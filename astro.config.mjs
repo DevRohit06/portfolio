@@ -27,6 +27,22 @@ export default defineConfig({
         context: "server",
         access: "secret",
       }),
+      PUBLIC_VERCEL_ENV: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+        default: "development",
+      }),
+      PUBLIC_VERCEL_PROJECT_PRODUCTION_URL: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+      }),
+      PUBLIC_VERCEL_URL: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+      }),
     },
   },
 
@@ -37,5 +53,7 @@ export default defineConfig({
 
   integrations: [svelte(), react(), mdx(), playformCompress()],
 
-  adapter: vercel(),
+  adapter: node({
+    mode: "standalone",
+  }),
 });
