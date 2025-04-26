@@ -13,6 +13,8 @@ import node from "@astrojs/node";
 
 import playformCompress from "@playform/compress";
 
+import vercel from "@astrojs/vercel";
+
 // https://astro.build/config
 export default defineConfig({
   vite: {
@@ -35,7 +37,5 @@ export default defineConfig({
 
   integrations: [svelte(), react(), mdx(), playformCompress()],
 
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: vercel(),
 });
