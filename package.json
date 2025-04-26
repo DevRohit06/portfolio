@@ -16,7 +16,6 @@
     "@astrojs/vercel": "^8.1.4",
     "@hono/zod-validator": "^0.4.3",
     "@playform/compress": "^0.1.9",
-    "@studio-freight/lenis": "^1.0.42",
     "@tailwindcss/vite": "^4.1.4",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
