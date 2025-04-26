@@ -83,12 +83,32 @@
 
   // Wait for DOM to be fully loaded
   document.addEventListener("DOMContentLoaded", () => {
-    // Note: body already has loading class applied in Layout.astro
+    // Check if we've already shown the loader in this session
+    const hasLoadedBefore = sessionStorage.getItem("hasLoadedSite");
 
+    // If we've already loaded once in this session, hide the loader immediately
+    if (hasLoadedBefore === "true") {
+      const loaderWrapper = document.getElementById("loader-wrapper");
+      if (loaderWrapper) {
+        loaderWrapper.style.display = "none";
+        document.body.classList.remove("loading");
+        document.body.classList.remove("page-transition");
+        return;
+      }
+    }
+
+    // Note: body already has loading class applied in Layout.astro
     const counterElement = document.getElementById("counter");
     const loaderWrapper = document.getElementById("loader-wrapper");
     const progressBar = document.getElementById("progress-bar");
     const loadingText = document.getElementById("loading-text");
+
+    // Guard clause if elements don't exist
+    if (!counterElement || !loaderWrapper || !progressBar || !loadingText) {
+      console.warn("Loader elements not found, skipping animation");
+      return;
+    }
+
     let progress = { value: 0 };
 
     // Loading messages to display during different progress points
@@ -112,7 +132,17 @@
     };
 
     // Create the loading animation
-    const loadingTl = gsap.timeline();
+    const loadingTl = gsap.timeline({
+      onComplete: () => {
+        // Enable scrolling after loader completes by removing restriction classes
+        document.body.classList.remove("loading");
+        document.body.classList.remove("page-transition");
+        // Mark that we've loaded the site in this session
+        sessionStorage.setItem("hasLoadedSite", "true");
+        // Play the page transition animations
+        pageTl.play();
+      },
+    });
 
     // Animate the counter from 0 to 100
     loadingTl.to(progress, {
@@ -160,13 +190,6 @@
       ease: "power2.out",
     });
 
-    // Play page animation after loader animation completes
-    loadingTl.eventCallback("onComplete", () => {
-      // Enable scrolling after loader completes by removing loading class from body
-      document.body.classList.remove("loading");
-      pageTl.play();
-    });
-
     // Add number pulsing animation for the counter (modified)
     gsap.to(counterElement, {
       scale: 1.03 /* Slightly increased scale change */,
@@ -182,6 +205,16 @@
       repeat: -1,
       yoyo: true,
       duration: 1.5,
+    });
+
+    // Handle Astro view transitions
+    document.addEventListener("astro:after-swap", () => {
+      // If we're navigating and the loader is still visible, hide it
+      if (sessionStorage.getItem("hasLoadedSite") === "true" && loaderWrapper) {
+        loaderWrapper.style.display = "none";
+        document.body.classList.remove("loading");
+        document.body.classList.remove("page-transition");
+      }
     });
   });
 </script>

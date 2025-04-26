@@ -8,6 +8,29 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 /**
+ * Cleanup all GSAP animations and ScrollTriggers
+ * Call this function during page navigation to prevent animations from getting stuck
+ */
+export function cleanupGSAPAnimations() {
+  // Kill all GSAP animations
+  gsap.killTweensOf("*");
+
+  // Kill and clear all ScrollTrigger instances
+  ScrollTrigger.getAll().forEach((st) => st.kill());
+  ScrollTrigger.clearScrollMemory();
+
+  // Clear any queued callbacks
+  gsap.globalTimeline.clear();
+
+  console.log("GSAP animations cleaned up");
+}
+
+// Make cleanup function available globally for navigation events
+if (typeof window !== "undefined") {
+  window.cleanupGSAPAnimations = cleanupGSAPAnimations;
+}
+
+/**
  * Standard fade-in animation from bottom with enhanced ScrollTrigger
  */
 export function fadeInUp(elements, options = {}) {

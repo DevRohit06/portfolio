@@ -43,7 +43,7 @@ const {
     <ClientRouter />
     <title>{title}</title>
   </head>
-  <body class="loading">
+  <body class="page-transition antialiased">
     {showLoader && <Loader />}
     <main>
       <slot />
@@ -64,19 +64,71 @@ const {
     overflow: hidden;
   }
 
+  .page-transition {
+    overflow: hidden;
+  }
+
   main {
     opacity: 1; /* Will be animated by GSAP */
   }
 </style>
 
 <script>
-  // Import GSAP
+  // Import GSAP and the cleanup function
   import { gsap } from "gsap";
+  import { cleanupGSAPAnimations } from "../utils/animations.js";
 
-  // Initialize animations for page elements that load after the loader animation
+  // Check if this is the first load of the site during this session
+  const isFirstLoad = !sessionStorage.getItem("hasLoadedSite");
+
+  // Initialize animations for page elements
   document.addEventListener("DOMContentLoaded", () => {
-    // This will be triggered by the Loader component's timeline
-    // The initial state of elements is set in the Loader component
-    // The loading class will be removed by the Loader component
+    if (!isFirstLoad) {
+      const loaderWrapper = document.getElementById("loader-wrapper");
+      // If not first load, remove the page-transition class immediately
+      document.body.classList.remove("page-transition");
+    }
+    // The loading animation will be handled by the Loader component
+  });
+
+  // Handle Astro view transitions
+  document.addEventListener("astro:page-load", () => {
+    // For subsequent page loads, we want to remove any loading classes
+    if (!isFirstLoad) {
+      document.body.classList.remove("page-transition");
+      document.body.classList.remove("loading");
+
+      // Apply simple fade-in for page transitions without the loader
+      const pageElements = document.querySelectorAll(
+        "nav, main, section, footer, .hero-card, .bento, .experience"
+      );
+
+      gsap.fromTo(
+        pageElements,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: "power2.out",
+        }
+      );
+    }
+  });
+
+  // Cleanup animations before navigating away
+  document.addEventListener("astro:before-preparation", () => {
+    console.log("Preparing for navigation, cleaning up GSAP animations");
+    cleanupGSAPAnimations();
+  });
+
+  // Additional failsafe cleanup on any navigation events
+  document.addEventListener("astro:after-swap", () => {
+    // This runs after the new page content is in the DOM but before it's visible
+    cleanupGSAPAnimations();
+
+    // Make sure we're not blocking scrolling during transitions
+    document.body.classList.remove("loading");
   });
 </script>

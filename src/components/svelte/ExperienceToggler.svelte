@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade, fly, slide } from "svelte/transition";
-  import { cubicOut, elasticOut } from "svelte/easing";
+  import { cubicOut } from "svelte/easing";
 
   // Define the type for experience data
   interface Links {
@@ -38,7 +38,7 @@
     },
     {
       id: 2,
-      title: "Fullstack Dev - Intern",
+      title: "Fullstack Dev",
       role: "Fullstack Developer Intern",
       company: "Qbtrix",
       duration: "DEC 2023 -  DEC 2024",
@@ -68,7 +68,6 @@
       const urlObj = new URL(url);
       return `https://www.google.com/s2/favicons?sz=32&domain_url=${encodeURIComponent(urlObj.hostname)}`;
     } catch (e) {
-      console.error("Invalid URL for favicon:", url);
       return "";
     }
   }
@@ -95,20 +94,20 @@
   $: animateRight = activeExperience.id > previousId;
 </script>
 
-<div class="w-[90%] sm:w-[85%] md:w-[80%] lg:w-[65%] mx-auto mt-8">
+<div class="w-[95%] sm:w-[90%] mx-auto mt-8">
   <div
     class="grid grid-cols-1 md:grid-cols-10 border border-[#7B7B7B] overflow-hidden"
     in:slide={{ duration: 800, delay: 200, easing: cubicOut }}
   >
     <!-- Left column - experience togglers -->
     <div
-      class="md:col-span-4 divide-y divide-[#7B7B7B] md:border-r md:border-[#7B7B7B]"
+      class="md:col-span-5 divide-y divide-[#7B7B7B] md:border-r md:border-[#7B7B7B]"
     >
       {#each experiences as experience}
         <button
-          class="w-full text-left p-4 sm:p-6 md:p-8 {experience.isActive
+          class="w-full text-left p-4 sm:p-5 md:p-8 md:py-9 {experience.isActive
             ? 'bg-[#0000CC] text-white'
-            : 'hover:bg-[#C9CDD1]/30'} transition-colors duration-300"
+            : ' bg-[#C9CDD1]'} transition-colors duration-300"
           on:click={() => setActiveExperience(experience.id)}
         >
           <div
@@ -120,7 +119,7 @@
               {experience.title}
             </h2>
             <p
-              class=" text-sm sm:text-base {!experience.isActive
+              class="text-sm mt-2 {!experience.isActive
                 ? 'text-[#7B7B7B]'
                 : ''}"
             >
@@ -133,11 +132,11 @@
 
     <!-- Right column - active experience details -->
     <div
-      class="md:col-span-6 p-4 sm:p-6 md:p-8 relative min-h-[250px] md:min-h-[300px]"
+      class="md:col-span-5 bg-[#C9CDD1] p-4 sm:p-5 md:p-8 relative min-h-[220px] md:min-h-[280px]"
     >
       {#key activeExperience?.id}
         <div
-          class="absolute inset-0 p-4 sm:p-6 md:p-8"
+          class="absolute inset-0 p-4 sm:p-5 md:p-8"
           in:fly={{
             x: animateRight ? 30 : -30,
             duration: 400,
@@ -146,15 +145,15 @@
           }}
           out:fade={{ duration: 150 }}
         >
-          <div class="mb-4">
+          <div class="mb-4 mt-8 md:mt-6">
             <div
-              class="inline-block bg-[#C9CDD1] text-[#7B7B7B] px-4 py-1 border border-[#7B7B7B] text-xs sm:text-sm mb-3"
+              class="inline-block bg-[#C9CDD1] text-[#7B7B7B] px-3 py-1 border border-[#7B7B7B] text-xs mb-3"
               in:fly={{ y: -10, duration: 300, delay: 150, easing: cubicOut }}
             >
               {activeExperience.duration}
             </div>
             <h3
-              class="text-xl sm:text-2xl md:text-3xl mb-1"
+              class="text-xl sm:text-2xl md:text-3xl mb-1 mt-4"
               in:fly={{ x: -10, duration: 300, delay: 200, easing: cubicOut }}
             >
               {activeExperience.title}
@@ -168,19 +167,19 @@
           </div>
 
           <p
-            class="text-sm sm:text-base text-[#7B7B7B] mb-4"
+            class="text-sm sm:text-base text-[#7B7B7B] my-6"
             in:fly={{ y: 10, duration: 300, delay: 300, easing: cubicOut }}
           >
             {activeExperience.description}
           </p>
           {#if activeExperience.links}
-            <div class="flex flex-wrap gap-4 mb-6">
+            <div class="flex flex-wrap gap-3 mb-4">
               {#each activeExperience.links as link, i}
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center text-[#0000CC] text-sm sm:text-base hover:underline transition-all duration-300 group"
+                  class="flex items-center text-[#0000CC] text-sm sm:text-base transition-all duration-300"
                   in:fly={{
                     y: 10,
                     duration: 300,
@@ -188,27 +187,22 @@
                     easing: cubicOut,
                   }}
                 >
-                  <img
-                    src={getFaviconUrl(link.url)}
-                    alt={link.title}
-                    class="w-4 h-4 mr-2"
-                  />
                   <span>{link.title}</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-0 ml-0 transition-all duration-300 group-hover:w-4 group-hover:ml-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
+                  <!-- Removed hover effect svg -->
                 </a>
+                {#if i < activeExperience.links.length - 1}
+                  <span
+                    class="text-[#7B7B7B] text-sm sm:text-base"
+                    in:fly={{
+                      y: 10,
+                      duration: 300,
+                      delay: 350 + (i + 1) * 50,
+                      easing: cubicOut,
+                    }}
+                  >
+                    /
+                  </span>
+                {/if}
               {/each}
             </div>
           {/if}
@@ -219,101 +213,17 @@
 </div>
 
 <style>
-  /* Add a subtle pulse animation to the active experience */
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(0, 0, 204, 0.4);
-    }
-    70% {
-      box-shadow: 0 0 0 10px rgba(0, 0, 204, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(0, 0, 204, 0);
-    }
-  }
+  /* Removed hover animations and pulse effects as requested */
 
-  /* Hover animation for the "Know more" link */
-  a:hover svg {
-    transform: translateX(4px);
-  }
-
-  .togglers-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .toggler {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border: 1px solid #7b7b7b;
-    background-color: transparent;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .toggler:hover {
-    border-color: #0000cc;
-    color: #0000cc;
-  }
-
-  .toggler.active {
-    color: white;
-    background-color: #0000cc;
-    border-color: #0000cc;
-    position: relative;
-    animation: slideInExpand 0.4s ease-out forwards;
-  }
-
+  /* Focus only on smooth transitions */
   @keyframes slideInExpand {
     0% {
       transform: translateY(-10px) scale(0.95);
       opacity: 0.7;
     }
-    40% {
-      transform: translateY(0) scale(1.05);
-    }
     100% {
       transform: translateY(0) scale(1);
       opacity: 1;
     }
-  }
-
-  /* Highlight the active toggler with a subtle glow */
-  .toggler.active::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-      circle at center,
-      rgba(255, 255, 255, 0.8) 0%,
-      rgba(255, 255, 255, 0) 70%
-    );
-    opacity: 0;
-    mix-blend-mode: overlay;
-    animation: pulseGlow 1s ease-out forwards;
-  }
-
-  @keyframes pulseGlow {
-    0% {
-      opacity: 0.7;
-      transform: scale(0.3);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(2);
-    }
-  }
-
-  .experience-container {
-    overflow: hidden;
   }
 </style>

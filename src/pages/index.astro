@@ -7,15 +7,26 @@ import Bento from "../components/Bento.astro";
 import Footer from "../components/Footer.astro";
 import BlogSection from "../components/BlogSection.astro";
 import Loader from "../components/Loader.astro";
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Element from "../assets/svgs/element-1.svg";
+import Badge from "../components/Badge.astro";
+import LiveClock from "../components/svelte/LiveClock.svelte";
+// Set showLoader to true only for the first visit in a session
+// We'll handle this client-side to avoid hydration issues
+const showLoader = true;
 ---
 
 <script>
   import Lenis from "lenis";
 
-  const lenis = new Lenis();
+  // Create smoother scroll with Lenis
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // improved easing
+    direction: "vertical",
+    smooth: true,
+    smoothTouch: false, // disable on touch devices for better performance
+    touchMultiplier: 2,
+  });
 
   function raf(time: number) {
     lenis.raf(time);
@@ -24,19 +35,348 @@ import Loader from "../components/Loader.astro";
 
   requestAnimationFrame(raf);
 </script>
-<Layout showLoader={true} title="My Portfolio">
+
+<Layout title="My Portfolio">
   <div class="pb-8 page-content">
     <Navbar />
-    <div class="hero-card">
-      <HeroCard />
+
+    <div
+      class="w-[90%] md:w-[80%] lg:w-[70%] mx-auto mt-[100px] md:mt-[150px] lg:mt-[200px]"
+    >
+      <div
+        class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-2 px-2 sm:px-8 hero-top-badges"
+      >
+        <Badge text="">
+          <LiveClock client:load />
+        </Badge>
+        <Badge text="En / Hi" />
+      </div>
+      <div class="main-border-container relative w-full" id="main-container">
+        <!-- Border elements for animation -->
+        <div class="animated-border border-top"></div>
+        <div class="animated-border border-right"></div>
+        <div class="animated-border border-bottom"></div>
+        <div class="animated-border border-left"></div>
+
+        <div class="hero-card">
+          <HeroCard />
+        </div>
+        <div class="experience relative">
+          <div class="absolute top-0 w-full -z-10">
+            <div
+              class="connecting-border border-[#7B7B7B] border h-52 w-2/5 mx-auto"
+              id="connecting-border"
+            >
+              <div
+                class="w-fit mx-auto absolute -top-17 left-1/2 transform -translate-x-1/2"
+              >
+                <Element />
+              </div>
+            </div>
+          </div>
+
+          <Experience />
+        </div>
+      </div>
     </div>
-    <div class="experience pt-24">
-      <Experience />
-    </div>
-    <div class="bento">
+    <div class="bento pt-52">
       <Bento />
     </div>
     <BlogSection />
     <Footer />
   </div>
 </Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Handle loader visibility on client side
+  document.addEventListener("DOMContentLoaded", () => {
+    const hasVisitedBefore = sessionStorage.getItem("hasLoadedSite");
+
+    if (hasVisitedBefore === "true") {
+      // Hide loader immediately if already visited
+      const loaderElement = document.getElementById("loader-wrapper");
+      if (loaderElement) {
+        loaderElement.style.display = "none";
+      }
+      document.body.classList.remove("loading");
+      document.body.classList.remove("page-transition");
+    } else {
+      // Set the flag for future visits
+      sessionStorage.setItem("hasLoadedSite", "true");
+    }
+
+    // Optimize page transitions
+    setTimeout(() => {
+      document.body.classList.remove("loading");
+      document.body.classList.add("page-loaded");
+    }, 300);
+
+    // Global animation settings for better performance
+    gsap.defaults({
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+
+    // Animate the main border container
+    const animateMainBorder = () => {
+      // Set initial state of all borders to 0 length
+      gsap.set(".border-top, .border-bottom", {
+        scaleX: 0,
+        transformOrigin: "left center",
+      });
+
+      gsap.set(".border-left, .border-right", {
+        scaleY: 0,
+        transformOrigin: "center top",
+      });
+
+      // Create timeline for main container borders
+      const mainBorderTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#main-container",
+          start: "top 70%", // Start when container is 70% from viewport top
+          end: "center 30%", // End when container center is 30% from viewport top
+          scrub: 0.8, // Smooth scrubbing effect tied to scroll position
+        },
+      });
+
+      // Timeline for border animation sequence
+      mainBorderTl
+        .to(".border-top", {
+          scaleX: 1,
+          duration: 0.25,
+          ease: "power1.inOut",
+        })
+        .to(
+          ".border-right",
+          {
+            scaleY: 1,
+            duration: 0.25,
+            ease: "power1.inOut",
+          },
+          "-=0.1"
+        )
+        .to(
+          ".border-bottom",
+          {
+            scaleX: 1,
+            duration: 0.25,
+            ease: "power1.inOut",
+          },
+          "-=0.1"
+        )
+        .to(
+          ".border-left",
+          {
+            scaleY: 1,
+            duration: 0.25,
+            ease: "power1.inOut",
+          },
+          "-=0.1"
+        );
+    };
+
+    // Initialize the main border animation
+    animateMainBorder();
+
+    // Animate the connecting border between hero and experience sections
+    const connectingBorder = document.getElementById("connecting-border");
+    if (connectingBorder) {
+      // Initially set the border to have 0 height
+      // gsap.set(connectingBorder, {
+      //   scaleY: 0,
+      //   transformOrigin: "top center",
+      // });
+
+      // Create timeline for border to grow as user scrolls
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: ".hero-card",
+          start: "bottom 70%", // Start when bottom of hero card is 70% from viewport top
+          end: "bottom 20%", // End when bottom of hero card is 20% from viewport top
+          scrub: 1, // Smooth scrubbing effect tied to scroll position
+          onUpdate: (self) => {
+            // Grow the border based on scroll progress
+            // gsap.to(connectingBorder, {
+            //   scaleY: self.progress,
+            //   duration: 0.1,
+            //   ease: "none",
+            //   overwrite: "auto",
+            // });
+          },
+        },
+      });
+    }
+
+    // Set up section transitions and animations
+    const sections = document.querySelectorAll(
+      ".bento, .blog-section, .footer"
+    );
+
+    sections.forEach((section, index) => {
+      // Create a simple fade-in animation for each section
+      gsap.set(section, { opacity: 0, y: 30 });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          gsap.to(section, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: index * 0.1, // Staggered delay based on section order
+          });
+        },
+      });
+    });
+
+    // Simple parallax effect for the hero section
+    const hero = document.querySelector(".hero-card");
+    if (hero) {
+      ScrollTrigger.create({
+        trigger: hero,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        onUpdate: (self) => {
+          // Limit the amount of movement for better mobile performance
+          const yOffset = Math.min(self.progress * 60, 60);
+          gsap.set(hero, { y: yOffset });
+        },
+      });
+    }
+
+    // Connect the experience section with the element decoration
+    const experienceElement = document.querySelector(".experience");
+    const elementDecoration = document.querySelector(".experience .absolute");
+
+    if (experienceElement && elementDecoration) {
+      ScrollTrigger.create({
+        trigger: experienceElement,
+        start: "top 70%",
+        end: "bottom 30%",
+        once: true,
+        onEnter: () => {
+          gsap.fromTo(
+            elementDecoration,
+            { opacity: 0, scale: 0.9 },
+            { opacity: 1, scale: 1, duration: 0.7 }
+          );
+        },
+      });
+    }
+
+    // Make sure GSAP doesn't cause performance issues on mobile
+    const mobileMediaQuery = window.matchMedia("(max-width: 768px)");
+
+    function handleMobileChange(e) {
+      if (e.matches) {
+        // Disable or simplify some animations on mobile for performance
+        ScrollTrigger.getAll().forEach((trigger) => {
+          if (trigger.vars.scrub) {
+            // Adjust scrub value for better mobile performance
+            trigger.vars.scrub = 1.5;
+          }
+        });
+      }
+    }
+
+    // Run once at initialization
+    handleMobileChange(mobileMediaQuery);
+
+    // Add listener for screen size changes
+    mobileMediaQuery.addEventListener("change", handleMobileChange);
+  });
+</script>
+
+<style>
+  .page-content {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Main border container */
+  .main-border-container {
+    position: relative;
+  }
+
+  /* Animated borders */
+  .animated-border {
+    position: absolute;
+    background-color: #7b7b7b;
+    z-index: 2;
+  }
+
+  .border-top {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+  }
+
+  .border-right {
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+  }
+
+  .border-bottom {
+    bottom: 0;
+    right: 0; /* Changed to right for different animation direction */
+    width: 100%;
+    height: 1px;
+    transform-origin: right center !important; /* Override for different direction */
+  }
+
+  .border-left {
+    bottom: 0; /* Changed to bottom for different animation direction */
+    left: 0;
+    width: 1px;
+    height: 100%;
+    transform-origin: center bottom !important; /* Override for different direction */
+  }
+
+  /* Add responsive spacing adjustments */
+  @media (max-width: 768px) {
+    .bento {
+      padding-top: 8rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bento {
+      padding-top: 6rem;
+    }
+  }
+
+  /* Improved loading and page transition styles */
+  :global(body.loading) {
+    overflow: hidden;
+  }
+
+  :global(body.page-loaded) {
+    overflow-x: hidden;
+  }
+
+  /* Focus on content transitions instead of hover effects */
+  :global(.fade-in) {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  :global(.fade-in.visible) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>

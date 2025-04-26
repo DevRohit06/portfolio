@@ -1,19 +1,124 @@
 ---
 import client from "../../lib/client";
+import Badge from "../Badge.astro";
 
 import BentoGithubActivityChart from "./BentoItemGithubActivityChart";
 
+// Add lazy loading with IntersectionObserver support
 const response = await client.api.github.contributions.$get();
 const data = response.status === 200 ? await response.json() : null;
+// Remove console log to improve performance
+// console.log("Github Activity Chart Data: ", data);
 
-// Astro.response.headers.set("Cache-Control", "public, max-age=86400");
+function formatDate(date) {
+  // Get day of week
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const dayOfWeek = weekdays[date.getDay()];
+
+  // Get month
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const month = months[date.getMonth()];
+
+  // Get date and add appropriate suffix
+  const dayOfMonth = date.getDate();
+  let suffix = "th";
+
+  if (dayOfMonth === 1 || dayOfMonth === 21 || dayOfMonth === 31) {
+    suffix = "st";
+  } else if (dayOfMonth === 2 || dayOfMonth === 22) {
+    suffix = "nd";
+  } else if (dayOfMonth === 3 || dayOfMonth === 23) {
+    suffix = "rd";
+  }
+
+  // Get year
+  const year = date.getFullYear();
+
+  // Format the full date string
+  return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
+}
+
+// Add Cache-Control header to improve performance
+Astro.response.headers.set("Cache-Control", "public, max-age=86400");
 ---
 
 {
   data ? (
-    <BentoGithubActivityChart {...data} client:only="react" />
+    <div
+      class="border border-[#7B7B7B] p-4 bento-github-card bento-scroll-reveal"
+      data-delay="0"
+      data-performance-critical="true"
+    >
+      <div class="flex items-center justify-between mb-2">
+        <Badge size="xs" text="GITHUB ACTIVITY">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            class="badge-icon"
+          >
+            <path
+              fill="currentColor"
+              d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.87 1.52 2.34 1.07 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.11.38-2 1.03-2.71c-.1-.25-.45-1.29.1-2.64c0 0 .84-.27 2.75 1.02c.8-.22 1.65-.33 2.5-.33c.85 0 1.7.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.35.2 2.39.1 2.64c.65.71 1.03 1.6 1.03 2.71c0 3.82-2.34 4.66-4.57 4.91c.36.31.67.91.67 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"
+            />
+          </svg>
+        </Badge>
+        <div>
+          <p class="text-xs  text-[#696969] font-semibold">
+            Last pushed on{" "}
+            <span class="">{formatDate(new Date(data.lastPushedAt))}</span>
+          </p>
+        </div>
+      </div>
+      <!-- Use client:visible for lazy loading -->
+      <BentoGithubActivityChart {...data} client:visible />
+    </div>
   ) : (
-    // TODO: handle error
-    <p>Something went wrong 😔</p>
+    <div class="border border-[#7B7B7B] p-4 bento-github-card bento-scroll-reveal flex items-center justify-center h-[200px]">
+      <p class="text-[#696969]">Loading GitHub activity...</p>
+    </div>
   )
 }
+
+<script>
+  // Add intersection observer for performance optimizations
+  document.addEventListener('DOMContentLoaded', () => {
+    const bentoGithubCard = document.querySelector('.bento-github-card');
+    if (!bentoGithubCard) return;
+    
+    // Create an intersection observer to optimize animations when GitHub card is visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          bentoGithubCard.setAttribute('data-visible', 'true');
+        } else {
+          bentoGithubCard.setAttribute('data-visible', 'false');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    observer.observe(bentoGithubCard);
+  });
+</script>

@@ -87,11 +87,11 @@ const techStack = [
 ];
 ---
 
-<div class="relative flex w-full flex-col items-center justify-center py-2">
+<div class="relative flex w-full flex-col items-center justify-center">
   <Marquee>
     {
       [...techStack, ...techStack].map((tech) => (
-        <div class="flex-shrink-0 mx-6 my-2">
+        <div class="flex-shrink-0 mx-6 ">
           <Image
             src={tech.icon}
             alt={tech.alt}
@@ -101,14 +101,6 @@ const techStack = [
       ))
     }
   </Marquee>
-</div>
-<div
-  class="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background"
->
-</div>
-<div
-  class="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background"
->
 </div>
 
 <style is:global>

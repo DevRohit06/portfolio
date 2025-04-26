@@ -42,8 +42,9 @@ import "lenis/dist/lenis.css";
 </style>
 
 <script>
-  // Import GSAP
+  // Import GSAP and cleanup function
   import { gsap } from "gsap";
+  import { cleanupGSAPAnimations } from "../utils/animations.js";
 
   // Initialize animations for blog page elements directly
   document.addEventListener("DOMContentLoaded", () => {
@@ -63,5 +64,16 @@ import "lenis/dist/lenis.css";
       { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
       "-=0.4"
     );
+  });
+
+  // Handle Astro view transitions for blog pages
+  document.addEventListener("astro:before-preparation", () => {
+    console.log("Blog page navigation: cleaning up GSAP animations");
+    cleanupGSAPAnimations();
+  });
+
+  // Additional failsafe cleanup on any navigation events
+  document.addEventListener("astro:after-swap", () => {
+    cleanupGSAPAnimations();
   });
 </script>

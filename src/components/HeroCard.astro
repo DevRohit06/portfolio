@@ -6,83 +6,60 @@ import Pfp from "../assets/rohit.webp";
 import { Image } from "astro:assets";
 ---
 
-<div
-  class="hero-container w-[90%] md:w-[80%] lg:w-[70%] mx-auto mt-[100px] md:mt-[150px] lg:mt-[200px]"
->
+<div class="hero-container relative">
   <div
-    class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-2 px-2 sm:px-8 hero-top-badges"
+    class="p-4 sm:p-6 md:p-12 relative border border-[#7B7B7B] hero-title-section"
   >
-    <Badge text="">
-      <LiveClock client:load />
-    </Badge>
-    <Badge text="En/Hi" />
-  </div>
-  <div class="p-4 sm:p-6 md:p-10 border border-[#7B7B7B] hero-title-section">
+    <div class="size-4 bg-[#7B7B7B] absolute -top-2 -left-2"></div>
     <div class="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-0">
       <h1
         class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold hero-title split-text"
       >
-        A Vibe Engineer*
+        A Vibe engineer*
       </h1>
       <span class="text-sm sm:text-md md:text-lg text-black/60 hero-subtitle"
         >/ Software Engineer</span
       >
     </div>
     <div
-      class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-4 hero-badges"
+      class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-6 hero-badges"
     >
-      <Badge text="I believe in tech you use" />
-      <Badge text="Ambernath, India">
+      <Badge size="lg" text="I believe in tech you use" />
+      <Badge size="lg" text="Ambernath, India">
         <div class="animate-pulse bg-[#0000CC] size-2 rounded-full"></div>
       </Badge>
     </div>
   </div>
   <div class="border border-[#7B7B7B] border-t-0 hero-info-section">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-11">
-      <div
-        class="sm:col-span-1 md:col-span-3 hero-image-container overflow-hidden"
-      >
-        <Image
-          src={Pfp}
-          alt="Rohit Kushwaha"
-          class="object-cover w-full aspect-square border border-[#7B7B7B] hero-image"
-          data-parallax="0.15"
-        />
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-11 relative">
+      <div class="sm:col-span-1 md:col-span-3">
+        <div class="border border-[#7B7B7B] hero-image relative">
+          <Image
+            src={Pfp}
+            alt="Rohit Kushwaha"
+            class="object-cover w-full aspect-square"
+          />
+          <div class="size-4 bg-[#7B7B7B] absolute -bottom-2 -right-2 z-50">
+          </div>
+        </div>
       </div>
-      <div class="sm:col-span-1 md:col-span-8 p-4 sm:p-6 md:p-10 hero-content">
+      <div class="sm:col-span-1 md:col-span-8 p-4 sm:p-6 md:p-12 hero-content">
         <Badge size="sm">
           <span class="text-xs font-bold uppercase">Hello</span>
         </Badge>
-        <h2 class="text-2xl sm:text-3xl md:text-4xl mt-1 hero-name split-text">
-          I am Rohit Kushwaha
+        <h2 class="text-2xl sm:text-3xl md:text-4xl mt-6 hero-name split-text">
+          Rohit Kushwaha
         </h2>
-        <div class="bio-wrapper mt-2">
+        <div class="bio-wrapper mt-5">
           <p class="text-sm sm:text-md md:text-lg text-black/60 hero-bio">
             I am a software engineer with a passion for building things that
             live on the internet. I am always looking for new challenges and I
             am always eager to learn new things. I am currently working as a
             software engineer at <a
               href="https://www.qbtrix.com"
-              class="text-[#0000CC] relative group inline-flex items-center hero-magnetic-item"
-              >Qbtrix
-              <span
-                class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#0000CC] group-hover:w-full transition-all duration-300"
-              ></span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-3 w-0 ml-0 transition-all duration-300 group-hover:w-3 group-hover:ml-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-              </svg>
-            </a>. I am a big fan of technology and I love to explore new things.
-            I am also a big fan of music and I love to listen to music while I
+              class="text-[#0000CC] relative inline-flex items-center">Qbtrix</a
+            >.I am a big fan of technology and I love to explore new things. I
+            am also a big fan of music and I love to listen to music while I
             work.
           </p>
         </div>
@@ -93,7 +70,9 @@ import { Image } from "astro:assets";
     class="border border-[#7B7B7B] border-t-0 px-4 sm:px-6 md:px-10 py-4 sm:py-6 flex flex-col items-center justify-between sm:flex-row gap-2 sm:gap-0 overflow-hidden hero-skills-section"
   >
     <Badge size="sm"
-      ><span class="font-bold whitespace-nowrap text-xs sm:text-sm uppercase">
+      ><span
+        class="font-bold whitespace-nowrap text-xs px-3 sm:text-sm uppercase"
+      >
         You can find me on
       </span></Badge
     >
@@ -104,17 +83,17 @@ import { Image } from "astro:assets";
         href={socials.github}
         target="_blank"
         rel="noopener noreferrer"
-        class="social-icon-link group"
+        class="social-icon-link"
         aria-label="GitHub Profile"
       >
         <div
-          class="social-icon-wrapper flex items-center size-8 justify-center transition-all duration-300"
+          class="social-icon-wrapper flex items-center size-8 justify-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="256"
             height="256"
-            class="transition-all duration-300 group-hover:text-[#0000CC] text-[#7B7B7B]"
+            class="text-[#7B7B7B]"
             viewBox="0 0 256 256"
             ><rect width="256" height="256" fill="none"></rect><path
               fill="currentColor"
@@ -128,18 +107,18 @@ import { Image } from "astro:assets";
         href={socials.twitter}
         target="_blank"
         rel="noopener noreferrer"
-        class="social-icon-link group"
+        class="social-icon-link"
         aria-label="Twitter Profile"
       >
         <div
-          class="social-icon-wrapper flex size-8 items-center justify-center transition-all duration-300"
+          class="social-icon-wrapper flex size-8 items-center justify-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="256"
             height="256"
             viewBox="0 0 256 256"
-            class="transition-all duration-300 group-hover:text-[#0000CC] text-[#7B7B7B]"
+            class="text-[#7B7B7B]"
             ><rect width="256" height="256" fill="none"></rect><path
               fill="currentColor"
               d="M247.39 68.94A8 8 0 0 0 240 64h-30.43a48.66 48.66 0 0 0-41.47-24a46.9 46.9 0 0 0-33.75 13.7A47.9 47.9 0 0 0 120 88v6.09C79.74 83.47 46.81 50.72 46.46 50.37a8 8 0 0 0-13.65 4.92c-4.31 47.79 9.57 79.77 22 98.18a111 111 0 0 0 21.88 24.2c-15.23 17.53-39.21 26.74-39.47 26.84a8 8 0 0 0-3.85 11.93c.75 1.12 3.75 5.05 11.08 8.72C53.51 229.7 65.48 232 80 232c70.67 0 129.72-54.42 135.75-124.44l29.91-29.9a8 8 0 0 0 1.73-8.72m-45 29.41a8 8 0 0 0-2.32 5.14C196 166.58 143.28 216 80 216c-10.56 0-18-1.4-23.22-3.08c11.51-6.25 27.56-17 37.88-32.48A8 8 0 0 0 92 169.08c-.47-.27-43.91-26.34-44-96c16 13 45.25 33.17 78.67 38.79A8 8 0 0 0 136 104V88a32 32 0 0 1 9.6-22.92A30.94 30.94 0 0 1 167.9 56c12.66.16 24.49 7.88 29.44 19.21a8 8 0 0 0 7.33 4.79h16Z"
@@ -152,18 +131,18 @@ import { Image } from "astro:assets";
         href={socials.linkedIn}
         target="_blank"
         rel="noopener noreferrer"
-        class="social-icon-link group"
+        class="social-icon-link"
         aria-label="LinkedIn Profile"
       >
         <div
-          class="social-icon-wrapper flex size-8 items-center justify-center transition-all duration-300"
+          class="social-icon-wrapper flex size-8 items-center justify-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="256"
             height="256"
             viewBox="0 0 256 256"
-            class="transition-all duration-300 group-hover:text-[#0000CC] text-[#7B7B7B]"
+            class="text-[#7B7B7B]"
             ><rect width="256" height="256" fill="none"></rect><path
               fill="currentColor"
               d="M216 24H40a16 16 0 0 0-16 16v176a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V40a16 16 0 0 0-16-16m0 192H40V40h176zM96 112v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0m88 28v36a8 8 0 0 1-16 0v-36a20 20 0 0 0-40 0v36a8 8 0 0 1-16 0v-64a8 8 0 0 1 15.79-1.78A36 36 0 0 1 184 140m-84-56a12 12 0 1 1-12-12a12 12 0 0 1 12 12"
@@ -172,16 +151,16 @@ import { Image } from "astro:assets";
         </div>
       </a>
 
-      <a href={socials.mail} class="social-icon-link group" aria-label="Email">
+      <a href={socials.mail} class="social-icon-link" aria-label="Email">
         <div
-          class="social-icon-wrapper flex size-8 items-center justify-center transition-all duration-300"
+          class="social-icon-wrapper flex size-8 items-center justify-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="256"
             height="256"
             viewBox="0 0 256 256"
-            class="transition-all duration-300 group-hover:text-[#0000CC] text-[#7B7B7B]"
+            class="text-[#7B7B7B]"
           >
             <rect width="256" height="256" fill="none"></rect><path
               fill="currentColor"
@@ -195,18 +174,18 @@ import { Image } from "astro:assets";
         href={socials.instagram}
         target="_blank"
         rel="noopener noreferrer"
-        class="social-icon-link group"
+        class="social-icon-link"
         aria-label="Instagram Profile"
       >
         <div
-          class="social-icon-wrapper flex size-8 items-center justify-center transition-all duration-300"
+          class="social-icon-wrapper flex size-8 items-center justify-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="256"
             height="256"
             viewBox="0 0 256 256"
-            class="transition-all duration-300 group-hover:text-[#0000CC] text-[#7B7B7B]"
+            class="text-[#7B7B7B]"
             ><rect width="256" height="256" fill="none"></rect><path
               fill="currentColor"
               d="M128 80a48 48 0 1 0 48 48a48.05 48.05 0 0 0-48-48m0 80a32 32 0 1 1 32-32a32 32 0 0 1-32 32m48-136H80a56.06 56.06 0 0 0-56 56v96a56.06 56.06 0 0 0 56 56h96a56.06 56.06 0 0 0 56-56V80a56.06 56.06 0 0 0-56-56m40 152a40 40 0 0 1-40 40H80a40 40 0 0 1-40-40V80a40 40 0 0 1 40-40h96a40 40 0 0 1 40 40ZM192 76a12 12 0 1 1-12-12a12 12 0 0 1 12 12"
@@ -220,51 +199,48 @@ import { Image } from "astro:assets";
   <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
-    import { createMagneticEffect } from "../utils/animations.js";
 
     gsap.registerPlugin(ScrollTrigger);
 
     document.addEventListener("DOMContentLoaded", () => {
-      // Hero animations - will start after the loader animation completes
+      // Hero animations - simplified for better performance
       const heroContainer = document.querySelector(".hero-container");
 
       if (!heroContainer) return;
 
-      // Create the hero animation timeline
+      // Create a simpler hero animation timeline
       const heroTl = gsap.timeline({
-        delay: 0.5, // Delay after loader completes
+        delay: 0.3,
       });
 
-      // Top badges animation with improved effect
+      // Top badges animation - simplified
       heroTl.from(".hero-top-badges", {
         opacity: 0,
-        y: -30,
-        duration: 0.8,
-        ease: "power3.out",
+        y: -20,
+        duration: 0.6,
+        ease: "power2.out",
       });
 
-      // Hero title section animation with backdrop blur reveal
+      // Hero title section animation - simplified
       heroTl.from(
         ".hero-title-section",
         {
           opacity: 0,
-          scale: 0.97,
-          duration: 0.9,
-          ease: "expo.out",
-          filter: "blur(10px)",
-          clearProps: "filter", // Clear filter after animation
+          y: 15,
+          duration: 0.7,
+          ease: "power2.out",
         },
-        "-=0.4"
+        "-=0.3"
       );
 
-      // Text reveal animations for title with more sophisticated effect
+      // Text reveal animations for title - more responsive approach
       const splitTextElements = document.querySelectorAll(".split-text");
 
       splitTextElements.forEach((element) => {
         const text = element.innerText;
         let htmlContent = "";
 
-        // Create spans for each character for advanced text animation
+        // Create spans for each character for text animation
         for (let i = 0; i < text.length; i++) {
           if (text[i] === " ") {
             htmlContent += '<span class="char-span">&nbsp;</span>';
@@ -276,153 +252,101 @@ import { Image } from "astro:assets";
         element.innerHTML = htmlContent;
       });
 
-      // Hero title text animation
+      // Hero title text animation - simplified for better performance
       heroTl.from(
         ".hero-title .char-span",
         {
           opacity: 0,
-          y: 20,
-          filter: "blur(4px)",
-          stagger: 0.03,
-          duration: 0.7,
-          ease: "back.out(1.5)",
-          clearProps: "filter",
+          y: 15,
+          stagger: 0.02,
+          duration: 0.6,
+          ease: "power2.out",
         },
         "-=0.2"
       );
 
-      // Hero subtitle animation
+      // Hero subtitle animation - simplified
       heroTl.from(
         ".hero-subtitle",
         {
           opacity: 0,
-          x: -20,
-          duration: 0.6,
-          ease: "power2.out",
-        },
-        "-=0.5"
-      );
-
-      // Badges animation with improved staggered reveal
-      heroTl.from(
-        ".hero-badges > *",
-        {
-          opacity: 0,
-          y: 20,
-          scale: 0.9,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "back.out(2)",
-        },
-        "-=0.3"
-      );
-
-      // Create hero info section animation with clipPath reveal
-      gsap.set(".hero-info-section", {
-        clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
-      });
-
-      heroTl.to(
-        ".hero-info-section",
-        {
-          clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-          duration: 1.2,
-          ease: "power4.inOut",
-        },
-        "-=0.1"
-      );
-
-      // Image container reveal
-      gsap.set(".hero-image-container", {
-        clipPath: "inset(100% 0 0 0)",
-      });
-
-      heroTl.to(
-        ".hero-image-container",
-        {
-          clipPath: "inset(0% 0 0 0)",
-          duration: 1.2,
-          ease: "power4.inOut",
-        },
-        "-=0.9"
-      );
-
-      // Hero name text animation with character reveal
-      heroTl.from(
-        ".hero-name .char-span",
-        {
-          opacity: 0,
-          y: 20,
-          filter: "blur(4px)",
-          stagger: 0.02,
-          duration: 0.6,
-          ease: "back.out(1.5)",
-          clearProps: "filter",
-        },
-        "-=0.8"
-      );
-
-      // Fix for bio paragraph - animate the wrapper instead of manipulating the HTML content
-      const bioWrapper = document.querySelector(".bio-wrapper");
-      if (bioWrapper) {
-        // Instead of modifying the HTML content, animate the bio with a different approach
-        gsap.set(bioWrapper, { opacity: 0 });
-
-        heroTl.to(
-          bioWrapper,
-          {
-            opacity: 1,
-            duration: 0.8,
-            ease: "power2.out",
-          },
-          "-=0.6"
-        );
-
-        // Add a subtle revealing effect
-        gsap.from(".hero-bio", {
-          y: 30,
-          duration: 1,
-          ease: "power3.out",
-          delay: heroTl.recent().endTime() - 0.4,
-        });
-      }
-
-      // Skills section animation
-      gsap.set(".hero-skills-section", {
-        y: 50,
-        opacity: 0,
-      });
-
-      heroTl.to(
-        ".hero-skills-section",
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
+          x: -10,
+          duration: 0.5,
           ease: "power2.out",
         },
         "-=0.4"
       );
 
-      // Create scroll-triggered parallax effect for the profile image
-      // createParallax(".hero-image", 0.15, {
-      //   trigger: ".hero-image-container",
-      //   start: "top bottom",
-      //   end: "bottom top",
-      // });
+      // Badges animation - simplified
+      heroTl.from(
+        ".hero-badges > *",
+        {
+          opacity: 0,
+          y: 10,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      );
 
-      // Add magnetic effect to links
-      createMagneticEffect(".hero-magnetic-item", 0.3);
+      // Hero info section animation - simplified
+      heroTl.from(
+        ".hero-info-section",
+        {
+          opacity: 0,
+          y: 20,
+          duration: 0.8,
+          ease: "power2.out",
+        },
+        "-=0.1"
+      );
 
-      // Create scroll-triggered animations for the hero sections
+      // Hero name text animation - simplified
+      heroTl.from(
+        ".hero-name .char-span",
+        {
+          opacity: 0,
+          y: 15,
+          stagger: 0.02,
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        "-=0.6"
+      );
+
+      // Bio animation - simplified
+      heroTl.from(
+        ".hero-bio",
+        {
+          opacity: 0,
+          y: 20,
+          duration: 0.7,
+          ease: "power2.out",
+        },
+        "-=0.5"
+      );
+
+      // Skills section animation - simplified
+      heroTl.from(
+        ".hero-skills-section",
+        {
+          opacity: 0,
+          y: 20,
+          duration: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      );
+
+      // Simple scroll animation
       ScrollTrigger.create({
         trigger: ".hero-container",
         start: "top top",
         end: "bottom top-=200",
-        pin: false,
         onUpdate: (self) => {
-          // Parallax effect for the entire hero container
-          const yPercent = self.progress * -20;
+          // Simple parallax effect
+          const yPercent = self.progress * -15;
           gsap.to(".hero-container", {
             y: yPercent,
             ease: "none",
@@ -434,6 +358,7 @@ import { Image } from "astro:assets";
   </script>
 
   <style>
+    /* Basic styling */
     .char-span {
       display: inline-block;
     }
@@ -442,36 +367,14 @@ import { Image } from "astro:assets";
       overflow: hidden;
     }
 
-    .hero-image-container {
-      position: relative;
-      overflow: hidden;
-    }
-
-    @media (min-width: 768px) {
-      .hero-title-section {
-        position: relative;
-        z-index: 2;
+    /* Simplified responsive styles */
+    @media (max-width: 640px) {
+      .hero-content {
+        padding: 1rem;
       }
 
-      .hero-title-section::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          to right,
-          rgba(201, 205, 209, 0.05),
-          transparent
-        );
-        z-index: -1;
-        transform-origin: left;
-        transition: transform 0.5s ease;
-      }
-
-      .hero-title-section:hover::after {
-        transform: scaleX(1.05);
+      .hero-skills-section {
+        padding: 1rem;
       }
     }
   </style>

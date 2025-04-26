@@ -47,10 +47,10 @@ const displayDate = updatedDate || pubDate;
 const primaryTag = tags.length > 0 ? tags[0] : "Blog";
 ---
 
-<div class="blog-card-wrapper">
+<div class="blog-card-wrapper group">
   <a
     href={url}
-    class="blog-card group block h-full border border-[#7B7B7B] overflow-hidden relative transition-all duration-300 bg-[#C9CDD1]"
+    class="blog-card block h-full border border-[#7B7B7B] group-hover:border-[#0707AC] overflow-hidden relative transition-all duration-300 bg-[#C9CDD1]"
   >
     <div
       class="blog-card-image-container relative overflow-hidden w-full aspect-video"
@@ -61,7 +61,7 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
         src={heroImage}
         alt={title}
         inferSize={true}
-        class="blog-card-image w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-105"
+        class="blog-card-image grayscale group-hover:grayscale-0 w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-105"
       />
       <div class="blog-card-category absolute top-3 left-3 z-10">
         <Badge
@@ -72,24 +72,22 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
       </div>
     </div>
     <div class="blog-card-content p-4 sm:p-5 relative">
-      <div
-        class="blog-card-date text-xs sm:text-sm text-[#7B7B7B] mb-2 font-medium"
-      >
+      <div class="blog-card-date text-xs text-[#7B7B7B] mb-2 font-medium">
         {formatDate(displayDate)}
         {readingTime && <span class="ml-2">{readingTime} min read</span>}
       </div>
       <h3
-        class="blog-card-title text-base sm:text-lg mb-2 sm:mb-3 font-medium transition-colors duration-300 group-hover:text-[#0000CC] line-clamp-2"
+        class="blog-card-title text-base sm:text-lg mt-2 mb-2 sm:mb-3 font-medium transition-colors duration-300 group-hover:text-[#0000CC] line-clamp-2 leading-tight"
       >
         {title}
       </h3>
       <p
-        class="blog-card-description text-xs sm:text-sm text-[#4B4B4B] mb-4 sm:mb-6 leading-relaxed line-clamp-3"
+        class="blog-card-description text-xs sm:text-sm text-[#4B4B4B] mb-4 sm:mb-6 leading-relaxed line-clamp-5"
       >
         {description}
       </p>
       <div
-        class="blog-card-read-more text-xs sm:text-sm font-medium text-[#7B7B7B] flex items-center group-hover:text-[#0000CC] transition-colors duration-300"
+        class="blog-card-read-more mt-8 text-xs sm:text-sm font-medium text-[#7B7B7B] flex items-center group-hover:text-[#0000CC] transition-colors duration-300"
       >
         Read more <span
           class="arrow ml-1 transition-transform duration-300 group-hover:translate-x-1"

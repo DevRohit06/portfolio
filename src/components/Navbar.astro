@@ -10,7 +10,7 @@ import { Image } from "astro:assets";
   <div
     class="w-[95%] sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto flex items-center justify-between"
   >
-    <a href="/" class="font-medium text-xl logo">Rohit K.</a>
+    <a href="/" class="font-medium text-xl logo home-link">Rohit K.</a>
 
     <!-- Menu Toggle Button -->
     <button
@@ -47,7 +47,7 @@ import { Image } from "astro:assets";
 
         <ul class="nav-links" role="menu">
           <li class="nav-item" role="menuitem">
-            <a href="/" data-text="Home" tabindex="0">Home</a>
+            <a href="/" class="home-link" data-text="Home" tabindex="0">Home</a>
           </li>
           <li class="nav-item" role="menuitem">
             <a href="/coming-soon" data-text="Projects" tabindex="0">Projects</a
@@ -461,6 +461,31 @@ import { Image } from "astro:assets";
     const socialLinks = document.querySelectorAll(".social-link");
     const navBadge = document.querySelector(".nav-badge");
     const navFooter = document.querySelector(".nav-footer");
+
+    // Handle home links specially to prevent loader from showing
+    const homeLinks = document.querySelectorAll(".home-link");
+    homeLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        // Only handle this specially if we're not already on the homepage
+        if (
+          window.location.pathname !== "/" &&
+          window.location.pathname !== ""
+        ) {
+          e.preventDefault();
+
+          // Mark that we've already loaded the site so loader won't show
+          sessionStorage.setItem("hasLoadedSite", "true");
+
+          // Clean up any animations that might be running
+          if (window.cleanupGSAPAnimations) {
+            window.cleanupGSAPAnimations();
+          }
+
+          // Navigate to home
+          window.location.href = "/";
+        }
+      });
+    });
 
     // Create GSAP timeline for menu animation
     const menuTl = gsap.timeline({ paused: true });
