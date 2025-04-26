@@ -1,0 +1,33 @@
+---
+import { TestimonialsCarousel } from "./react/TestimonialsCarousel";
+
+// Array of testimonials
+const testimonials = [
+  {
+    content:
+      "Your portfolio showcases not just skills, but a passion for clean, innovative solutions. The attention to detail is remarkable.",
+    name: "Alex Chen",
+    position: "Tech Lead",
+  },
+  {
+    content:
+      "Working with you was a game-changer for our project. Your technical knowledge and collaborative approach made all the difference.",
+    name: "Priya Sharma",
+    position: "Project Manager",
+  },
+  {
+    content:
+      "A Testimonial will be here with person name not one but 3 Testimonial ofc it will be big but you should definitely add it.",
+    name: "Aasam Jain",
+    position: "Whatever",
+  },
+];
+---
+
+<TestimonialsCarousel 
+  testimonials={testimonials}
+  client:load
+  client:only="react"
+  autoPlay={true}
+  delayMs={8000}
+/>

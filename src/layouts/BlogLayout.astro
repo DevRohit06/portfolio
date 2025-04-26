@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+import "lenis/dist/lenis.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta
+      name="description"
+      content="Rohit Kushwaha - Software Engineer and Web Developer Portfolio"
+    />
+    <meta name="theme-color" content="#C9CDD1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{Astro.props.title || "Rohit Kushwaha"}</title>
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  main {
+    opacity: 1; /* Fully visible from the start */
+  }
+</style>
+
+<script>
+  // Import GSAP
+  import { gsap } from "gsap";
+
+  // Initialize animations for blog page elements directly
+  document.addEventListener("DOMContentLoaded", () => {
+    // Animate page elements on load
+    const tl = gsap.timeline();
+
+    // Animate header elements - these animations can be customized as needed
+    tl.fromTo(
+      ".blog-header, .blog-hero",
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+    );
+
+    tl.fromTo(
+      ".blog-content",
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+      "-=0.4"
+    );
+  });
+</script>

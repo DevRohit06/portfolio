@@ -1,0 +1,19 @@
+---
+import client from "../../lib/client.ts";
+
+import BentoGithubActivityChart from "./BentoItemGithubActivityChart";
+
+const response = await client.api.github.contributions.$get();
+const data = response.status === 200 ? await response.json() : null;
+
+// Astro.response.headers.set("Cache-Control", "public, max-age=86400");
+---
+
+{
+  data ? (
+    <BentoGithubActivityChart {...data} client:only="react" />
+  ) : (
+    // TODO: handle error
+    <p>Something went wrong 😔</p>
+  )
+}

@@ -1,0 +1,25 @@
+---
+interface Props {
+  text?: string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}
+
+const { text = "", size = "md", className = "" } = Astro.props;
+
+// Define size-based classes
+const sizeClasses = {
+  sm: "px-1 py-0.5 text-xs gap-1",
+  md: "px-2 sm:px-3 py-1 sm:py-2 text-xs  sm:text-sm gap-1 sm:gap-2",
+  lg: "px-3 sm:px-4 md:px-5 py-2 sm:py-3 text-sm sm:text-base gap-2 sm:gap-3",
+};
+
+const classes = sizeClasses[size];
+---
+
+<div
+  class={`bg-[#C9CDD1] text-[#696969] border border-[#7B7B7B] font-semibold w-fit flex items-center ${classes} ${className}`}
+>
+  <slot />
+  {text}
+</div>

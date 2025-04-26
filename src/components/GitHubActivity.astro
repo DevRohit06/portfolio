@@ -1,0 +1,61 @@
+---
+import BentoGithubActivity from "./bento/BentoItemGithubActivityChart";
+
+// Define props with default values
+interface Props {
+  title?: string;
+  weeks?: number;
+  cellSize?: number;
+  cellSpacing?: number;
+  cellRadius?: number;
+  lastPushedDate?: Date | string;
+  showTooltip?: boolean;
+  enableInteraction?: boolean;
+  username?: string;
+  loadRealData?: boolean;
+}
+
+const {
+  title = "GITHUB ACTIVITY",
+  cellSize = 16,
+  cellSpacing = 4,
+  cellRadius = 4,
+  lastPushedDate = new Date(2025, 1, 2), // Will be updated by component if real data is loaded
+  showTooltip = true,
+  enableInteraction = true,
+  username = "devrohit06",
+  loadRealData = true,
+} = Astro.props;
+
+// Mock data for initial render
+const mockData = {
+  lastPushedAt:
+    lastPushedDate instanceof Date
+      ? lastPushedDate.toISOString()
+      : lastPushedDate,
+  totalContributions: 365,
+  contributions: [],
+};
+
+// Customize colors to match your design preference
+const panelColors = {
+  1: "rgba(140, 140, 140, 0.9)",
+  4: "rgba(100, 100, 100, 1)",
+  8: "rgba(70, 70, 70, 1)",
+  12: "rgba(40, 40, 40, 1)",
+};
+---
+
+<div class="w-full">
+  <div class="mb-2 text-sm font-medium">{title}</div>
+  <BentoGithubActivity
+    client:load
+    rectSize={cellSize}
+    space={cellSpacing}
+    rectRadius={cellRadius}
+    panelColors={panelColors}
+    username={username}
+    loadRealData={loadRealData}
+    client:only="react"
+  />
+</div>

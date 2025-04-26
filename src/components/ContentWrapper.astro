@@ -1,0 +1,107 @@
+---
+// ContentWrapper handles the rendering of blog post content
+// It provides a consistent container for all blog post content
+
+interface Props {
+  content: any; // The rendered content component from Astro
+}
+
+const { content: Content } = Astro.props;
+---
+
+<div class="blog-content prose prose-lg max-w-none">
+  <Content />
+</div>
+
+<style>
+  .blog-content {
+    color: #333;
+  }
+
+  /* Additional styling for blog content carried over from existing styles */
+  :global(.blog-content h1),
+  :global(.blog-content h2),
+  :global(.blog-content h3),
+  :global(.blog-content h4),
+  :global(.blog-content h5),
+  :global(.blog-content h6) {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    position: relative;
+  }
+
+  :global(.blog-content h2) {
+    font-size: 1.75rem;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(123, 123, 123, 0.3);
+    padding-bottom: 0.3em;
+  }
+
+  :global(.blog-content h3) {
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+
+  :global(.blog-content p) {
+    margin-bottom: 1.5em;
+    line-height: 1.7;
+  }
+
+  :global(.blog-content a) {
+    color: #0000cc;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+
+  :global(.blog-content a:hover) {
+    color: #000088;
+  }
+
+  :global(.blog-content img) {
+    border-radius: 4px;
+    margin: 1.5em 0;
+  }
+
+  :global(.blog-content pre) {
+    background-color: #1e1e1e;
+    border-radius: 6px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1.5em 0;
+  }
+
+  :global(.blog-content code) {
+    background-color: rgba(123, 123, 123, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: "RoobertMonoTRIAL-Regular", monospace;
+    font-size: 0.9em;
+  }
+
+  :global(.blog-content pre code) {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  :global(.blog-content blockquote) {
+    border-left: 4px solid #0000cc;
+    padding-left: 1em;
+    margin-left: 0;
+    font-style: italic;
+    background-color: rgba(0, 0, 204, 0.05);
+    padding: 1em 1.2em;
+    border-radius: 0 4px 4px 0;
+  }
+
+  :global(.blog-content ul),
+  :global(.blog-content ol) {
+    margin-bottom: 1.5em;
+    padding-left: 1.5em;
+  }
+
+  :global(.blog-content li) {
+    margin-bottom: 0.5em;
+  }
+</style>

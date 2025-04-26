@@ -1,0 +1,16 @@
+/* @font-face {
+  font-family: myFirstFont;
+  src: url("/fonts/RoobertMonoTRIAL-Regular.woff2") format("woff2"),
+    url("/fonts/RoobertMonoTRIAL-Regular.woff") format("woff"),
+    url("/fonts/RoobertMonoTRIAL-Regular.ttf") format("truetype");
+  font-weight: normal;
+} */
+
+@import "tailwindcss";
+
+html,
+body {
+  /* font-family: "Cascadia Mono", sans-serif; */
+  font-family: "Playfair Display", serif;
+  background-color: #c9cdd1;
+}

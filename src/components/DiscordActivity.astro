@@ -1,0 +1,31 @@
+---
+import DiscordActivitySvelte from "./svelte/DiscordActivity.svelte";
+import Badge from "./Badge.astro";
+
+// Define props with default values
+interface Props {
+  title?: string;
+  userId?: string;
+  username?: string;
+  inviteCode?: string;
+  showButtons?: boolean;
+}
+
+const {
+  title = "DISCORD PRESENCE",
+  userId = "743173584935190620", // Default user ID
+  username = "rohitk06", // Discord username for add friend button
+  inviteCode = "", // Discord server invite code
+  showButtons = true, // Whether to show action buttons
+} = Astro.props;
+---
+
+<div class="w-full">
+  <DiscordActivitySvelte
+    client:load
+    userId={userId}
+    username={username}
+    inviteCode={inviteCode}
+    showButtons={showButtons}
+  />
+</div>

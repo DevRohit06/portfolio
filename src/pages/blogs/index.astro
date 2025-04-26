@@ -1,0 +1,260 @@
+---
+import { getCollection } from "astro:content";
+import BlogLayout from "../../layouts/BlogLayout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import Badge from "../../components/Badge.astro";
+
+// Get all blog posts
+const allBlogPosts = await getCollection("blog");
+
+// Sort by publication date (newest first)
+const sortedPosts = allBlogPosts.sort(
+  (a, b) =>
+    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+
+// Get unique tags from all blog posts
+const allTags = [
+  ...new Set(sortedPosts.flatMap((post) => post.data.tags || [])),
+];
+---
+
+<script>
+  import Lenis from "lenis";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Initialize smooth scrolling
+  const lenis = new Lenis();
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Animate page elements on load
+    const tl = gsap.timeline();
+
+    // Animate header elements
+    tl.fromTo(
+      ".blog-header",
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+    );
+
+    tl.fromTo(
+      ".blog-subheader",
+      { opacity: 0, y: -10 },
+      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+      "-=0.4"
+    );
+
+    // Animate blog cards with stagger effect
+    gsap.fromTo(
+      ".blog-card-wrapper",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "back.out(1.2)",
+        scrollTrigger: {
+          trigger: ".blogs-grid",
+          start: "top 85%",
+          once: true,
+        },
+      }
+    );
+
+    // Initialize tag filter functionality
+    const tagButtons = document.querySelectorAll(".tag-filter");
+    const blogCards = document.querySelectorAll(".blog-card-wrapper");
+
+    // Show all posts initially
+    let currentFilter = "all";
+
+    tagButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        // Update active state of buttons
+        tagButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        // Get the selected tag
+        const tag = button.getAttribute("data-tag");
+        currentFilter = tag;
+
+        // Filter blog cards based on selected tag
+        if (tag === "all") {
+          // Show all posts
+          blogCards.forEach((card) => {
+            gsap.to(card, {
+              opacity: 1,
+              scale: 1,
+              display: "block",
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          });
+        } else {
+          // Filter posts by tag
+          blogCards.forEach((card) => {
+            const cardTags = JSON.parse(card.getAttribute("data-tags"));
+            if (cardTags.includes(tag)) {
+              gsap.to(card, {
+                opacity: 1,
+                scale: 1,
+                display: "block",
+                duration: 0.4,
+                ease: "power2.out",
+              });
+            } else {
+              gsap.to(card, {
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.4,
+                ease: "power2.out",
+                onComplete: () => {
+                  card.style.display = "none";
+                },
+              });
+            }
+          });
+        }
+      });
+    });
+  });
+</script>
+
+<BlogLayout title="Blog - Rohit Kushwaha">
+  <div class="pb-8 page-content">
+    <Navbar />
+
+    <div
+      class="blogs-container w-[90%] md:w-[80%] lg:w-[70%] mx-auto mt-[100px] md:mt-[120px]"
+    >
+      <!-- Header Section -->
+      <div class="mb-10">
+        <h1
+          class="blog-header text-3xl sm:text-4xl md:text-5xl mb-4 font-medium"
+        >
+          Blog
+        </h1>
+        <p class="blog-subheader text-lg sm:text-xl text-[#4B4B4B]">
+          Thoughts, learnings, and insights from my journey in tech.
+        </p>
+      </div>
+
+      <!-- Tags Filter -->
+      <div class="tags-container mb-8 overflow-x-auto whitespace-nowrap py-2">
+        <button class="tag-filter active mr-2 mb-2" data-tag="all">
+          <Badge
+            text="All"
+            size="sm"
+            className="hover:bg-[#0000CC] hover:text-white hover:border-[#0000CC] transition-colors cursor-pointer"
+          />
+        </button>
+
+        {
+          allTags.map((tag) => (
+            <button class="tag-filter mr-2 mb-2" data-tag={tag}>
+              <Badge
+                text={tag}
+                size="sm"
+                className="hover:bg-[#0000CC] hover:text-white hover:border-[#0000CC] transition-colors cursor-pointer"
+              />
+            </button>
+          ))
+        }
+      </div>
+
+      <!-- Blog Grid -->
+      <div
+        class="blogs-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        {
+          sortedPosts.map((post) => (
+            <div
+              class="blog-card-wrapper"
+              data-tags={JSON.stringify(post.data.tags || [])}
+            >
+              <BlogCard
+                title={post.data.title}
+                pubDate={post.data.pubDate}
+                updatedDate={post.data.updatedDate}
+                description={post.data.description}
+                heroImage={post.data.heroImage}
+                tags={post.data.tags}
+                readingTime={post.data.readingTime}
+                wordsCount={post.data.wordsCount}
+                url={`/blogs/${post.slug || post.id}`}
+                body={post.body}
+              />
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Empty State (shown when no posts match the filter) -->
+      <div class="empty-state hidden text-center py-16">
+        <p class="text-xl text-[#7B7B7B]">No posts found with this tag.</p>
+        <button class="reset-filter mt-4 text-[#0000CC]">View all posts</button>
+      </div>
+    </div>
+
+    <Footer />
+  </div>
+</BlogLayout>
+
+<style>
+  /* Custom styles for blogs page */
+  .tags-container {
+    scrollbar-width: thin;
+    scrollbar-color: #7b7b7b transparent;
+  }
+
+  .tags-container::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .tags-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .tags-container::-webkit-scrollbar-thumb {
+    background-color: #7b7b7b;
+    border-radius: 2px;
+  }
+
+  .tag-filter.active :global(.bg-\[\#C9CDD1\]) {
+    background-color: #0000cc;
+    color: white;
+    border-color: #0000cc;
+  }
+
+  /* Animation styles */
+  .blog-card-wrapper {
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-card-wrapper {
+      transition: opacity 0.1s ease-in-out;
+      transform: none !important;
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .blogs-grid {
+      gap: 16px;
+    }
+  }
+</style>

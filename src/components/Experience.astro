@@ -1,0 +1,256 @@
+---
+import Badge from "./Badge.astro";
+import ExperienceToggler from "./svelte/ExperienceToggler.svelte";
+
+// Define props with default values
+interface Props {
+  title?: string;
+}
+
+const { title = "EXPERIENCE:" } = Astro.props;
+---
+
+<div class="experience-section" id="experience">
+  <div class="experience-content">
+    <div class="flex w-full justify-center">
+      <Badge> Experience </Badge>
+    </div>
+    <ExperienceToggler client:load />
+  </div>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { createSectionTransition, createScene } from "../utils/animations.js";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const experienceSection = document.querySelector(".experience-section");
+    if (!experienceSection) return;
+
+    // Create initial state
+    gsap.set(".experience-heading", { opacity: 0, x: -50 });
+    gsap.set(".experience-line", { scaleX: 0, transformOrigin: "left center" });
+    gsap.set(".experience-content", { opacity: 0, y: 50 });
+
+    // Create scroll-triggered animations with a timeline
+    const experienceTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: experienceSection,
+        start: "top 80%",
+        end: "top 60%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // Heading animation
+    experienceTl.to(".experience-heading", {
+      opacity: 1,
+      x: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    });
+
+    // Line expand animation
+    experienceTl.to(
+      ".experience-line",
+      {
+        scaleX: 1,
+        duration: 1,
+        ease: "power2.out",
+      },
+      "-=0.4"
+    );
+
+    // Content reveal
+    experienceTl.to(
+      ".experience-content",
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+      },
+      "-=0.6"
+    );
+
+    // Create scroll-based parallax effect for the section
+    ScrollTrigger.create({
+      trigger: experienceSection,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true,
+      onUpdate: (self) => {
+        const yPos = self.progress * -20; // Move up slightly as user scrolls
+        gsap.to(experienceSection, {
+          y: yPos,
+          ease: "none",
+          overwrite: "auto",
+        });
+      },
+    });
+
+    // Add a subtle highlight effect when experiences are clicked
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "class"
+        ) {
+          const target = mutation.target as HTMLElement;
+          if (
+            target.classList.contains("active") ||
+            target.classList.contains("bg-[#0000CC]")
+          ) {
+            // Simple, clean entry animation for active experiences
+            gsap.killTweensOf(target); // Clear any existing animations
+
+            // Create a timeline for entry animation
+            const tl = gsap.timeline();
+
+            // Simple reveal animation
+            tl.fromTo(
+              target,
+              {
+                opacity: 0.8,
+                x: -5,
+              },
+              {
+                opacity: 1,
+                x: 0,
+                duration: 0.4,
+                ease: "power2.out",
+              }
+            ).fromTo(
+              target,
+              {
+                borderLeftWidth: "1px",
+              },
+              {
+                borderLeftWidth: "3px",
+                borderLeftColor: "#0000CC",
+                duration: 0.3,
+                ease: "power1.out",
+              },
+              "-=0.2"
+            );
+
+            // Add a subtle border highlight
+            if (!target.dataset.highlightActive) {
+              target.dataset.highlightActive = "true";
+              target.style.borderColor = "#0000CC";
+
+              // Reset when no longer active
+              const resetObserver = new MutationObserver((resetMutations) => {
+                resetMutations.forEach((resetMutation) => {
+                  if (
+                    resetMutation.type === "attributes" &&
+                    resetMutation.attributeName === "class"
+                  ) {
+                    if (
+                      !target.classList.contains("active") &&
+                      !target.classList.contains("bg-[#0000CC]")
+                    ) {
+                      gsap.to(target, {
+                        boxShadow: "0 0 0 rgba(0, 0, 204, 0)",
+                        borderColor: "#7B7B7B",
+                        duration: 0.3,
+                        onComplete: () => {
+                          target.style.borderColor = "";
+                          target.dataset.highlightActive = "";
+                          resetObserver.disconnect();
+                        },
+                      });
+                    }
+                  }
+                });
+              });
+              resetObserver.observe(target, { attributes: true });
+            }
+          }
+        }
+      });
+    });
+
+    // Observe changes in experience items
+    const experienceButtons = document.querySelectorAll(
+      ".experience-section button"
+    );
+    experienceButtons.forEach((button) => {
+      observer.observe(button, { attributes: true });
+    });
+
+    // Create mousemove parallax effect for depth
+    experienceSection.addEventListener("mousemove", (e) => {
+      const xPos = (e.clientX - window.innerWidth / 2) * 0.01;
+      const yPos = (e.clientY - window.innerHeight / 2) * 0.01;
+
+      gsap.to(".experience-content", {
+        x: xPos * -1, // Inverse movement for depth effect
+        y: yPos * -1,
+        duration: 1,
+        ease: "power1.out",
+      });
+
+      gsap.to(".experience-heading-container", {
+        x: xPos * -0.5, // Half the movement for layered effect
+        y: yPos * -0.5,
+        duration: 1,
+        ease: "power1.out",
+      });
+    });
+  });
+</script>
+
+<style>
+  .experience-section {
+    margin: 8rem auto;
+    position: relative;
+    will-change: transform;
+  }
+
+  .experience-heading-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .experience-heading {
+    background-color: #c9cdd1;
+    color: #7b7b7b;
+    padding: 0.5rem 1rem;
+    border: 1px solid #7b7b7b;
+    font-weight: 500;
+    position: relative;
+    z-index: 2;
+    will-change: transform, opacity;
+  }
+
+  .experience-line {
+    height: 1px;
+    background-color: #7b7b7b;
+    flex-grow: 1;
+    will-change: transform;
+  }
+
+  .experience-content {
+    position: relative;
+    z-index: 1;
+    will-change: transform, opacity;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 0, 204, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(0, 0, 204, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 0, 204, 0);
+    }
+  }
+</style>

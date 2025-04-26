@@ -1,0 +1,187 @@
+---
+// Loader.astro - A loading screen with percentage counter
+---
+
+<div id="loader-wrapper">
+  <div class="loader-content">
+    <div class="progress-bar-container">
+      <div id="progress-bar"></div>
+    </div>
+    <div class="counter-container">
+      <span id="counter">0</span>
+      <span>%</span>
+    </div>
+    <div class="loading-message">
+      <span id="loading-text">Initializing</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  #loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #121212;
+    z-index: 9999;
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    color: white;
+    flex-direction: column; /* Stack elements vertically */
+  }
+
+  .loader-content {
+    text-align: center; /* Center align the content */
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px; /* Reduced from 500px */
+  }
+
+  .counter-container {
+    font-size: 5rem; /* Reduced from 8rem */
+    font-family: "RoobertMonoTRIAL-Medium", monospace;
+    display: flex;
+    justify-content: center; /* Center the counter */
+    align-items: baseline;
+    margin-bottom: 1rem;
+  }
+
+  .progress-bar-container {
+    width: 100%;
+    height: 3px; /* Slightly thinner */
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px; /* Slightly rounded corners */
+  }
+
+  #progress-bar {
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background-color: white;
+    left: 0;
+    top: 0;
+    transition: width 0.2s ease;
+  }
+
+  .loading-message {
+    font-family: "RoobertMonoTRIAL-Light", monospace;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    letter-spacing: 0.5px;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  // Wait for DOM to be fully loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    // Note: body already has loading class applied in Layout.astro
+
+    const counterElement = document.getElementById("counter");
+    const loaderWrapper = document.getElementById("loader-wrapper");
+    const progressBar = document.getElementById("progress-bar");
+    const loadingText = document.getElementById("loading-text");
+    let progress = { value: 0 };
+
+    // Loading messages to display during different progress points
+    const loadingMessages = [
+      { threshold: 0, message: "Initializing" },
+      { threshold: 20, message: "Loading assets" },
+      { threshold: 40, message: "Preparing content" },
+      { threshold: 60, message: "Optimizing experience" },
+      { threshold: 80, message: "Almost there" },
+      { threshold: 95, message: "Ready to launch" },
+    ];
+
+    // Function to update the loading message based on progress
+    const updateLoadingMessage = (value) => {
+      for (let i = loadingMessages.length - 1; i >= 0; i--) {
+        if (value >= loadingMessages[i].threshold) {
+          loadingText.textContent = loadingMessages[i].message;
+          break;
+        }
+      }
+    };
+
+    // Create the loading animation
+    const loadingTl = gsap.timeline();
+
+    // Animate the counter from 0 to 100
+    loadingTl.to(progress, {
+      value: 100,
+      duration: 3, // Adjust this duration as needed
+      ease: "power1.inOut",
+      onUpdate: () => {
+        const currentValue = Math.floor(progress.value);
+        counterElement.textContent = currentValue;
+        progressBar.style.width = `${currentValue}%`;
+        updateLoadingMessage(currentValue);
+      },
+    });
+
+    // After loading is complete, add a slight pause
+    loadingTl.to({}, { duration: 0.3 });
+
+    // After loading is complete, slide the loader up and reveal the page
+    loadingTl.to(loaderWrapper, {
+      y: "-100%",
+      duration: 1.2,
+      ease: "power3.inOut",
+    });
+
+    // Set display none after animation completes to remove from DOM flow
+    loadingTl.set(loaderWrapper, { display: "none" });
+
+    // Create a timeline for page elements
+    const pageTl = gsap.timeline({ paused: true });
+
+    // Select all main page elements to animate
+    const pageElements = document.querySelectorAll(
+      "nav, main, section, footer, .hero-card, .bento, .experience"
+    );
+
+    // Set initial opacity to 0
+    gsap.set(pageElements, { opacity: 0, y: 30 });
+
+    // Add staggered animation to reveal page elements
+    pageTl.to(pageElements, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.12,
+      ease: "power2.out",
+    });
+
+    // Play page animation after loader animation completes
+    loadingTl.eventCallback("onComplete", () => {
+      // Enable scrolling after loader completes by removing loading class from body
+      document.body.classList.remove("loading");
+      pageTl.play();
+    });
+
+    // Add number pulsing animation for the counter (modified)
+    gsap.to(counterElement, {
+      scale: 1.03 /* Slightly increased scale change */,
+      duration: 0.8,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut",
+    });
+
+    // Add subtle glow animation to progress bar
+    gsap.to("#progress-bar", {
+      boxShadow: "0 0 8px 1px rgba(255, 255, 255, 0.5)",
+      repeat: -1,
+      yoyo: true,
+      duration: 1.5,
+    });
+  });
+</script>

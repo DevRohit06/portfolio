@@ -1,0 +1,424 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404 - Page Not Found">
+  <main
+    class="error-page-container min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden"
+  >
+    <!-- Animated background elements -->
+    <div class="animated-bg-element bg-element-1"></div>
+    <div class="animated-bg-element bg-element-2"></div>
+
+    <div class="error-content text-center max-w-2xl mx-auto relative z-10">
+      <div class="mb-8">
+        <div
+          class="w-fit mx-auto bg-[#C9CDD1] text-[#7B7B7B] border border-[#7B7B7B] px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base font-medium"
+        >
+          ERROR
+        </div>
+      </div>
+
+      <div class="error-number-wrapper my-6">
+        <h1
+          class="error-number text-7xl sm:text-8xl md:text-9xl font-bold text-[#0000CC] number-glitch"
+          data-text="404"
+        >
+          404
+        </h1>
+      </div>
+
+      <div
+        class="error-line w-24 h-1 bg-gradient-to-r from-[#0000CC] to-[#5050FF] mx-auto mb-8"
+      >
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
+        Page Not Found
+      </h2>
+
+      <p
+        class="text-[#4B4B4B] mb-8 sm:mb-12 text-base sm:text-lg max-w-lg mx-auto leading-relaxed"
+      >
+        The page you're looking for doesn't exist or has been moved. Let's get
+        you back on track.
+      </p>
+
+      <!-- Search box
+      <div class="search-box mb-10 max-w-md mx-auto">
+        <form
+          class="flex flex-col sm:flex-row gap-3"
+          onsubmit="handleSearch(event)"
+        >
+          <div class="relative flex-grow">
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Try searching..."
+              class="w-full px-4 py-3 pl-10 border border-[#7B7B7B] focus:border-[#0000CC] focus:outline-none bg-[#C9CDD1]/50"
+              aria-label="Search"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="absolute top-3.5 left-3 text-[#7B7B7B]"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <button
+            type="submit"
+            class="px-6 py-3 border border-[#0000CC] bg-[#0000CC] text-white font-medium hover:bg-transparent hover:text-[#0000CC] transition-all duration-300"
+          >
+            Search
+          </button>
+        </form>
+      </div> -->
+
+      <!-- Suggested links -->
+      <div class="suggested-links mb-10">
+        <h3 class="text-lg font-medium mb-4">Popular Pages</h3>
+        <div
+          class="suggested-links-grid grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto"
+        >
+          <a
+            href="/"
+            class="suggested-link py-2.5 px-4 border border-[#7B7B7B] bg-[#C9CDD1]/50 hover:border-[#0000CC] hover:text-[#0000CC] transition-all duration-300 flex items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#7B7B7B]"
+              ><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+              ></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg
+            >
+            Home Page
+          </a>
+          <a
+            href="/blogs"
+            class="suggested-link py-2.5 px-4 border border-[#7B7B7B] bg-[#C9CDD1]/50 hover:border-[#0000CC] hover:text-[#0000CC] transition-all duration-300 flex items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#7B7B7B]"
+              ><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path
+                d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+              ></path></svg
+            >
+            Blog Posts
+          </a>
+          <a
+            href="#"
+            class="suggested-link py-2.5 px-4 border border-[#7B7B7B] bg-[#C9CDD1]/50 hover:border-[#0000CC] hover:text-[#0000CC] transition-all duration-300 flex items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#7B7B7B]"
+              ><path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+              ></path></svg
+            >
+            Contact
+          </a>
+          <a
+            href="#"
+            class="suggested-link py-2.5 px-4 border border-[#7B7B7B] bg-[#C9CDD1]/50 hover:border-[#0000CC] hover:text-[#0000CC] transition-all duration-300 flex items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#7B7B7B]"
+              ><polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+              ></polygon></svg
+            >
+            Projects
+          </a>
+        </div>
+      </div>
+
+      <div class="error-actions">
+        <a
+          href="/"
+          class="inline-block px-8 py-4 border border-[#0000CC] bg-transparent text-[#0000CC] hover:bg-[#0000CC] hover:text-white font-medium transition-all duration-300"
+        >
+          Return Home
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .error-page-container {
+    background-color: #c9cdd1;
+    background-image: radial-gradient(
+        circle at 25% 25%,
+        rgba(255, 255, 255, 0.5) 0%,
+        transparent 20%
+      ),
+      radial-gradient(
+        circle at 75% 75%,
+        rgba(255, 255, 255, 0.5) 0%,
+        transparent 20%
+      );
+  }
+
+  .animated-bg-element {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.05;
+    filter: blur(60px);
+  }
+
+  .bg-element-1 {
+    width: 400px;
+    height: 400px;
+    background: #0000cc;
+    top: -100px;
+    left: -100px;
+    animation: float-slow 15s ease-in-out infinite alternate;
+  }
+
+  .bg-element-2 {
+    width: 500px;
+    height: 500px;
+    background: #0000cc;
+    bottom: -150px;
+    right: -150px;
+    animation: float-slow 20s ease-in-out infinite alternate-reverse;
+  }
+
+  .error-line {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .number-glitch {
+    position: relative;
+  }
+
+  .number-glitch::before,
+  .number-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .number-glitch::before {
+    left: -2px;
+    text-shadow: 2px 0 #0000cc;
+    animation: glitch-1 2s infinite linear alternate-reverse;
+  }
+
+  .number-glitch::after {
+    left: 2px;
+    text-shadow: -2px 0 #5050ff;
+    animation: glitch-2 3s infinite linear alternate-reverse;
+  }
+
+  .suggested-link {
+    transition: all 0.3s ease;
+  }
+
+  .suggested-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 204, 0.1);
+  }
+
+  .suggested-link:hover svg {
+    color: #0000cc;
+  }
+
+  @keyframes glitch-1 {
+    0%,
+    100% {
+      clip-path: inset(50% 0 40% 0);
+    }
+    20% {
+      clip-path: inset(20% 0 80% 0);
+    }
+    40% {
+      clip-path: inset(80% 0 20% 0);
+    }
+    60% {
+      clip-path: inset(10% 0 70% 0);
+    }
+    80% {
+      clip-path: inset(30% 0 50% 0);
+    }
+  }
+
+  @keyframes glitch-2 {
+    0%,
+    100% {
+      clip-path: inset(30% 0 60% 0);
+    }
+    20% {
+      clip-path: inset(40% 0 50% 0);
+    }
+    40% {
+      clip-path: inset(5% 0 95% 0);
+    }
+    60% {
+      clip-path: inset(60% 0 30% 0);
+    }
+    80% {
+      clip-path: inset(10% 0 90% 0);
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes float-slow {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(20px, 20px);
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .error-page-container {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+
+    .animated-bg-element {
+      opacity: 0.03;
+    }
+  }
+
+  /* Accessibility improvements */
+  @media (prefers-reduced-motion: reduce) {
+    .error-line,
+    .animated-bg-element,
+    .number-glitch::before,
+    .number-glitch::after,
+    .suggested-link:hover {
+      animation: none;
+      transition: none;
+      transform: none;
+      text-shadow: none;
+    }
+  }
+</style>
+
+<script>
+  // Handle the search functionality
+  window.handleSearch = function (event) {
+    event.preventDefault();
+    const searchInput = document.getElementById("search-input");
+
+    if (searchInput && searchInput.value.trim() !== "") {
+      // Here you would typically redirect to a search results page
+      // For now we'll just redirect to the home page
+      window.location.href = `/?search=${encodeURIComponent(searchInput.value.trim())}`;
+    }
+  };
+
+  // Add subtle parallax effect to the background elements
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.addEventListener("mousemove", function (e) {
+      const elements = document.querySelectorAll(".animated-bg-element");
+      const moveX = (e.clientX - window.innerWidth / 2) / 25;
+      const moveY = (e.clientY - window.innerHeight / 2) / 25;
+
+      elements.forEach((element, index) => {
+        const depth = (index + 1) / elements.length;
+        element.style.transform = `translate(${moveX * depth}px, ${moveY * depth}px)`;
+      });
+    });
+  }
+
+  // Easter egg: Konami Code (↑ ↑ ↓ ↓ ← → ← → B A)
+  let konamiCode = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "b",
+    "a",
+  ];
+  let konamiCodePosition = 0;
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key.toLowerCase() === konamiCode[konamiCodePosition].toLowerCase()) {
+      konamiCodePosition++;
+
+      if (konamiCodePosition === konamiCode.length) {
+        // Easter egg activated!
+        const errorNumber = document.querySelector(".error-number");
+        if (errorNumber) {
+          errorNumber.textContent = "🎮";
+          errorNumber.setAttribute("data-text", "🎮");
+
+          // Reset after a moment
+          setTimeout(() => {
+            errorNumber.textContent = "404";
+            errorNumber.setAttribute("data-text", "404");
+            konamiCodePosition = 0;
+          }, 2000);
+        }
+      }
+    } else {
+      konamiCodePosition = 0;
+    }
+  });
+</script>

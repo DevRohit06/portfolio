@@ -1,0 +1,230 @@
+---
+import BlogCard from "./BlogCard.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+const blogs = await getCollection("blog");
+---
+
+<section
+  class="blog-section my-16 sm:my-24 md:my-32 opacity-0 relative scroll-reveal"
+  id="blog"
+>
+  <div class="blog-section-container w-[90%] md:w-[80%] lg:w-[65%] mx-auto">
+    <div
+      class="blog-heading-container flex flex-col gap-2 sm:gap-4 mb-6 sm:mb-8 md:mb-8"
+    >
+      <div
+        class="blog-heading bg-[#C9CDD1] text-[#7B7B7B] px-3 py-1.5 sm:px-4 sm:py-2 border border-[#7B7B7B] text-sm sm:text-base font-medium w-fit"
+      >
+        BLOGS
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="blog-subheading text-base sm:text-lg md:text-xl">
+          Learning, Building & Documenting...
+        </div>
+        <a
+          href="/blogs"
+          class="all-blogs-link text-sm sm:text-base text-[#7B7B7B] font-medium hover:text-[#0000CC] transition-colors duration-300"
+          >All blogs</a
+        >
+      </div>
+    </div>
+
+    <div
+      class="blog-grid grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:gap-6 lg:grid-cols-3"
+    >
+      {
+        blogs.slice(0, 3).map((blog) => (
+          <div class="blog-item transform-none">
+            <BlogCard
+              title={blog.data.title}
+              pubDate={blog.data.pubDate}
+              updatedDate={blog.data.updatedDate}
+              description={blog.data.description}
+              heroImage={blog.data.heroImage}
+              tags={blog.data.tags}
+              readingTime={blog.data.readingTime}
+              url={`/blogs/${blog.data.slug}`}
+              slug={blog.data.slug}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Create scroll animations for blog section
+    const blogSection = document.getElementById("blog");
+    if (blogSection) {
+      // Reveal the section with a fade-in and slight upward movement
+      gsap.fromTo(
+        blogSection,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          scrollTrigger: {
+            trigger: blogSection,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+            once: true,
+          },
+        }
+      );
+
+      // Staggered reveal for blog cards
+      gsap.fromTo(
+        ".blog-item",
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.15,
+          duration: 0.8,
+          ease: "back.out(1.5)",
+          scrollTrigger: {
+            trigger: ".blog-grid",
+            start: "top 85%",
+            end: "bottom 70%",
+            scrub: 1,
+            once: true,
+          },
+        }
+      );
+
+      // Remove hover effects from blog cards completely
+      // Add magnetic effect to "All Blogs" link only
+      const createMagneticEffect = (selector, strength = 0.3) => {
+        const magneticItems = document.querySelectorAll(selector);
+
+        magneticItems.forEach((item) => {
+          // Skip this effect for blog items
+          if (item.closest(".blog-item")) return;
+
+          item.addEventListener("mousemove", (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            gsap.to(item, {
+              x: x * strength,
+              y: y * strength,
+              duration: 0.3,
+              ease: "power2.out",
+            });
+          });
+
+          item.addEventListener("mouseleave", () => {
+            gsap.to(item, {
+              x: 0,
+              y: 0,
+              duration: 0.7,
+              ease: "elastic.out(1, 0.5)",
+            });
+          });
+        });
+      };
+
+      createMagneticEffect(".magnetic-item", 0.3);
+    }
+
+    // Add parallax scroll effect
+    ScrollTrigger.create({
+      trigger: blogSection,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true,
+      onUpdate: (self) => {
+        const yPos = (1 - self.progress) * 30; // Move up as it enters viewport
+        gsap.to(".blog-section-container", {
+          y: yPos,
+          ease: "none",
+          overwrite: "auto",
+        });
+      },
+    });
+  });
+</script>
+
+<style>
+  .blog-section {
+    will-change: transform;
+  }
+
+  .blog-heading-container {
+    will-change: transform;
+  }
+
+  .blog-heading {
+    will-change: transform;
+    position: relative;
+  }
+
+  .blog-heading::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s ease;
+    pointer-events: none;
+  }
+
+  .blog-heading:hover::before {
+    border-color: #0000cc;
+  }
+
+  .all-blogs-link {
+    will-change: transform;
+    position: relative;
+  }
+
+  .blog-item {
+    /* Explicitly prevent 3D transforms and hover animations */
+    transform: none !important;
+    will-change: auto;
+    transition: opacity 0.3s ease;
+    transform-style: flat;
+    perspective: none;
+  }
+
+  .blog-grid {
+    position: relative;
+  }
+
+  /* Add subtle animation for the blog grid background */
+
+  .blog-grid:hover::before {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-item,
+    .all-blogs-link {
+      transition: none !important;
+      transform: none !important;
+    }
+
+    .blog-section {
+      opacity: 1 !important;
+    }
+  }
+</style>

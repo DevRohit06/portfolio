@@ -1,0 +1,128 @@
+---
+import { Image } from "astro:assets";
+import Badge from "./Badge.astro";
+import calculateReadingTime from "reading-time";
+
+interface Props {
+  title: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  description: string;
+  heroImage: any;
+  tags?: string[];
+  readingTime?: number;
+  wordsCount?: number;
+  url: string;
+  body?: string;
+  slug?: string;
+}
+
+const {
+  title,
+  pubDate,
+  updatedDate,
+  description,
+  heroImage,
+  tags = [],
+  readingTime: propReadingTime,
+  url,
+  body,
+  slug,
+} = Astro.props;
+
+// Format date to show Feb 12 style
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+};
+
+// Calculate reading time from body content if not provided in props
+let readingTime = propReadingTime;
+if (!readingTime && body) {
+  const { minutes } = calculateReadingTime(body);
+  readingTime = Math.ceil(minutes);
+}
+
+// Use updatedDate if available, otherwise use pubDate
+const displayDate = updatedDate || pubDate;
+const primaryTag = tags.length > 0 ? tags[0] : "Blog";
+---
+
+<div class="blog-card-wrapper">
+  <a
+    href={url}
+    class="blog-card group block h-full border border-[#7B7B7B] overflow-hidden relative transition-all duration-300 bg-[#C9CDD1]"
+  >
+    <div
+      class="blog-card-image-container relative overflow-hidden w-full aspect-video"
+    >
+      <Image
+        transition:name={slug}
+        transition:animate={"slide"}
+        src={heroImage}
+        alt={title}
+        inferSize={true}
+        class="blog-card-image w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-105"
+      />
+      <div class="blog-card-category absolute top-3 left-3 z-10">
+        <Badge
+          className="bg-opacity-50"
+          text={primaryTag.toUpperCase()}
+          size="sm"
+        />
+      </div>
+    </div>
+    <div class="blog-card-content p-4 sm:p-5 relative">
+      <div
+        class="blog-card-date text-xs sm:text-sm text-[#7B7B7B] mb-2 font-medium"
+      >
+        {formatDate(displayDate)}
+        {readingTime && <span class="ml-2">{readingTime} min read</span>}
+      </div>
+      <h3
+        class="blog-card-title text-base sm:text-lg mb-2 sm:mb-3 font-medium transition-colors duration-300 group-hover:text-[#0000CC] line-clamp-2"
+      >
+        {title}
+      </h3>
+      <p
+        class="blog-card-description text-xs sm:text-sm text-[#4B4B4B] mb-4 sm:mb-6 leading-relaxed line-clamp-3"
+      >
+        {description}
+      </p>
+      <div
+        class="blog-card-read-more text-xs sm:text-sm font-medium text-[#7B7B7B] flex items-center group-hover:text-[#0000CC] transition-colors duration-300"
+      >
+        Read more <span
+          class="arrow ml-1 transition-transform duration-300 group-hover:translate-x-1"
+          >→</span
+        >
+      </div>
+    </div>
+  </a>
+</div>
+
+<style>
+  .blog-card-wrapper {
+    transform: translateY(0);
+    transition: transform 0.5s ease;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-card-wrapper {
+      transition: none;
+    }
+
+    .blog-card-image {
+      transition: none;
+    }
+
+    .arrow {
+      transition: none;
+    }
+
+    .blog-card-title,
+    .blog-card-read-more {
+      transition: none;
+    }
+  }
+</style>

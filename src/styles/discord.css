@@ -1,0 +1,324 @@
+.discord-activity {
+  min-height: 90px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 2px;
+}
+
+/* Loading, error, and empty states */
+.loading-container,
+.error-container,
+.no-activity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 80px;
+  text-align: center;
+}
+
+.loading-spinner {
+  border: 2px solid rgba(123, 123, 123, 0.2);
+  border-top: 2px solid #7b7b7b;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.retry-button {
+  padding: 6px 12px;
+  background-color: transparent;
+  border: 1px solid #7b7b7b;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Activity image styles */
+.activity-image-wrapper {
+  position: relative;
+  border: 1px solid rgba(123, 123, 123, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.activity-image {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.activity-image.pulse {
+  animation: pulse-subtle 2s infinite;
+}
+
+@keyframes pulse-subtle {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.activity-placeholder {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e0e0;
+  color: #7b7b7b;
+  font-size: 20px;
+  font-weight: bold;
+  border: 1px solid rgba(123, 123, 123, 0.5);
+  border-radius: 4px;
+}
+
+.activity-type-badge {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Activity text styles */
+.activity-label {
+  font-size: 11px;
+  color: #7b7b7b;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+}
+
+.activity-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.activity-subtitle {
+  font-size: 12px;
+  color: #7b7b7b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* Platform info */
+.platform-info {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #7b7b7b;
+}
+
+.platform-icon {
+  margin-right: 4px;
+  font-size: 10px;
+}
+
+.platform-name {
+  text-transform: capitalize;
+}
+
+/* Progress bar */
+.progress-container {
+  margin-top: 8px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(123, 123, 123, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 1s linear;
+  border-radius: 2px;
+}
+
+.progress-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 10px;
+  color: #7b7b7b;
+}
+
+/* Service badges */
+.service-badge {
+  display: flex;
+  align-items: center;
+}
+
+.service-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+}
+
+.service-name {
+  font-size: 11px;
+  color: #7b7b7b;
+}
+
+.activity-buttons {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.activity-button {
+  font-size: 10px;
+  color: #0000cc;
+  background-color: rgba(0, 0, 204, 0.05);
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 204, 0.2);
+}
+
+/* Status display */
+.status-container {
+  min-height: 80px;
+}
+
+.status-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
+  position: relative;
+}
+
+.status-indicator.online {
+  background-color: #43b581;
+  box-shadow: 0 0 0 2px rgba(67, 181, 129, 0.2);
+}
+
+.status-indicator.idle {
+  background-color: #faa61a;
+  box-shadow: 0 0 0 2px rgba(250, 166, 26, 0.2);
+}
+
+.status-indicator.dnd {
+  background-color: #f04747;
+  box-shadow: 0 0 0 2px rgba(240, 71, 71, 0.2);
+}
+
+.status-indicator.offline {
+  background-color: #747f8d;
+  box-shadow: 0 0 0 2px rgba(116, 127, 141, 0.2);
+}
+
+.status-indicator.online::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  border: 1px solid #43b581;
+  animation: pulse-status 2s infinite;
+}
+
+@keyframes pulse-status {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.status-label {
+  font-size: 11px;
+  color: #7b7b7b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-transform: capitalize;
+  margin-bottom: 4px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.user-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 6px;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 12px;
+  color: #333;
+}
+
+.user-tag {
+  color: #7b7b7b;
+  font-size: 11px;
+}
+
+.device-badge {
+  font-size: 12px;
+  margin-right: 6px;
+}
