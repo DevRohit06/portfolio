@@ -54,7 +54,5 @@ export default defineConfig({
 
   integrations: [svelte(), react(), mdx(), playformCompress()],
 
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: vercel(),
 });
