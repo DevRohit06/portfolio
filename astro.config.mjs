@@ -15,9 +15,12 @@ import playformCompress from "@playform/compress";
 
 import vercel from "@astrojs/vercel";
 
+import sitemap from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
   output: "static",
+  site: "https://rohitk06.dev",
   vite: {
     plugins: [tailwindcss()],
   },
@@ -52,7 +55,7 @@ export default defineConfig({
     defaultStrategy: "load",
   },
 
-  integrations: [svelte(), react(), mdx(), playformCompress()],
+  integrations: [svelte(), react(), mdx(), playformCompress(), sitemap()],
 
   adapter: vercel(),
 });
