@@ -1,0 +1,237 @@
+---
+import TextReveal from "./TextReveal.astro";
+import Badge from "./Badge.astro";
+
+interface Props {
+  className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<div class={`projects-container relative ${className}`}>
+  <div
+    class="border border-[var(--border-color)] p-4 sm:p-6 md:p-12 relative projects-title-section"
+  >
+    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
+    <Badge size="sm" className="mb-4">
+      <span class="text-xs font-bold uppercase">Projects</span>
+    </Badge>
+
+    <TextReveal
+      element="h2"
+      text="My Work"
+      className="text-3xl sm:text-4xl md:text-5xl font-semibold projects-title split-text"
+      splitBy="chars"
+      stagger={0.03}
+      from="bottom"
+    />
+  </div>
+
+  <!-- Blurred Projects Area with Coming Soon Message -->
+  <div
+    class="border border-[var(--border-color)] border-t-0 p-4 sm:p-6 md:p-8 projects-content relative overflow-hidden"
+  >
+    <!-- Placeholder Grid -->
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 blur-xs opacity-40 pointer-events-none"
+    >
+      {
+        Array(6)
+          .fill(0)
+          .map((_, i) => (
+            <div class="project-card border border-[var(--border-color)] p-4 h-[200px]">
+              <div class="flex justify-between items-start mb-3">
+                <div class="h-7 w-32 bg-[var(--bg-secondary)] rounded" />
+                <div class="h-6 w-20 bg-[var(--bg-secondary)] rounded" />
+              </div>
+              <div class="h-4 w-full bg-[var(--bg-secondary)] rounded mb-2" />
+              <div class="h-4 w-3/4 bg-[var(--bg-secondary)] rounded mb-2" />
+              <div class="h-4 w-5/6 bg-[var(--bg-secondary)] rounded mb-4" />
+              <div class="flex flex-wrap gap-2 mb-4">
+                <div class="h-6 w-16 bg-[var(--bg-secondary)] rounded" />
+                <div class="h-6 w-20 bg-[var(--bg-secondary)] rounded" />
+                <div class="h-6 w-14 bg-[var(--bg-secondary)] rounded" />
+              </div>
+            </div>
+          ))
+      }
+    </div>
+
+    <!-- Overlay Message -->
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center z-10"
+    >
+      <div
+        class="text-center p-8 rounded-lg backdrop-blur-sm bg-[var(--bg-primary)]/50 max-w-md border border-[var(--border-color)]"
+      >
+        <Badge size="sm" className="mx-auto mb-4">
+          <span class="text-xs font-bold uppercase">Coming Soon</span>
+        </Badge>
+        <h3 class="text-2xl font-bold mb-4">Projects Under Progress</h3>
+        <p class="text-[var(--text-secondary)]">
+          I'm currently working on several exciting projects that will be
+          showcased here soon. Stay tuned for updates!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="border border-[var(--border-color)] border-t-0 px-4 sm:px-6 md:px-10 p-4 sm:py-6 flex flex-col items-start gap-4 projects-cta-section"
+  >
+    <TextReveal
+      element="h3"
+      text="Collaborate With Me"
+      className="text-xl font-medium"
+      splitBy="chars"
+      stagger={0.03}
+      from="top"
+      delay={0.5}
+    />
+
+    <TextReveal
+      text="Got a project idea or looking for a development partner? Let's collaborate and build something amazing together."
+      className="text-sm sm:text-base text-[var(--text-secondary)]"
+      splitBy="words"
+      stagger={0.02}
+      from="left"
+      delay={0.6}
+    />
+
+    <a
+      href="mailto:rohitk290106@gmail.com"
+      class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-[var(--border-color)] hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 cta-button"
+    >
+      Start a Project
+    </a>
+  </div>
+  <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10">
+  </div>
+</div>
+
+<style>
+  /* Essential styling matching your design system */
+  .projects-container {
+    perspective: 1000px;
+  }
+
+  /* Section styling with initial states */
+  .projects-title-section,
+  .projects-content,
+  .projects-cta-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  /* Text styling */
+  .projects-title {
+    overflow: hidden;
+  }
+
+  /* Project card styling */
+  .project-card {
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  /* Animated blur effect */
+  .projects-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: var(--bg-primary);
+    opacity: 0.1;
+  }
+
+  /* CTA button hover effect */
+  .cta-button:hover {
+    background-color: var(--accent-primary);
+    color: white;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .projects-content {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Initialize animations when DOM is ready
+  document.addEventListener("DOMContentLoaded", () => {
+    // Animate sections on scroll
+    const projectSections = [
+      ".projects-title-section",
+      ".projects-content",
+      ".projects-cta-section",
+    ];
+
+    projectSections.forEach((section, index) => {
+      gsap.set(section, {
+        opacity: 0,
+      });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          gsap.to(section, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: index * 0.1,
+            ease: "power3.out",
+          });
+        },
+      });
+    });
+
+    // Add a hover animation for the overlay message
+    const messageContainer = document.querySelector(
+      ".projects-content .absolute"
+    );
+    if (messageContainer) {
+      gsap.set(messageContainer, { scale: 1 });
+
+      messageContainer.addEventListener("mouseenter", () => {
+        gsap.to(messageContainer.querySelector("div"), {
+          scale: 1.03,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+
+      messageContainer.addEventListener("mouseleave", () => {
+        gsap.to(messageContainer.querySelector("div"), {
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.in",
+        });
+      });
+    }
+  });
+
+  // Re-initialize animations after page transitions
+  document.addEventListener("astro:page-load", () => {
+    // Handle any page transition animations if needed
+  });
+
+  // Listen for theme changes to update animations if needed
+  document.addEventListener("themeChanged", () => {
+    // Refresh scroll triggers to ensure any color-dependent animations work properly
+    ScrollTrigger.refresh();
+  });
+</script>

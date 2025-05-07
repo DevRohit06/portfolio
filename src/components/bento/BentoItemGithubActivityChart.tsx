@@ -54,6 +54,7 @@ const BentoGithubActivity = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
   const [renderedOnce, setRenderedOnce] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Get CSS variables for theme-aware colors
   const [panelColors, setPanelColors] = useState({
@@ -63,12 +64,17 @@ const BentoGithubActivity = (props: Props) => {
     12: "#0707AC",
   });
 
-  // Update colors based on CSS variables when component mounts
+  // Update colors based on CSS variables and theme when component mounts
   useEffect(() => {
     const updateThemeColors = () => {
       const accentPrimary = getComputedStyle(document.documentElement)
         .getPropertyValue("--accent-primary")
         .trim();
+
+      // Check if currently in dark mode
+      const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "light";
+      setIsDarkMode(currentTheme === "dark");
 
       // Function to adjust shade (make lighter or darker)
       const getShade = (hexColor: string, percent: number) => {
@@ -102,29 +108,69 @@ const BentoGithubActivity = (props: Props) => {
       );
 
       if (isValidHex) {
-        setPanelColors({
-          1: getShade(accentPrimary, 0.85), // Very light shade (85% brighter)
-          4: getShade(accentPrimary, 0.4), // Light shade (40% brighter)
-          8: getShade(accentPrimary, 0), // Base accent color
-          12: getShade(accentPrimary, -0.3), // Dark shade (30% darker)
-        });
+        if (currentTheme === "dark") {
+          // Enhanced contrast color scheme for dark mode
+          setPanelColors({
+            1: "#263040", // Very dark blue-gray for level 1 in dark mode
+            4: "#375a7f", // Medium blue for level 4
+            8: "#4a8db7", // Bright blue for level 8
+            12: "#6fc2ef", // Light blue for level 12 (highest activity)
+          });
+        } else {
+          // Original light mode colors with accent color
+          setPanelColors({
+            1: getShade(accentPrimary, 0.85), // Very light shade
+            4: getShade(accentPrimary, 0.4), // Light shade
+            8: getShade(accentPrimary, 0), // Base accent color
+            12: getShade(accentPrimary, -0.3), // Dark shade
+          });
+        }
       } else {
         // Fallback colors if CSS variable isn't a valid hex
-        setPanelColors({
-          1: "#e6e6ff",
-          4: "#9c9cde",
-          8: "#3939bd",
-          12: "#0707AC",
-        });
+        if (currentTheme === "dark") {
+          setPanelColors({
+            1: "#263040", // Very dark blue-gray for level 1 in dark mode
+            4: "#375a7f", // Medium blue for level 4
+            8: "#4a8db7", // Bright blue for level 8
+            12: "#6fc2ef", // Light blue for level 12 (highest activity)
+          });
+        } else {
+          setPanelColors({
+            1: "#e6e6ff",
+            4: "#9c9cde",
+            8: "#3939bd",
+            12: "#0707AC",
+          });
+        }
       }
     };
 
     // Update colors immediately and when theme changes
     updateThemeColors();
+
+    // Listen for theme change events
     document.addEventListener("themeChanged", updateThemeColors);
+
+    // Also observe data-theme attribute changes on document.documentElement
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "data-theme"
+        ) {
+          updateThemeColors();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
 
     return () => {
       document.removeEventListener("themeChanged", updateThemeColors);
+      observer.disconnect();
     };
   }, []);
 
@@ -166,7 +212,10 @@ const BentoGithubActivity = (props: Props) => {
             monthLabels={false}
             legendCellSize={0}
             space={4}
-            style={{ color: "var(--text-primary)" }}
+            style={{
+              color: "var(--text-primary)",
+              backgroundColor: "transparent",
+            }}
             rectProps={{ rx: 4 }}
             rectSize={16}
             rectRender={renderRect((date) => setHoveredTile(date))}
@@ -174,7 +223,13 @@ const BentoGithubActivity = (props: Props) => {
           />
         )}
       </div>
-      {<p className="line-clamp-1 text-xs">{hoveredTile}</p>}
+      {
+        <p
+          className={`line-clamp-1 text-xs ${isDarkMode ? "text-gray-300" : ""}`}
+        >
+          {hoveredTile}
+        </p>
+      }
     </div>
   );
 };

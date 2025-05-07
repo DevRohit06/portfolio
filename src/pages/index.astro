@@ -13,6 +13,7 @@ import Badge from "../components/Badge.astro";
 import LiveClock from "../components/svelte/LiveClock.svelte";
 import TextReveal from "../components/TextReveal.astro";
 import AboutMe from "../components/AboutMe.astro";
+import Projects from "../components/Projects.astro";
 // Set showLoader to true only for the first visit in a session
 // We'll handle this client-side to avoid hydration issues
 const showLoader = true;
@@ -196,6 +197,12 @@ const jsonLd = {
       <AboutMe />
     </div>
     <!-- End About Me Section -->
+
+    <!-- Projects Section -->
+    <div class="w-[90%] md:w-[80%] lg:w-[70%] mx-auto mb-40 md:mb-56 lg:mb-64">
+      <Projects />
+    </div>
+    <!-- End Projects Section -->
 
     <!-- Bento Grid Section with more breathing room -->
     <div class="bento pb-40 md:pb-48 lg:pb-56">
