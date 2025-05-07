@@ -1,5 +1,5 @@
 import HeatMap, { type SVGProps } from "@uiw/react-heat-map";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 
 import { formatDate, formatNumber, getDateSuffix } from "../../lib/utils";
 import type { GithubContributionData } from "../../types";
@@ -13,9 +13,59 @@ const getDateProps = () => {
   return { startDate: oneYearAgo, endDate: today };
 };
 
+// Function to get dark mode colors with high contrast
+const getDarkModeColors = () => ({
+  0: "#1a2233", // Darker background (no contributions)
+  1: "#1d344d", // Very low activity
+  4: "#2d6fa3", // More vibrant blue for level 4
+  8: "#30a5e8", // Bright blue for level 8
+  12: "#78d3ff", // Very light bright blue for highest activity
+});
+
+// Function to get light mode colors based on accent
+const getLightModeColors = (accentPrimary = "#3939bd") => {
+  const getShade = (hexColor: string, percent: number) => {
+    // Convert hex to RGB
+    let r = parseInt(hexColor.slice(1, 3), 16);
+    let g = parseInt(hexColor.slice(3, 5), 16);
+    let b = parseInt(hexColor.slice(5, 7), 16);
+
+    // Adjust brightness
+    if (percent > 0) {
+      // Brighten
+      r = Math.min(255, Math.floor(r + (255 - r) * percent));
+      g = Math.min(255, Math.floor(g + (255 - g) * percent));
+      b = Math.min(255, Math.floor(b + (255 - b) * percent));
+    } else {
+      // Darken
+      const absPercent = Math.abs(percent);
+      r = Math.floor(r * (1 - absPercent));
+      g = Math.floor(g * (1 - absPercent));
+      b = Math.floor(b * (1 - absPercent));
+    }
+
+    // Convert back to hex
+    return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+  };
+
+  return {
+    0: "#f0f0f0", // No contributions
+    1: getShade(accentPrimary, 0.85), // Very light shade
+    4: getShade(accentPrimary, 0.4), // Light shade
+    8: getShade(accentPrimary, 0), // Base accent color
+    12: getShade(accentPrimary, -0.3), // Dark shade
+  };
+};
+
+// Check if code is running in browser
+const isBrowser = typeof window !== "undefined";
+
 // Optimize rect rendering with throttling
 const renderRect =
-  (handleMouseEnter: (date: string) => void): SVGProps["rectRender"] =>
+  (
+    handleMouseEnter: (date: string) => void,
+    isDarkMode: boolean
+  ): SVGProps["rectRender"] =>
   (props, data) => {
     const date = new Date(data.date);
     const formattedDate =
@@ -33,11 +83,16 @@ const renderRect =
       }
     };
 
+    // Add custom styling for dark mode
+    const customStyles =
+      isDarkMode && data.count ? { style: { filter: "brightness(1.2)" } } : {};
+
     return (
       <rect
-        className="transition-all hover:brightness-125"
+        className={`transition-all ${isDarkMode ? "dark-rect" : ""} hover:brightness-125`}
         onMouseEnter={handleMouseEnterThrottled}
         {...props}
+        {...customStyles}
       />
     );
   };
@@ -55,101 +110,59 @@ const BentoGithubActivity = (props: Props) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [renderedOnce, setRenderedOnce] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [forceRender, setForceRender] = useState(0);
 
-  // Get CSS variables for theme-aware colors
-  const [panelColors, setPanelColors] = useState({
-    1: "#ffffff",
-    4: "#9c9cde",
-    8: "#3939bd",
-    12: "#0707AC",
-  });
+  // Get current theme - safely handles server-side rendering
+  const getCurrentTheme = useCallback(() => {
+    if (!isBrowser) return false;
+    return document.documentElement.getAttribute("data-theme") === "dark";
+  }, []);
 
-  // Update colors based on CSS variables and theme when component mounts
+  // Create memoized panelColors getter that's safe for SSR
+  const getPanelColors = useCallback(() => {
+    let accentPrimary = "#3939bd"; // Default accent color
+
+    // Only try to access CSS variables in the browser
+    if (isBrowser) {
+      try {
+        const cssAccent = window
+          .getComputedStyle(document.documentElement)
+          .getPropertyValue("--accent-primary")
+          .trim();
+
+        if (cssAccent && /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(cssAccent)) {
+          accentPrimary = cssAccent;
+        }
+      } catch (e) {
+        console.warn("Error accessing CSS variables:", e);
+      }
+    }
+
+    if (isDarkMode) {
+      return getDarkModeColors();
+    } else {
+      return getLightModeColors(accentPrimary);
+    }
+  }, [isDarkMode]);
+
+  // Update theme and force re-render when theme changes - only run in browser
   useEffect(() => {
-    const updateThemeColors = () => {
-      const accentPrimary = getComputedStyle(document.documentElement)
-        .getPropertyValue("--accent-primary")
-        .trim();
+    if (!isBrowser) return;
 
-      // Check if currently in dark mode
-      const currentTheme =
-        document.documentElement.getAttribute("data-theme") || "light";
-      setIsDarkMode(currentTheme === "dark");
+    // Initial theme check
+    setIsDarkMode(getCurrentTheme());
 
-      // Function to adjust shade (make lighter or darker)
-      const getShade = (hexColor: string, percent: number) => {
-        // Convert hex to RGB
-        let r = parseInt(hexColor.slice(1, 3), 16);
-        let g = parseInt(hexColor.slice(3, 5), 16);
-        let b = parseInt(hexColor.slice(5, 7), 16);
-
-        // Adjust brightness
-        // Positive percent brightens, negative percent darkens
-        if (percent > 0) {
-          // Brighten
-          r = Math.min(255, Math.floor(r + (255 - r) * percent));
-          g = Math.min(255, Math.floor(g + (255 - g) * percent));
-          b = Math.min(255, Math.floor(b + (255 - b) * percent));
-        } else {
-          // Darken
-          const absPercent = Math.abs(percent);
-          r = Math.floor(r * (1 - absPercent));
-          g = Math.floor(g * (1 - absPercent));
-          b = Math.floor(b * (1 - absPercent));
-        }
-
-        // Convert back to hex
-        return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
-      };
-
-      // Create proper shades of the accent color
-      const isValidHex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(
-        accentPrimary
-      );
-
-      if (isValidHex) {
-        if (currentTheme === "dark") {
-          // Enhanced contrast color scheme for dark mode
-          setPanelColors({
-            1: "#263040", // Very dark blue-gray for level 1 in dark mode
-            4: "#375a7f", // Medium blue for level 4
-            8: "#4a8db7", // Bright blue for level 8
-            12: "#6fc2ef", // Light blue for level 12 (highest activity)
-          });
-        } else {
-          // Original light mode colors with accent color
-          setPanelColors({
-            1: getShade(accentPrimary, 0.85), // Very light shade
-            4: getShade(accentPrimary, 0.4), // Light shade
-            8: getShade(accentPrimary, 0), // Base accent color
-            12: getShade(accentPrimary, -0.3), // Dark shade
-          });
-        }
-      } else {
-        // Fallback colors if CSS variable isn't a valid hex
-        if (currentTheme === "dark") {
-          setPanelColors({
-            1: "#263040", // Very dark blue-gray for level 1 in dark mode
-            4: "#375a7f", // Medium blue for level 4
-            8: "#4a8db7", // Bright blue for level 8
-            12: "#6fc2ef", // Light blue for level 12 (highest activity)
-          });
-        } else {
-          setPanelColors({
-            1: "#e6e6ff",
-            4: "#9c9cde",
-            8: "#3939bd",
-            12: "#0707AC",
-          });
-        }
+    const updateThemeAndRerender = () => {
+      const newDarkMode = getCurrentTheme();
+      if (newDarkMode !== isDarkMode) {
+        setIsDarkMode(newDarkMode);
+        // Force a re-render of the component
+        setForceRender((prev) => prev + 1);
       }
     };
 
-    // Update colors immediately and when theme changes
-    updateThemeColors();
-
     // Listen for theme change events
-    document.addEventListener("themeChanged", updateThemeColors);
+    document.addEventListener("themeChanged", updateThemeAndRerender);
 
     // Also observe data-theme attribute changes on document.documentElement
     const observer = new MutationObserver((mutations) => {
@@ -158,7 +171,7 @@ const BentoGithubActivity = (props: Props) => {
           mutation.type === "attributes" &&
           mutation.attributeName === "data-theme"
         ) {
-          updateThemeColors();
+          updateThemeAndRerender();
         }
       });
     });
@@ -169,14 +182,14 @@ const BentoGithubActivity = (props: Props) => {
     });
 
     return () => {
-      document.removeEventListener("themeChanged", updateThemeColors);
+      document.removeEventListener("themeChanged", updateThemeAndRerender);
       observer.disconnect();
     };
-  }, []);
+  }, [getCurrentTheme, isDarkMode]);
 
-  // Use intersection observer to only render when visible
+  // Use intersection observer to only render when visible - only run in browser
   useEffect(() => {
-    if (!chartRef.current || renderedOnce) return;
+    if (!isBrowser || !chartRef.current || renderedOnce) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -196,14 +209,21 @@ const BentoGithubActivity = (props: Props) => {
     return () => observer.disconnect();
   }, [renderedOnce]);
 
+  // Get current panel colors based on theme
+  const panelColors = getPanelColors();
+
   return (
     <div
-      className="relative flex h-full flex-col justify-between max-md:gap-4"
+      className={`relative flex h-full flex-col justify-between max-md:gap-4 ${
+        isDarkMode ? "dark-heat-map" : ""
+      }`}
       ref={chartRef}
+      key={`chart-container-${forceRender}`}
     >
       <div className="w-full overflow-x-auto">
         {(isVisible || renderedOnce) && (
           <HeatMap
+            key={`heat-map-${forceRender}`}
             {...getDateProps()}
             onMouseLeave={() => setHoveredTile(defaultValue)}
             className="w-full"
@@ -215,23 +235,43 @@ const BentoGithubActivity = (props: Props) => {
             style={{
               color: "var(--text-primary)",
               backgroundColor: "transparent",
+              WebkitFontSmoothing: isDarkMode ? "antialiased" : "auto",
             }}
             rectProps={{ rx: 4 }}
             rectSize={16}
-            rectRender={renderRect((date) => setHoveredTile(date))}
+            rectRender={renderRect((date) => setHoveredTile(date), isDarkMode)}
             panelColors={panelColors}
           />
         )}
       </div>
-      {
-        <p
-          className={`line-clamp-1 text-xs ${isDarkMode ? "text-gray-300" : ""}`}
-        >
-          {hoveredTile}
-        </p>
-      }
+      <p
+        className={`line-clamp-1 text-xs ${
+          isDarkMode ? "text-gray-300 font-light" : ""
+        }`}
+        style={{
+          WebkitFontSmoothing: isDarkMode ? "antialiased" : "auto",
+        }}
+      >
+        {hoveredTile}
+      </p>
     </div>
   );
 };
+
+// Only add styles in browser environment
+if (isBrowser) {
+  // Check if style already exists to avoid duplicates
+  const styleId = "github-activity-chart-styles";
+  if (!document.getElementById(styleId)) {
+    const styles = document.createElement("style");
+    styles.id = styleId;
+    styles.textContent = `
+      .dark-heat-map .dark-rect {
+        transition: all 0.2s ease;
+      }
+    `;
+    document.head.appendChild(styles);
+  }
+}
 
 export default React.memo(BentoGithubActivity);
