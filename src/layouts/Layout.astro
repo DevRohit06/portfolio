@@ -129,7 +129,6 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
     </script>
   </head>
   <body class="antialiased">
-    {showLoader && <Loader />}
     <main>
       <slot />
     </main>
@@ -142,7 +141,7 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
     margin: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow: none;
   }
 
   .loading {
