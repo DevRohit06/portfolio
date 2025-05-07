@@ -1,48 +1,105 @@
-# Astro Starter Kit: Basics
+# 🚀 Rohit Kushwaha's Portfolio
 
-```sh
-npm create astro@latest -- --template basics
+<div align="center">
+  <img src="./public/images/og.webp" alt="Portfolio Banner" width="700">
+  <p><em>Modern, responsive full-stack developer portfolio</em></p>
+</div>
+
+[![Built with Astro](https://astro.badg.es/v2/built-with-astro/small.svg)](https://astro.build)
+[![Website Status](https://img.shields.io/website?url=https://rohitk06.dev&style=flat-square&label=website)](https://rohitk06.dev)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/devrohit06/portfolio?style=flat-square)](https://github.com/devrohit06/portfolio)
+[![License](https://img.shields.io/github/license/devrohit06/portfolio?style=flat-square)](./LICENSE)
+
+## ✨ Features
+
+- 🎨 **Modern UI/UX** with seamless animations using GSAP
+- 📱 **Fully Responsive** design for all devices
+- 🌙 **Dark/Light Mode** with smooth transitions
+- ⚡ **Blazing Fast** performance with Astro
+- 🧩 **Component Islands** with React, Svelte & more
+- 📝 **Blog System** with MDX support
+- 🔍 **SEO Optimized** with meta tags, Open Graph and JSON-LD
+- 📊 **GitHub Activity Integration** showing live contributions
+- 💬 **Discord Status** integration
+- 📈 **Analytics Ready** infrastructure
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Astro](https://astro.build/)
+- **UI Components**: [React](https://react.dev/), [Svelte](https://svelte.dev/)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/)
+- **Animations**: [GSAP](https://greensock.com/gsap/)
+- **Typography**: Custom Roobert font
+- **Deployment**: [Vercel](https://vercel.com/)
+
+## 🖥️ Local Development
+
+```bash
+# Clone the repository
+git clone https://github.com/DevRohit06/portfolio.git
+
+# Enter the project directory
+cd portfolio
+
+# Install dependencies
+npm install
+# or
+bun install
+
+# Start the development server
+npm run dev
+# or
+bun dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+The site will be available at `http://localhost:4321`
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🏗️ Build
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+```bash
+# Build for production
+npm run build
+# or
+bun run build
 
-## 🚀 Project Structure
+# Preview the production build
+npm run preview
+# or
+bun run preview
+```
 
-Inside of your Astro project, you'll see the following folders and files:
+## 📂 Project Structure
 
-```text
+```
 /
-├── public/
-│   └── favicon.svg
+├── public/              # Static assets
+│   ├── fonts/           # Custom web fonts
+│   └── images/          # Images and icons
 ├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── assets/          # Project assets requiring processing
+│   ├── components/      # UI Components
+│   │   ├── astro/       # Astro components
+│   │   ├── react/       # React components
+│   │   └── svelte/      # Svelte components
+│   ├── content/         # Blog content
+│   ├── layouts/         # Page layouts
+│   ├── lib/             # Utility libraries
+│   ├── pages/           # Page routes
+│   └── styles/          # CSS styles
+└── package.json         # Project dependencies and scripts
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 📝 License
 
-## 🧞 Commands
+This project is available as open source under the terms of the [MIT License](./LICENSE).
 
-All commands are run from the root of the project, from a terminal:
+## 🔗 Connect with Me
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/rohitk06)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github)](https://github.com/devrohit06)
 
-## 👀 Want to learn more?
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+<div align="center">
+  <p>💻 Designed & Developed with ❤️ by <a href="https://dialogh.in">Dialogh</a></p>
+</div>

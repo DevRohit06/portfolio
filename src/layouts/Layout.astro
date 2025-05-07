@@ -5,7 +5,7 @@ import Loader from "../components/Loader.astro";
 import Seo from "../components/Seo.astro";
 import { mainMetaData } from "../lib/metaData";
 import { ClientRouter } from "astro:transitions";
-import { PUBLIC_UMAMI_WEBSITE_ID } from "astro:env/client";
+import { PUBLIC_GOOGLE_TAG_KEY } from "astro:env/client";
 interface Props {
   showLoader?: boolean;
   description?: string;
@@ -40,7 +40,7 @@ const {
 } = Astro.props;
 
 // Get Umami website ID from environment variable
-const umamiWebsiteId = PUBLIC_UMAMI_WEBSITE_ID;
+const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
 ---
 
 <!doctype html>
@@ -114,14 +114,22 @@ const umamiWebsiteId = PUBLIC_UMAMI_WEBSITE_ID;
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <script
-      is:inline
-      defer
       type="text/partytown"
-      src="https://cloud.umami.is/script.js"
-      data-website-id={umamiWebsiteId}
-      data-domains="rohitk06.dev,www.rohitk06.dev"></script>
+      async
+      src=`https://www.googletagmanager.com/gtag/js?id=${googleTagKey}`
+    ></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", `${googleTagKey}`);
+    </script>
   </head>
   <body class="antialiased">
+    {showLoader && <Loader />}
     <main>
       <slot />
     </main>
@@ -134,7 +142,7 @@ const umamiWebsiteId = PUBLIC_UMAMI_WEBSITE_ID;
     margin: 0;
     width: 100%;
     height: 100%;
-    overflow: none;
+    overflow: hidden;
   }
 
   .loading {
