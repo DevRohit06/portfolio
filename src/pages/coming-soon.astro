@@ -1,312 +1,87 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
 import { socials } from "../lib/socials";
+import SocialIcons from "../components/SocialIcons.astro";
 ---
 
-<Layout title="Coming Soon - Stay Tuned">
-  <main
-    class="coming-soon-container min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden"
-  >
-    <!-- Animated background elements -->
-    <div class="animated-bg-element bg-element-1"></div>
-    <div class="animated-bg-element bg-element-2"></div>
+<Layout title="Coming Soon - Rohit Kushwaha">
+  <Navbar />
 
+  <main class="coming-soon-page min-h-screen flex items-center justify-center">
     <div
-      class="coming-soon-content text-center max-w-2xl mx-auto relative z-10"
+      class="w-[90%] md:w-[80%] lg:w-[60%] mx-auto flex flex-col items-center justify-center text-center p-8 mt-[-100px]"
     >
-      <div class="mb-8 pulse-animation">
-        <div
-          class="w-fit mx-auto bg-[#C9CDD1] text-[#7B7B7B] border border-[#7B7B7B] px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base font-medium"
-        >
-          COMING SOON
-        </div>
-      </div>
-
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6">
-        Something Amazing is in the Works
+      <h1
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 coming-soon-title"
+      >
+        Coming Soon
       </h1>
-
-      <div
-        class="coming-soon-line w-24 h-1 bg-gradient-to-r from-[#0000CC] to-[#5050FF] mx-auto mb-8 sm:mb-10"
-      >
-      </div>
-
       <p
-        class="text-[#4B4B4B] mb-10 sm:mb-12 text-base sm:text-lg max-w-lg mx-auto leading-relaxed"
+        class="text-[var(--text-secondary)] text-lg sm:text-xl md:text-2xl mb-8 max-w-2xl"
       >
-        I'm currently crafting this section of my portfolio with care and
-        precision. Check back soon for updates or connect with me through my
-        social platforms.
+        This page is currently under construction. Check back soon for updates!
       </p>
-
-      <!-- Social Media Links -->
-      <div class="social-links flex justify-center gap-6 mb-12">
-        <a
-          href={socials.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link text-[#7B7B7B] hover:text-[#0000CC] transition-all duration-300 p-3"
-          aria-label="GitHub"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            ><path
-              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-            ></path></svg
-          >
-        </a>
-        <a
-          href={socials.linkedIn}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link text-[#7B7B7B] hover:text-[#0000CC] transition-all duration-300 p-3"
-          aria-label="LinkedIn"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            ><path
-              d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
-            ></path><rect x="2" y="9" width="4" height="12"></rect><circle
-              cx="4"
-              cy="4"
-              r="2"></circle></svg
-          >
-        </a>
-        <a
-          href={socials.twitter}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link text-[#7B7B7B] hover:text-[#0000CC] transition-all duration-300 p-3"
-          aria-label="Twitter"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            ><path
-              d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
-            ></path></svg
-          >
-        </a>
-        <a
-          href={socials.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link text-[#7B7B7B] hover:text-[#0000CC] transition-all duration-300 p-3"
-          aria-label="Instagram"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            ><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path
-              d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line
-              x1="17.5"
-              y1="6.5"
-              x2="17.51"
-              y2="6.5"></line></svg
-          >
-        </a>
+      <div class="w-16 h-1 bg-[var(--accent-primary)] mb-8"></div>
+      <p class="text-[var(--text-secondary)] mb-8">
+        In the meantime, you can connect with me on social media:
+      </p>
+      <div class="social-links flex space-x-4 mb-12">
+        <SocialIcons variant="button" size="lg" />
       </div>
-
-      <div class="coming-soon-actions">
-        <a
-          href="/"
-          class="inline-block px-8 py-4 border border-[#0000CC] bg-transparent text-[#0000CC] hover:bg-[#0000CC] hover:text-white font-medium transition-all duration-300"
+      <a
+        href="/"
+        class="border border-[var(--border-color)] hover:text-[var(--accent-primary)] hover:border-[var(--accent-primary)] px-6 py-3 transition-all duration-300 group flex items-center"
+      >
+        <span>Return to Home</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="ml-2 group-hover:translate-x-1 transition-transform duration-300"
+          ><path d="m9 18 6-6-6-6"></path></svg
         >
-          Return Home
-        </a>
-      </div>
+      </a>
     </div>
   </main>
-</Layout>
 
-<style>
-  .coming-soon-container {
-    background-color: #c9cdd1;
-    background-image: radial-gradient(
-        circle at 25% 25%,
-        rgba(255, 255, 255, 0.5) 0%,
-        transparent 20%
-      ),
-      radial-gradient(
-        circle at 75% 75%,
-        rgba(255, 255, 255, 0.5) 0%,
-        transparent 20%
-      );
-  }
-
-  .animated-bg-element {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.05;
-    filter: blur(60px);
-  }
-
-  .bg-element-1 {
-    width: 300px;
-    height: 300px;
-    background: #0000cc;
-    top: -100px;
-    left: -100px;
-  }
-
-  .bg-element-2 {
-    width: 400px;
-    height: 400px;
-    background: #0000cc;
-    bottom: -150px;
-    right: -150px;
-  }
-
-  .social-link {
-    transform: translateY(0);
-    transition: all 0.3s ease;
-  }
-
-  .social-link:hover {
-    transform: translateY(-5px);
-  }
-
-  .pulse-animation {
-    animation: pulse 2s infinite;
-  }
-
-  .countdown-item {
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-  }
-
-  .countdown-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 204, 0.1);
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 640px) {
-    .coming-soon-container {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-    }
-
-    .animated-bg-element {
-      opacity: 0.03;
-    }
-  }
-
-  /* Accessibility improvements */
-  @media (prefers-reduced-motion: reduce) {
-    .coming-soon-line,
-    .animated-bg-element,
-    .social-link:hover,
-    .pulse-animation,
-    .countdown-item:hover {
-      animation: none;
-      transition: none;
-      transform: none;
-    }
-  }
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Set the date we're counting down to (about 2 months from current date)
-    const currentDate = new Date();
-    const targetDate = new Date(currentDate);
-    targetDate.setMonth(currentDate.getMonth() + 2);
-
-    // Update the countdown every 1 second
-    const countdown = setInterval(() => {
-      // Get current date and time
-      const now = new Date().getTime();
-
-      // Find the distance between now and the countdown date
-      const distance = targetDate - now;
-
-      // Time calculations for days, hours, minutes and seconds
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      // Display the result
-      document.getElementById("days").textContent = days
-        .toString()
-        .padStart(2, "0");
-      document.getElementById("hours").textContent = hours
-        .toString()
-        .padStart(2, "0");
-      document.getElementById("minutes").textContent = minutes
-        .toString()
-        .padStart(2, "0");
-      document.getElementById("seconds").textContent = seconds
-        .toString()
-        .padStart(2, "0");
-
-      // If the countdown is finished, display a message
-      if (distance < 0) {
-        clearInterval(countdown);
-        const countdownTimer = document.querySelector(".countdown-timer");
-        if (countdownTimer) {
-          countdownTimer.innerHTML =
-            '<p class="text-xl font-medium text-[#0000CC]">We are live now!</p>';
-        }
+  <style>
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
       }
-    }, 1000);
-
-    // Add form submission handler
-    const form = document.querySelector("form");
-    if (form) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = form.querySelector('input[type="email"]')?.value;
-        if (email) {
-          const button = form.querySelector("button");
-          const originalText = button.textContent;
-          button.textContent = "Thank you!";
-          button.disabled = true;
-          button.classList.add("bg-transparent", "text-[#0000CC]");
-
-          // Reset after 3 seconds
-          setTimeout(() => {
-            button.textContent = originalText;
-            button.disabled = false;
-            button.classList.remove("bg-transparent", "text-[#0000CC]");
-            form.reset();
-          }, 3000);
-        }
-      });
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
-  });
-</script>
+
+    .coming-soon-title {
+      background: linear-gradient(
+        -45deg,
+        var(--accent-primary),
+        #8b3acf,
+        var(--accent-primary)
+      );
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient 6s ease infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .coming-soon-title {
+        animation: none;
+      }
+    }
+  </style>
+</Layout>

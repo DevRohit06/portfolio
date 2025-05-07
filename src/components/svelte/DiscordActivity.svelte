@@ -1,4 +1,3 @@
-<!-- filepath: e:\Codes\portfolio\src\components\svelte\DiscordActivity.svelte -->
 <script lang="ts">
   import "../../styles/discord.css";
   import { onMount, onDestroy } from "svelte";
@@ -263,18 +262,18 @@
 
   // Get activity color based on type
   const getActivityColor = (type: number): string => {
-    switch (type) {
-      case ACTIVITY_TYPES.LISTENING:
-        return "#1DB954"; // Spotify green
-      case ACTIVITY_TYPES.PLAYING:
-        return "#5865F2"; // Discord blurple
-      case ACTIVITY_TYPES.STREAMING:
-        return "#9146FF"; // Twitch purple
-      case ACTIVITY_TYPES.WATCHING:
-        return "#FF0000"; // YouTube red
-      default:
-        return accentColor; // Default accent color
-    }
+    // switch (type) {
+    //   case ACTIVITY_TYPES.LISTENING:
+    return "var(--accent-primary)"; // Spotify green
+    //   case ACTIVITY_TYPES.PLAYING:
+    //     return "#5865F2"; // Discord blurple
+    //   case ACTIVITY_TYPES.STREAMING:
+    //     return "#9146FF"; // Twitch purple
+    //   case ACTIVITY_TYPES.WATCHING:
+    //     return "#FF0000"; // YouTube red
+    //   default:
+    //     return accentColor; // Default accent color
+    // }
   };
 
   // Calculate and update progress bar for current activity
@@ -456,27 +455,40 @@
     connectWebSocket();
     setupTimeInterval();
 
+    // Listen for theme changes
+    const handleThemeChange = () => {
+      // Force refresh of status dot borders and other elements that might need updating
+      if (activityData) {
+        activityData = { ...activityData };
+      }
+    };
+
+    document.addEventListener("themeChanged", handleThemeChange);
+
     // Return cleanup function
-    return cleanup;
+    return () => {
+      cleanup();
+      document.removeEventListener("themeChanged", handleThemeChange);
+    };
   });
 
   onDestroy(cleanup);
 </script>
 
 <div
-  class="discord-activity border border-[#7B7B7B] p-0 bg-[#C9CDD1]/20 hover:bg-[#C9CDD1]/30 transition-all duration-300"
+  class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height"
 >
   {#if loading}
     <div class="loading-container" in:fade={{ duration: 300 }}>
       <div class="loading-spinner"></div>
-      <p class="text-gray-600">Loading Discord activity...</p>
+      <p class="text-[var(--text-secondary)]">Loading Discord activity...</p>
     </div>
   {:else if error}
     <div class="error-container" in:fade={{ duration: 300 }}>
-      <p class="text-gray-600">{error}</p>
+      <p class="text-[var(--text-secondary)]">{error}</p>
       <button
         on:click={connectWebSocket}
-        class="retry-button mt-2 text-sm text-[#0000CC] hover:bg-[#0000CC]/5"
+        class="retry-button mt-2 text-sm text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/5"
       >
         Retry
       </button>
@@ -590,13 +602,6 @@
                     style="width: {currentProgress}%; background-color: {activityColor}"
                   ></div>
                 </div>
-                <!-- Time display -->
-                <!-- <div
-                  class="progress-times flex justify-between text-xs  mt-1 text-[#7B7B7B]"
-                >
-                  <span>{currentTime}</span>
-                  <span>{remainingTime}</span>
-                </div> -->
               </div>
             {/if}
           </div>
@@ -604,11 +609,11 @@
       </div>
     {:else if activityData}
       <div class="profile-header p-4 flex items-center">
-        <div class="avatar-container relative">
+        <div class="avatar-container flex-shrink-0 relative">
           <img
             src={getAvatarUrl()}
             alt="Discord Avatar"
-            class="avatar-image w-12 h-12 rounded-full object-cover border border-[#7B7B7B]/40"
+            class="avatar-image w-12 h-12 rounded-full object-cover border border-[var(--border-color)]/40"
           />
           <div
             class="status-dot"
@@ -623,30 +628,19 @@
           <div class="user-info ml-3 flex-1">
             <div class="flex items-center justify-between">
               <div>
-                <div class="user-name font-medium">
+                <div class="user-name font-medium text-[var(--text-primary)]">
                   {getDisplayName()}
                 </div>
                 {#if activityData?.discord_user?.discriminator && activityData?.discord_user?.discriminator !== "0"}
-                  <div class="user-tag text-xs text-[#7B7B7B]">
+                  <div class="user-tag text-xs text-[var(--text-secondary)]">
                     {activityData.discord_user.username}#{activityData
                       .discord_user.discriminator}
                   </div>
                 {:else}
-                  <div class="user-tag text-xs text-[#7B7B7B]">
+                  <div class="user-tag text-xs text-[var(--text-secondary)]">
                     {activityData.discord_user?.username || ""}
                   </div>
                 {/if}
-              </div>
-
-              <div
-                class="status-badge text-xs ml-3 py-1 px-2 rounded capitalize"
-                class:online={activityData.discord_status === "online"}
-                class:idle={activityData.discord_status === "idle"}
-                class:dnd={activityData.discord_status === "dnd"}
-                class:offline={activityData.discord_status === "offline" ||
-                  !activityData.discord_status}
-              >
-                {activityData.discord_status || "offline"}
               </div>
             </div>
           </div>
@@ -691,7 +685,7 @@
                         d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
                       />
                     </svg>
-                    <span>Add Friend</span>
+                    <span>Add</span>
                   </button>
 
                   {#if inviteCode}
@@ -726,8 +720,14 @@
 
 <style>
   .discord-activity {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
       sans-serif;
+  }
+
+  /* Fixed height container */
+  .fixed-height {
+    min-height: 105px;
   }
 
   /* Loading and error states */
@@ -739,13 +739,14 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    min-height: 80px;
+    min-height: 105px; /* Maintain minimum height for these states */
     text-align: center;
+    padding: 16px;
   }
 
   .loading-spinner {
-    border: 2px solid rgba(123, 123, 123, 0.2);
-    border-top: 2px solid #7b7b7b;
+    border: 2px solid var(--border-color-alpha);
+    border-top: 2px solid var(--border-color);
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -774,7 +775,7 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid #c9cdd1;
+    border: 2px solid var(--bg-secondary);
   }
 
   .status-dot.online {
@@ -788,35 +789,6 @@
   }
   .status-dot.offline {
     background-color: #747f8d;
-  }
-
-  .status-badge {
-    font-size: 10px;
-    border: 1px solid;
-  }
-
-  .status-badge.online {
-    background-color: rgba(67, 181, 129, 0.1);
-    color: #43b581;
-    border-color: rgba(67, 181, 129, 0.3);
-  }
-
-  .status-badge.idle {
-    background-color: rgba(250, 166, 26, 0.1);
-    color: #faa61a;
-    border-color: rgba(250, 166, 26, 0.3);
-  }
-
-  .status-badge.dnd {
-    background-color: rgba(240, 71, 71, 0.1);
-    color: #f04747;
-    border-color: rgba(240, 71, 71, 0.3);
-  }
-
-  .status-badge.offline {
-    background-color: rgba(116, 127, 141, 0.1);
-    color: #747f8d;
-    border-color: rgba(116, 127, 141, 0.3);
   }
 
   /* Activity image styles */
@@ -839,33 +811,28 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #e0e0e0;
-    color: #7b7b7b;
+    background-color: var(--card-bg);
+    color: var(--text-secondary);
     font-size: 20px;
     font-weight: bold;
-    border: 1px solid rgba(123, 123, 123, 0.5);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
   }
 
-  .activity-type-badge {
-    position: absolute;
-    bottom: -5px;
-    right: -5px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+  .activity-card {
+    min-height: 105px; /* Maintain consistent height for activity display */
+  }
+
+  .profile-header {
+    min-height: 105px; /* Maintain consistent height for profile display */
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
   }
 
   /* Activity text styles */
   .activity-label {
     font-size: 11px;
-    color: #7b7b7b;
+    color: var(--text-secondary);
     text-transform: uppercase;
     margin-bottom: 2px;
     letter-spacing: 0.5px;
@@ -874,7 +841,7 @@
   .activity-title {
     font-size: 14px;
     font-weight: 600;
-    color: #333;
+    color: var(--text-primary);
     margin-bottom: 2px;
     white-space: nowrap;
     overflow: hidden;
@@ -890,7 +857,7 @@
 
   .activity-subtitle {
     font-size: 12px;
-    color: #7b7b7b;
+    color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -922,7 +889,7 @@
   .progress-bar {
     width: 100%;
     height: 4px;
-    background-color: rgba(123, 123, 123, 0.2);
+    background-color: var(--border-color-alpha);
     border-radius: 2px;
     overflow: hidden;
     margin-top: 6px;
@@ -948,7 +915,7 @@
 
   .service-name {
     font-size: 11px;
-    color: #7b7b7b;
+    color: var(--text-secondary);
   }
 
   /* Discord buttons */
@@ -962,8 +929,9 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+      Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
 
   .discord-button:hover {

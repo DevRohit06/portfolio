@@ -6,45 +6,157 @@ import Experience from "../components/Experience.astro";
 import Bento from "../components/Bento.astro";
 import Footer from "../components/Footer.astro";
 import BlogSection from "../components/BlogSection.astro";
+import ThemeChanger from "../components/svelte/ThemeChanger.svelte";
 import Loader from "../components/Loader.astro";
 import Element from "../assets/svgs/element-1.svg";
 import Badge from "../components/Badge.astro";
 import LiveClock from "../components/svelte/LiveClock.svelte";
+import TextReveal from "../components/TextReveal.astro";
+import AboutMe from "../components/AboutMe.astro";
 // Set showLoader to true only for the first visit in a session
 // We'll handle this client-side to avoid hydration issues
 const showLoader = true;
+
+// SEO metadata for the homepage
+const pageTitle = "Rohit Kushwaha - Software Engineer Portfolio";
+const description =
+  "Portfolio of Rohit Kushwaha, a software engineer specializing in web development, React, Next.js, Svelte, and modern JavaScript frameworks.";
+const keywords = [
+  "software engineer",
+  "web developer",
+  "portfolio",
+  "Rohit Kushwaha",
+  "React",
+  "Next.js",
+  "Svelte",
+  "JavaScript",
+];
+
+// Structured data for search engines
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  headline: "Rohit Kushwaha - Software Engineer Portfolio",
+  datePublished: "2025-05-08",
+  dateModified: new Date().toISOString(),
+  description: description,
+  author: {
+    "@type": "Person",
+    name: "Rohit Kushwaha",
+    jobTitle: "Software Engineer",
+    url: "https://rohitk06.dev",
+    sameAs: [
+      "https://github.com/devrohit06",
+      "https://linkedin.com/in/rohitk06",
+      "https://twitter.com/rohitk_06",
+      "https://instagram.com/rohitk.06",
+    ],
+  },
+  mainEntity: {
+    "@type": "Person",
+    name: "Rohit Kushwaha",
+    jobTitle: "Software Engineer",
+    alumniOf: "SMT. CHM College, Ulhasnagar",
+    knowsAbout: [
+      "svelte",
+      "sveltekit",
+      "astro",
+      "ai",
+      "Web Development",
+      "JavaScript",
+      "React",
+      "Svelte",
+      "Next.js",
+      "Node.js",
+      "TypeScript",
+    ],
+  },
+};
 ---
 
 <script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
   import Lenis from "lenis";
 
-  // Create smoother scroll with Lenis
-  const lenis = new Lenis({
+  // Create smoother scroll with Lenis - with menu toggle protection
+  let lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // improved easing
-    direction: "vertical",
-    smooth: true,
-    smoothTouch: false, // disable on touch devices for better performance
-    touchMultiplier: 2,
   });
 
-  function raf(time: number) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
+  // Store the current scroll position for menu toggle operations
+  let lastScrollPosition = 0;
 
-  requestAnimationFrame(raf);
+  // Add a flag to track menu toggling
+  let isMenuToggling = false;
+
+  // // Prevent scroll reset during menu toggle
+  // document.addEventListener(
+  //   "click",
+  //   (e) => {
+  //     if (e.target.closest(".menu-toggle")) {
+  //       isMenuToggling = true;
+  //       lastScrollPosition = window.scrollY;
+  //       // Re-enable scrolling after menu animation completes
+  //       setTimeout(() => {
+  //         isMenuToggling = false;
+  //       }, 500);
+  //     }
+  //   },
+  //   true
+  // );
+
+  lenis.on("scroll", (e) => {
+    // Skip ScrollTrigger update during menu toggle operations
+    if (!isMenuToggling) {
+      ScrollTrigger.update();
+    } else if (lastScrollPosition > 0) {
+      // Restore scroll position if needed
+      window.scrollTo(0, lastScrollPosition);
+    }
+  });
+
+  // Add Lenis's requestAnimationFrame (raf) method to GSAP's ticker
+  // This ensures Lenis's smooth scroll animation updates on each GSAP tick
+  gsap.ticker.add((time) => {
+    // Don't update Lenis during menu toggle operations
+    if (!isMenuToggling) {
+      lenis.raf(time * 1000); // Convert time from seconds to milliseconds
+    }
+  });
+
+  // Disable lag smoothing in GSAP to prevent any delay in scroll animations
+  gsap.ticker.lagSmoothing(0);
+
+  // Initialize Lenis on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    // initLenis();
+  });
+
+  // Re-initialize Lenis after page transitions
+  document.addEventListener("astro:page-load", () => {
+    // initLenis();
+  });
 </script>
 
-<Layout title="My Portfolio">
-  <div class="pb-8 page-content">
+<Layout
+  title={pageTitle}
+  description={description}
+  keywords={keywords}
+  showLoader={showLoader}
+>
+  <div class="page-content relative">
+    <!-- <div class="sticky top-0 z-20"> -->
     <Navbar />
+    <!-- </div> -->
 
+    <!-- Hero Section with increased bottom margin -->
     <div
-      class="w-[90%] md:w-[80%] lg:w-[70%] mx-auto mt-[100px] md:mt-[150px] lg:mt-[200px]"
+      class="w-[90%] md:w-[80%] lg:w-[70%] mx-auto mt-[120px] md:mt-[160px] lg:mt-[220px] mb-32 md:mb-40 lg:mb-48"
     >
       <div
-        class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-2 px-2 sm:px-8 hero-top-badges"
+        class="flex flex-row justify-between items-center gap-2 mb-4 px-2 sm:px-8 hero-top-badges"
       >
         <Badge text="">
           <LiveClock client:load />
@@ -53,7 +165,6 @@ const showLoader = true;
       </div>
       <div class="main-border-container relative w-full" id="main-container">
         <!-- Border elements for animation -->
-        <div class="animated-border border-top"></div>
         <div class="animated-border border-right"></div>
         <div class="animated-border border-bottom"></div>
         <div class="animated-border border-left"></div>
@@ -62,9 +173,9 @@ const showLoader = true;
           <HeroCard />
         </div>
         <div class="experience relative">
-          <div class="absolute top-0 w-full -z-10">
+          <div class="absolute top-0 w-full z-0">
             <div
-              class="connecting-border border-[#7B7B7B] border h-52 w-2/5 mx-auto"
+              class="connecting-border border-[var(--border-color)] border h-52 sm:w-2/5 w-4/5 mx-auto"
               id="connecting-border"
             >
               <div
@@ -79,65 +190,69 @@ const showLoader = true;
         </div>
       </div>
     </div>
-    <div class="bento pt-52">
+
+    <!-- About Me Section with increased vertical spacing -->
+    <div class="w-[90%] md:w-[80%] lg:w-[70%] mx-auto mb-40 md:mb-56 lg:mb-64">
+      <AboutMe />
+    </div>
+    <!-- End About Me Section -->
+
+    <!-- Bento Grid Section with more breathing room -->
+    <div class="bento pb-40 md:pb-48 lg:pb-56">
       <Bento />
     </div>
-    <BlogSection />
+
+    <!-- Blog Section with increased spacing -->
+    <div class="mb-40 md:mb-48 lg:mb-56">
+      <BlogSection />
+    </div>
+
     <Footer />
   </div>
+  <!-- Theme changer - positioned at bottom right on large screens, top right on mobile -->
+  <div class="sticky bottom-8 right-8 z-50">
+    <div class="flex justify-end sm:pr-8 pr-5">
+      <ThemeChanger client:only="svelte" />
+    </div>
+  </div>
+
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </Layout>
 
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { cleanupGSAPAnimations } from "../utils/animations.js";
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Handle loader visibility on client side
-  document.addEventListener("DOMContentLoaded", () => {
-    const hasVisitedBefore = sessionStorage.getItem("hasLoadedSite");
+  // Keep track of whether animations have been initialized
+  let animationsInitialized = false;
 
-    if (hasVisitedBefore === "true") {
-      // Hide loader immediately if already visited
-      const loaderElement = document.getElementById("loader-wrapper");
-      if (loaderElement) {
-        loaderElement.style.display = "none";
-      }
-      document.body.classList.remove("loading");
-      document.body.classList.remove("page-transition");
-    } else {
-      // Set the flag for future visits
-      sessionStorage.setItem("hasLoadedSite", "true");
+  // Function to initialize all page animations
+  function initPageAnimations() {
+    // Prevent multiple initializations
+    if (animationsInitialized) {
+      console.log("Animations already initialized, skipping");
+      return;
     }
 
-    // Optimize page transitions
-    setTimeout(() => {
-      document.body.classList.remove("loading");
-      document.body.classList.add("page-loaded");
-    }, 300);
-
-    // Global animation settings for better performance
-    gsap.defaults({
-      ease: "power2.out",
-      overwrite: "auto",
-    });
+    console.log("Initializing home page animations");
+    animationsInitialized = true;
 
     // Animate the main border container
     const animateMainBorder = () => {
       // Set initial state of all borders to 0 length
-      gsap.set(".border-top, .border-bottom", {
-        scaleX: 0,
-        transformOrigin: "left center",
-      });
-
       gsap.set(".border-left, .border-right", {
         scaleY: 0,
-        transformOrigin: "center top",
+        transformOrigin: "bottom top",
       });
 
       // Create timeline for main container borders
       const mainBorderTl = gsap.timeline({
         scrollTrigger: {
+          id: "main-border-animation",
           trigger: "#main-container",
           start: "top 70%", // Start when container is 70% from viewport top
           end: "center 30%", // End when container center is 30% from viewport top
@@ -147,11 +262,6 @@ const showLoader = true;
 
       // Timeline for border animation sequence
       mainBorderTl
-        .to(".border-top", {
-          scaleX: 1,
-          duration: 0.25,
-          ease: "power1.inOut",
-        })
         .to(
           ".border-right",
           {
@@ -182,36 +292,7 @@ const showLoader = true;
     };
 
     // Initialize the main border animation
-    animateMainBorder();
-
-    // Animate the connecting border between hero and experience sections
-    const connectingBorder = document.getElementById("connecting-border");
-    if (connectingBorder) {
-      // Initially set the border to have 0 height
-      // gsap.set(connectingBorder, {
-      //   scaleY: 0,
-      //   transformOrigin: "top center",
-      // });
-
-      // Create timeline for border to grow as user scrolls
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: ".hero-card",
-          start: "bottom 70%", // Start when bottom of hero card is 70% from viewport top
-          end: "bottom 20%", // End when bottom of hero card is 20% from viewport top
-          scrub: 1, // Smooth scrubbing effect tied to scroll position
-          onUpdate: (self) => {
-            // Grow the border based on scroll progress
-            // gsap.to(connectingBorder, {
-            //   scaleY: self.progress,
-            //   duration: 0.1,
-            //   ease: "none",
-            //   overwrite: "auto",
-            // });
-          },
-        },
-      });
-    }
+    // animateMainBorder();
 
     // Set up section transitions and animations
     const sections = document.querySelectorAll(
@@ -223,6 +304,7 @@ const showLoader = true;
       gsap.set(section, { opacity: 0, y: 30 });
 
       ScrollTrigger.create({
+        id: `section-reveal-${index}`,
         trigger: section,
         start: "top 80%",
         once: true,
@@ -241,6 +323,7 @@ const showLoader = true;
     const hero = document.querySelector(".hero-card");
     if (hero) {
       ScrollTrigger.create({
+        id: "hero-parallax",
         trigger: hero,
         start: "top top",
         end: "bottom top",
@@ -259,8 +342,9 @@ const showLoader = true;
 
     if (experienceElement && elementDecoration) {
       ScrollTrigger.create({
+        id: "experience-element-animation",
         trigger: experienceElement,
-        start: "top 70%",
+        start: "top ",
         end: "bottom 30%",
         once: true,
         onEnter: () => {
@@ -293,15 +377,55 @@ const showLoader = true;
 
     // Add listener for screen size changes
     mobileMediaQuery.addEventListener("change", handleMobileChange);
+  }
+
+  // Handle loader visibility on client side
+  document.addEventListener("DOMContentLoaded", () => {
+    const hasVisitedBefore = sessionStorage.getItem("hasLoadedSite");
+
+    if (hasVisitedBefore === "true") {
+      // Hide loader immediately if already visited
+      const loaderElement = document.getElementById("loader-wrapper");
+      if (loaderElement) {
+        loaderElement.style.display = "none";
+      }
+      document.body.classList.remove("loading");
+      document.body.classList.remove("page-transition");
+    } else {
+      // Set the flag for future visits
+      sessionStorage.setItem("hasLoadedSite", "true");
+    }
+
+    // Optimize page transitions
+    setTimeout(() => {
+      document.body.classList.remove("loading");
+      document.body.classList.add("page-loaded");
+    }, 300);
+
+    // Initialize animations after the loader is hidden
+    initPageAnimations();
+  });
+
+  // Clean up animations when leaving the page
+  document.addEventListener("astro:before-swap", () => {
+    console.log("Cleaning up animations before page navigation");
+    cleanupGSAPAnimations();
+    animationsInitialized = false;
+  });
+
+  // Re-initialize animations after page transition
+  document.addEventListener("astro:page-load", () => {
+    console.log("Re-initializing animations after page navigation");
+    // Small delay to ensure DOM is fully loaded
+    setTimeout(() => {
+      cleanupGSAPAnimations(); // Clean up any existing animations first
+      animationsInitialized = false; // Reset the initialized flag
+      initPageAnimations(); // Re-initialize animations
+    }, 100);
   });
 </script>
 
 <style>
-  .page-content {
-    position: relative;
-    overflow: hidden;
-  }
-
   /* Main border container */
   .main-border-container {
     position: relative;

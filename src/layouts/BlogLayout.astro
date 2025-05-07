@@ -1,6 +1,31 @@
 ---
 import "../styles/global.css";
 import "lenis/dist/lenis.css";
+import { blogMetaData } from "../lib/metaData";
+import Seo from "../components/Seo.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  author?: string;
+  publishDate?: Date;
+  canonicalURL?: string;
+  tags?: string[];
+}
+
+const {
+  title = blogMetaData.title,
+  description = blogMetaData.description,
+  image = "/images/og.webp",
+  author = "Rohit Kushwaha",
+  publishDate,
+  canonicalURL = Astro.url.href,
+  tags = [],
+} = Astro.props;
+
+// Format the publish date to ISO string for metadata if available
+const formattedDate = publishDate ? new Date(publishDate).toISOString() : null;
 ---
 
 <!doctype html>
@@ -11,14 +36,65 @@ import "lenis/dist/lenis.css";
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <meta
-      name="description"
-      content="Rohit Kushwaha - Software Engineer and Web Developer Portfolio"
+    <!-- SEO Component with enhanced metadata for blog posts -->
+    <Seo
+      slot="seo"
+      title={title}
+      description={description}
+      openGraph={{
+        basic: {
+          title: title,
+          type: "article",
+          image: image,
+        },
+        optional: {
+          siteName: "Rohit Kushwaha",
+          description: description,
+          locale: "en_US",
+        },
+        article: {
+          publishedTime: formattedDate || undefined,
+          authors: [author],
+        },
+      }}
+      twitter={{
+        card: "summary_large_image",
+        site: "@rohitk_06",
+        creator: "@rohitk_06",
+        title: title,
+        description: description,
+        image: image,
+      }}
+      extend={{
+        link: [
+          { rel: "canonical", href: canonicalURL },
+          {
+            rel: "alternate",
+            type: "application/rss+xml",
+            href: "/rss.xml",
+            title: "Rohit Kushwaha's Blog RSS Feed",
+          },
+        ],
+        meta: [
+          { name: "author", content: author },
+          {
+            name: "theme-color",
+            content: "#202020",
+            media: "(prefers-color-scheme: dark)",
+          },
+          {
+            name: "theme-color",
+            content: "#C9CDD1",
+            media: "(prefers-color-scheme: light)",
+          },
+          ...(Array.isArray(tags)
+            ? tags.map((tag) => ({ name: "keywords", content: tag }))
+            : []),
+        ],
+      }}
     />
-    <meta name="theme-color" content="#C9CDD1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{Astro.props.title || "Rohit Kushwaha"}</title>
   </head>
   <body>
     <main>
@@ -30,7 +106,8 @@ import "lenis/dist/lenis.css";
 <style>
   html,
   body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+    font-family: "Roobert Mono", sans-serif;
     margin: 0;
     width: 100%;
     height: 100%;
@@ -46,8 +123,37 @@ import "lenis/dist/lenis.css";
   import { gsap } from "gsap";
   import { cleanupGSAPAnimations } from "../utils/animations.js";
 
-  // Initialize animations for blog page elements directly
+  // Theme initialization function
+  function initTheme() {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    // Set theme based on saved preference or system preference
+    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add("dark-theme");
+    } else {
+      document.documentElement.classList.remove("dark-theme");
+    }
+
+    // Update theme color meta tag
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute(
+        "content",
+        document.documentElement.classList.contains("dark-theme")
+          ? "#202020"
+          : "#C9CDD1"
+      );
+    }
+  }
+
+  // Initialize theme as early as possible
   document.addEventListener("DOMContentLoaded", () => {
+    // Initialize theme
+    initTheme();
+
     // Animate page elements on load
     const tl = gsap.timeline();
 

@@ -94,33 +94,34 @@
   $: animateRight = activeExperience.id > previousId;
 </script>
 
-<div class="w-[95%] sm:w-[90%] mx-auto mt-8">
+<div class="w-[95%] sm:w-[90%] mx-auto mt-6 sm:mt-8">
+  <!-- Main container with better mobile structure -->
   <div
-    class="grid grid-cols-1 md:grid-cols-10 border border-[#7B7B7B] overflow-hidden"
+    class="flex flex-col md:grid md:grid-cols-10 border border-[var(--border-color)] overflow-hidden"
     in:slide={{ duration: 800, delay: 200, easing: cubicOut }}
   >
     <!-- Left column - experience togglers -->
     <div
-      class="md:col-span-5 divide-y divide-[#7B7B7B] md:border-r md:border-[#7B7B7B]"
+      class="md:col-span-5 divide-y divide-[var(--border-color)] md:border-r md:border-[var(--border-color)]"
     >
       {#each experiences as experience}
         <button
-          class="w-full text-left p-4 sm:p-5 md:p-8 md:py-9 {experience.isActive
-            ? 'bg-[#0000CC] text-white'
-            : ' bg-[#C9CDD1]'} transition-colors duration-300"
+          class="w-full text-left p-3 sm:p-5 md:p-8 md:py-9 {experience.isActive
+            ? 'bg-[var(--accent-primary)] text-white'
+            : ' bg-[var(--card-bg)]'} transition-colors duration-300"
           on:click={() => setActiveExperience(experience.id)}
         >
           <div
             class="transform {experience.isActive
-              ? 'translate-x-2'
+              ? 'translate-x-1 sm:translate-x-2'
               : ''} transition-transform duration-300"
           >
-            <h2 class="text-xl sm:text-2xl md:text-3xl">
+            <h2 class="text-lg sm:text-xl md:text-3xl font-medium">
               {experience.title}
             </h2>
             <p
-              class="text-sm mt-2 {!experience.isActive
-                ? 'text-[#7B7B7B]'
+              class="text-xs sm:text-sm mt-1 sm:mt-2 {!experience.isActive
+                ? 'text-[var(--text-secondary)]'
                 : ''}"
             >
               {experience.role}
@@ -130,13 +131,13 @@
       {/each}
     </div>
 
-    <!-- Right column - active experience details -->
+    <!-- Right column - active experience details with better mobile height -->
     <div
-      class="md:col-span-5 bg-[#C9CDD1] p-4 sm:p-5 md:p-8 relative min-h-[220px] md:min-h-[280px]"
+      class="md:col-span-5 bg-[var(--card-bg)] p-3 sm:p-5 md:p-8 relative min-h-[240px] sm:min-h-[260px] md:min-h-[280px]"
     >
       {#key activeExperience?.id}
         <div
-          class="absolute inset-0 p-4 sm:p-5 md:p-8"
+          class="absolute inset-0 p-3 sm:p-5 md:p-8"
           in:fly={{
             x: animateRight ? 30 : -30,
             duration: 400,
@@ -145,21 +146,21 @@
           }}
           out:fade={{ duration: 150 }}
         >
-          <div class="mb-4 mt-8 md:mt-6">
+          <div class="mb-2 sm:mb-4 mt-2 sm:mt-6 md:mt-6">
             <div
-              class="inline-block bg-[#C9CDD1] text-[#7B7B7B] px-3 py-1 border border-[#7B7B7B] text-xs mb-3"
+              class="inline-block bg-[var(--card-bg)] text-[var(--text-secondary)] px-2 sm:px-3 py-1 border border-[var(--border-color)] text-xs mb-2 sm:mb-3"
               in:fly={{ y: -10, duration: 300, delay: 150, easing: cubicOut }}
             >
               {activeExperience.duration}
             </div>
             <h3
-              class="text-xl sm:text-2xl md:text-3xl mb-1 mt-4"
+              class="text-lg sm:text-xl md:text-3xl mb-1 mt-3 sm:mt-4 font-medium text-[var(--text-primary)]"
               in:fly={{ x: -10, duration: 300, delay: 200, easing: cubicOut }}
             >
               {activeExperience.title}
             </h3>
             <p
-              class="text-sm sm:text-base text-[#7B7B7B]"
+              class="text-xs sm:text-sm text-[var(--text-secondary)]"
               in:fly={{ x: -10, duration: 300, delay: 250, easing: cubicOut }}
             >
               {activeExperience.company}
@@ -167,19 +168,19 @@
           </div>
 
           <p
-            class="text-sm sm:text-base text-[#7B7B7B] my-6"
+            class="text-xs sm:text-sm text-[var(--text-secondary)] my-3 sm:my-6 line-clamp-4 sm:line-clamp-none"
             in:fly={{ y: 10, duration: 300, delay: 300, easing: cubicOut }}
           >
             {activeExperience.description}
           </p>
           {#if activeExperience.links}
-            <div class="flex flex-wrap gap-3 mb-4">
+            <div class="flex flex-wrap gap-2 sm:gap-3 mb-2 sm:mb-4">
               {#each activeExperience.links as link, i}
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center text-[#0000CC] text-sm sm:text-base transition-all duration-300"
+                  class="flex items-center text-[var(--accent-primary)] text-xs sm:text-sm transition-all duration-300"
                   in:fly={{
                     y: 10,
                     duration: 300,
@@ -188,11 +189,10 @@
                   }}
                 >
                   <span>{link.title}</span>
-                  <!-- Removed hover effect svg -->
                 </a>
                 {#if i < activeExperience.links.length - 1}
                   <span
-                    class="text-[#7B7B7B] text-sm sm:text-base"
+                    class="text-[var(--text-secondary)] text-xs sm:text-sm"
                     in:fly={{
                       y: 10,
                       duration: 300,
@@ -213,8 +213,6 @@
 </div>
 
 <style>
-  /* Removed hover animations and pulse effects as requested */
-
   /* Focus only on smooth transitions */
   @keyframes slideInExpand {
     0% {

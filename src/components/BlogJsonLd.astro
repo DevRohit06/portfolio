@@ -1,0 +1,74 @@
+---
+/**
+ * BlogJsonLd - A component for adding structured data to blog posts
+ * Uses JSON-LD format following schema.org BlogPosting schema
+ * https://schema.org/BlogPosting
+ */
+
+interface Props {
+  title: string;
+  description: string;
+  publishDate: Date;
+  updatedDate?: Date;
+  authorName?: string;
+  authorUrl?: string;
+  heroImage?: string;
+  tags?: string[];
+  canonicalUrl: string;
+  readingTime?: number;
+}
+
+const {
+  title,
+  description,
+  publishDate,
+  updatedDate,
+  authorName = "Rohit Kushwaha",
+  authorUrl = "https://rohitk06.dev",
+  heroImage,
+  tags = [],
+  canonicalUrl,
+  readingTime,
+} = Astro.props;
+
+// Format dates for structured data
+const formattedPubDate = new Date(publishDate).toISOString();
+const formattedUpdatedDate = updatedDate
+  ? new Date(updatedDate).toISOString()
+  : formattedPubDate;
+
+// Construct the JSON-LD structured data
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description: description,
+  image: heroImage || "https://rohitk06.dev/images/og.webp",
+  datePublished: formattedPubDate,
+  dateModified: formattedUpdatedDate,
+  author: {
+    "@type": "Person",
+    name: authorName,
+    url: authorUrl,
+  },
+  publisher: {
+    "@type": "Person",
+    name: authorName,
+    url: authorUrl,
+    logo: {
+      "@type": "ImageObject",
+      url: "https://rohitk06.dev/favicon.svg",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": canonicalUrl,
+  },
+  keywords: Array.isArray(tags) ? tags.join(", ") : "",
+  timeRequired: readingTime ? `PT${readingTime}M` : "PT5M",
+  inLanguage: "en-US",
+};
+---
+
+<!-- Render the JSON-LD structured data -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

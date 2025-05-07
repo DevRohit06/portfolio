@@ -13,14 +13,14 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
  */
 export function cleanupGSAPAnimations() {
   // Kill all GSAP animations
-  gsap.killTweensOf("*");
+  // gsap.killTweensOf("*");
 
-  // Kill and clear all ScrollTrigger instances
-  ScrollTrigger.getAll().forEach((st) => st.kill());
-  ScrollTrigger.clearScrollMemory();
-
-  // Clear any queued callbacks
-  gsap.globalTimeline.clear();
+  // // Kill and clear all ScrollTrigger instances
+  // ScrollTrigger.getAll().forEach((st) => st.kill());
+  // ScrollTrigger.clearScrollMemory();
+  // ScrollTrigger.killAll();
+  // // Clear any queued callbacks
+  // gsap.globalTimeline.clear();
 
   console.log("GSAP animations cleaned up");
 }
@@ -454,6 +454,138 @@ export function initSmoothScrolling() {
       });
     });
   });
+}
+
+/**
+ * Animate text transition between two states (e.g., Menu ↔ Close)
+ * Perfect for toggle buttons in navigation
+ * @param {Element} element - The button element containing the text
+ * @param {string} startText - Initial text state (e.g., "Menu")
+ * @param {string} endText - Target text state (e.g., "Close")
+ * @param {boolean} isReversing - Whether to animate from endText to startText
+ * @param {Object} options - Animation options
+ * @returns {Object} - GSAP timeline for the animation
+ */
+export function animateMenuText(
+  element,
+  startText,
+  endText,
+  isReversing = false,
+  options = {}
+) {
+  // Default animation options
+  const defaults = {
+    duration: 0.4,
+    staggerTime: 0.03,
+    ease: "power2.inOut",
+    yOffset: 10,
+    fade: true,
+  };
+
+  const settings = { ...defaults, ...options };
+  const currentText = isReversing ? endText : startText;
+  const targetText = isReversing ? startText : endText;
+
+  // Find text node within the element
+  let textNode = Array.from(element.childNodes).find(
+    (node) =>
+      node.nodeType === Node.TEXT_NODE ||
+      (node.nodeType === Node.ELEMENT_NODE &&
+        node.tagName.toLowerCase() === "span")
+  );
+
+  // If found a span, use that, otherwise use the element itself
+  const textContainer =
+    textNode && textNode.nodeType === Node.ELEMENT_NODE ? textNode : element;
+
+  // Create timeline for the animation
+  const tl = gsap.timeline();
+
+  // Store the original content to restore it after animation
+  const originalContent = textContainer.innerHTML || textContainer.textContent;
+
+  // First part: animate current text out
+  if (settings.fade) {
+    tl.to(textContainer, {
+      opacity: 0,
+      y: isReversing ? settings.yOffset * -1 : settings.yOffset,
+      duration: settings.duration / 2,
+      ease: settings.ease,
+      onComplete: () => {
+        // Change the text content
+        if (textContainer.tagName) {
+          textContainer.textContent = targetText;
+        } else {
+          element.textContent = targetText;
+        }
+      },
+    });
+  } else {
+    // Create letter-by-letter animation for current text
+    const chars = currentText.split("");
+
+    // Replace content with spans for each character
+    textContainer.innerHTML = "";
+    chars.forEach((char) => {
+      const span = document.createElement("span");
+      span.textContent = char;
+      span.style.display = "inline-block";
+      textContainer.appendChild(span);
+    });
+
+    // Animate each character out
+    tl.to([...textContainer.children].reverse(), {
+      opacity: 0,
+      y: isReversing ? settings.yOffset * -1 : settings.yOffset,
+      duration: settings.duration / 2,
+      stagger: settings.staggerTime,
+      ease: settings.ease,
+      onComplete: () => {
+        // Change the text content
+        textContainer.innerHTML = "";
+
+        // Create spans for each character of the new text
+        const newChars = targetText.split("");
+        newChars.forEach((char) => {
+          const span = document.createElement("span");
+          span.textContent = char;
+          span.style.display = "inline-block";
+          span.style.opacity = 0;
+          span.style.transform = `translateY(${isReversing ? settings.yOffset : settings.yOffset * -1}px)`;
+          textContainer.appendChild(span);
+        });
+      },
+    });
+
+    // Animate new text in
+    tl.to(textContainer.children, {
+      opacity: 1,
+      y: 0,
+      duration: settings.duration / 2,
+      stagger: settings.staggerTime,
+      ease: settings.ease,
+      onComplete: () => {
+        // Restore original HTML structure but with new text
+        if (textContainer.tagName) {
+          textContainer.textContent = targetText;
+        } else {
+          element.textContent = targetText;
+        }
+      },
+    });
+
+    return tl;
+  }
+
+  // Second part: animate new text in
+  tl.to(textContainer, {
+    opacity: 1,
+    y: 0,
+    duration: settings.duration / 2,
+    ease: settings.ease,
+  });
+
+  return tl;
 }
 
 /**

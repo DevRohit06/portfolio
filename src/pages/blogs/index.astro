@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar.astro";
 import Footer from "../../components/Footer.astro";
 import BlogCard from "../../components/BlogCard.astro";
 import Badge from "../../components/Badge.astro";
+import { blogMetaData } from "../../lib/metaData";
 
 // Get all blog posts
 const allBlogPosts = await getCollection("blog");
@@ -19,6 +20,45 @@ const sortedPosts = allBlogPosts.sort(
 const allTags = [
   ...new Set(sortedPosts.flatMap((post) => post.data.tags || [])),
 ];
+
+// Construct the canonical URL for SEO
+const canonicalURL = new URL(
+  "/blogs",
+  Astro.site || "https://rohitk06.dev"
+).toString();
+
+// SEO metadata
+const title = "Blog - Rohit Kushwaha";
+const description =
+  "Explore articles on web development, software engineering, and tech insights by Rohit Kushwaha. Learning, building, and documenting my journey.";
+const keywords = [
+  "web development",
+  "software engineering",
+  "programming",
+  "coding tips",
+  "tech blog",
+  ...allTags,
+];
+
+// Create JSON-LD structured data for blog listing
+const blogListingJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  headline: title,
+  description: description,
+  url: canonicalURL,
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: sortedPosts.map((post, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `https://rohitk06.dev/blogs/${post.slug || post.id}`,
+      name: post.data.title,
+      image: post.data.heroImage,
+      description: post.data.description,
+    })),
+  },
+};
 ---
 
 <script>
@@ -131,7 +171,18 @@ const allTags = [
   });
 </script>
 
-<BlogLayout title="Blog - Rohit Kushwaha">
+<BlogLayout
+  title={title}
+  description={description}
+  canonicalURL={canonicalURL}
+  tags={allTags.slice(0, 10)}
+  Use
+  top
+  10
+  tags
+  for
+  metadata
+>
   <div class="pb-8 page-content">
     <Navbar />
 
@@ -209,6 +260,12 @@ const allTags = [
 
     <Footer />
   </div>
+
+  <!-- Add JSON-LD structured data -->
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(blogListingJsonLd)}
+  />
 </BlogLayout>
 
 <style>

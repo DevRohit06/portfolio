@@ -1,0 +1,248 @@
+---
+interface Props {
+  text: string;
+  element?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div";
+  className?: string;
+  stagger?: number;
+  duration?: number;
+  delay?: number;
+  from?: "bottom" | "top" | "left" | "right";
+  splitBy?: "chars" | "words" | "lines";
+  startTrigger?: string;
+  endTrigger?: string;
+  scrub?: boolean;
+  markers?: boolean;
+  id?: string;
+  once?: boolean;
+}
+
+const {
+  text,
+  element: Element = "p",
+  className = "",
+  stagger = 0.05,
+  duration = 1,
+  delay = 0,
+  from = "bottom",
+  splitBy = "words",
+  startTrigger = "self",
+  endTrigger = "",
+  scrub = false,
+  markers = false,
+  id = "",
+  once = true,
+} = Astro.props;
+
+const uniqueId = `text-reveal-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<Element
+  class={`text-reveal ${className}`}
+  data-text-reveal={uniqueId}
+  data-stagger={stagger}
+  data-duration={duration}
+  data-delay={delay}
+  data-from={from}
+  data-split-by={splitBy}
+  data-start-trigger={startTrigger}
+  data-end-trigger={endTrigger}
+  data-scrub={scrub}
+  data-markers={markers}
+  data-once={once}
+  id={id}
+>
+  {text}
+</Element>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  // Check if we're in the browser
+  if (typeof window !== "undefined") {
+    // Register the ScrollTrigger plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Initialize all text reveal elements when content is loaded
+    document.addEventListener("DOMContentLoaded", initTextReveal);
+
+    // Also try to initialize on window load as a fallback
+    window.addEventListener("load", initTextReveal);
+  }
+
+  function initTextReveal() {
+    const textRevealElements = document.querySelectorAll(".text-reveal");
+
+    textRevealElements.forEach((element) => {
+      // Skip if already initialized
+      if (element.classList.contains("initialized")) return;
+
+      const id = element.getAttribute("data-text-reveal");
+      const stagger = parseFloat(
+        element.getAttribute("data-stagger") || "0.05"
+      );
+      const duration = parseFloat(element.getAttribute("data-duration") || "1");
+      const delay = parseFloat(element.getAttribute("data-delay") || "0");
+      const from = element.getAttribute("data-from") || "bottom";
+      const splitBy = element.getAttribute("data-split-by") || "words";
+      const startTrigger =
+        element.getAttribute("data-start-trigger") === "self"
+          ? element
+          : element.getAttribute("data-start-trigger");
+      const endTrigger = element.getAttribute("data-end-trigger") || null;
+      const scrub = element.getAttribute("data-scrub") === "true";
+      const markers = element.getAttribute("data-markers") === "true";
+      const once = element.getAttribute("data-once") === "true";
+
+      // Create a custom SplitText-like functionality since SplitText is a premium GSAP plugin
+      let textContent = element.innerHTML.trim();
+      let splitContent = "";
+
+      if (splitBy === "chars") {
+        splitContent = textContent
+          .split("")
+          .map((char) =>
+            char === " " ? " " : `<span class="sr-char">${char}</span>`
+          )
+          .join("");
+      } else if (splitBy === "words") {
+        splitContent = textContent
+          .split(" ")
+          .map(
+            (word) =>
+              `<span class="sr-word"><span class="sr-word-inner">${word}</span></span>`
+          )
+          .join(" ");
+      } else if (splitBy === "lines") {
+        // For lines, we'll wrap each line later with JS after rendering
+        splitContent = `<span class="sr-line-wrapper">${textContent}</span>`;
+      }
+
+      // Update the innerHTML with our split content
+      element.innerHTML = splitContent;
+
+      // For line splitting, we need to detect lines after rendering
+      if (splitBy === "lines") {
+        const lineWrapper = element.querySelector(".sr-line-wrapper");
+        if (lineWrapper) {
+          const words = lineWrapper.innerHTML.split(" ");
+          let lines = [];
+          let currentLine = [];
+          let top = -1;
+
+          // Create temporary spans to detect line breaks
+          lineWrapper.innerHTML = words
+            .map(
+              (word, i) =>
+                `<span class="sr-word-temp" data-index="${i}">${word} </span>`
+            )
+            .join("");
+
+          // Detect which words are on which line
+          const tempWords = lineWrapper.querySelectorAll(".sr-word-temp");
+          tempWords.forEach((wordSpan) => {
+            const rect = wordSpan.getBoundingClientRect();
+            if (top !== rect.top) {
+              if (top !== -1) {
+                lines.push(currentLine.join(" "));
+                currentLine = [];
+              }
+              top = rect.top;
+            }
+            currentLine.push(wordSpan.textContent);
+          });
+
+          // Add the last line
+          if (currentLine.length) {
+            lines.push(currentLine.join(" "));
+          }
+
+          // Replace with line spans
+          lineWrapper.innerHTML = lines
+            .map(
+              (line) =>
+                `<span class="sr-line"><span class="sr-line-inner">${line}</span></span>`
+            )
+            .join("");
+        }
+      }
+
+      // Select the elements to animate
+      const targets =
+        splitBy === "chars"
+          ? element.querySelectorAll(".sr-char")
+          : splitBy === "words"
+            ? element.querySelectorAll(".sr-word-inner")
+            : element.querySelectorAll(".sr-line-inner");
+
+      // Initial state
+      let fromProps = {};
+      switch (from) {
+        case "bottom":
+          fromProps = { y: "100%", opacity: 0 };
+          break;
+        case "top":
+          fromProps = { y: "-100%", opacity: 0 };
+          break;
+        case "left":
+          fromProps = { x: "-100%", opacity: 0 };
+          break;
+        case "right":
+          fromProps = { x: "100%", opacity: 0 };
+          break;
+      }
+
+      gsap.set(targets, {
+        ...fromProps,
+        transformOrigin: "center center",
+      });
+
+      // Create animation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: startTrigger,
+          endTrigger: endTrigger,
+          start: "top 80%",
+          end: endTrigger ? "bottom top" : "bottom 20%",
+          scrub: scrub,
+          markers: markers,
+          toggleActions: once
+            ? "play none none none"
+            : "play reverse play reverse",
+        },
+      });
+
+      tl.to(targets, {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        duration: duration,
+        stagger: stagger,
+        delay: delay,
+        ease: "power3.out",
+      });
+
+      // Mark as initialized
+      element.classList.add("initialized");
+    });
+  }
+</script>
+
+<style>
+  .text-reveal {
+    overflow: hidden;
+  }
+  .sr-word,
+  .sr-line {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+  }
+  .sr-word:not(:last-child) {
+    margin-right: 0.25em;
+  }
+  .sr-line {
+    display: block;
+    overflow: hidden;
+  }
+</style>

@@ -1,0 +1,155 @@
+---
+import { socials } from "../lib/socials";
+import {
+  GithubIcon,
+  TwitterIcon,
+  LinkedInIcon,
+  MailIcon,
+  InstagramIcon,
+  DiscordIcon,
+} from "./icons";
+
+interface Props {
+  color?: string; // Default color or explicit color via CSS classes
+  size?: "sm" | "md" | "lg"; // Different size options
+  variant?: "default" | "button" | "minimal"; // Different display variants
+  showLabels?: boolean; // Whether to show text labels alongside icons
+  platform?:
+    | "github"
+    | "twitter"
+    | "linkedin"
+    | "mail"
+    | "instagram"
+    | "discord"
+    | "all"; // Specific platform or all
+  className?: string; // Additional CSS classes
+}
+
+const {
+  color = "text-[var(--text-secondary)]",
+  size = "md",
+  variant = "default",
+  showLabels = false,
+  platform = "all",
+  className = "",
+} = Astro.props;
+
+// Define size-based classes
+const sizeClasses = {
+  sm: "w-5 h-5",
+  md: "w-6 h-6",
+  lg: "w-7 h-7",
+};
+
+const iconSize = sizeClasses[size];
+
+// Define container classes based on variant
+const containerClasses = {
+  default: "flex gap-4",
+  button: "flex gap-4",
+  minimal: "flex gap-3",
+};
+
+// Define individual icon wrapper classes based on variant
+const iconWrapperClasses = {
+  default: `flex items-center justify-center  text-[var(--text-primary)] hover:text-[var(--accent-primary)] ${showLabels ? "gap-2" : ""}`,
+  button: `flex items-center justify-center w-12 h-12 rounded-full hover:text-[var(--accent-primary)] transition-all duration-200 ${showLabels ? "gap-2" : ""}`,
+  minimal: `hover:text-[var(--accent-primary)] transition-colors duration-200 ${showLabels ? "flex items-center gap-2" : ""}`,
+};
+
+// Determine which platforms to show
+const platforms =
+  platform === "all"
+    ? ["github", "twitter", "linkedin", "mail", "instagram", "discord"]
+    : [platform];
+---
+
+<div class:list={[containerClasses[variant], className]}>
+  {
+    platforms.includes("github") && (
+      <a
+        href={socials.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={[iconWrapperClasses[variant]]}
+        aria-label="GitHub Profile"
+      >
+        <GithubIcon size={iconSize} class={color} />
+        {showLabels && <span>GitHub</span>}
+      </a>
+    )
+  }
+
+  {
+    platforms.includes("twitter") && (
+      <a
+        href={socials.twitter}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={[iconWrapperClasses[variant]]}
+        aria-label="Twitter/X Profile"
+      >
+        <TwitterIcon size={iconSize} class={color} />
+        {showLabels && <span>Twitter</span>}
+      </a>
+    )
+  }
+
+  {
+    platforms.includes("linkedin") && (
+      <a
+        href={socials.linkedIn}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={[iconWrapperClasses[variant]]}
+        aria-label="LinkedIn Profile"
+      >
+        <LinkedInIcon size={iconSize} class={color} />
+        {showLabels && <span>LinkedIn</span>}
+      </a>
+    )
+  }
+
+  {
+    platforms.includes("mail") && (
+      <a
+        href={socials.mail}
+        class:list={[iconWrapperClasses[variant]]}
+        aria-label="Email"
+      >
+        <MailIcon size={iconSize} class={color} />
+        {showLabels && <span>Email</span>}
+      </a>
+    )
+  }
+
+  {
+    platforms.includes("instagram") && (
+      <a
+        href={socials.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={[iconWrapperClasses[variant]]}
+        aria-label="Instagram Profile"
+      >
+        <InstagramIcon size={iconSize} class={color} />
+        {showLabels && <span>Instagram</span>}
+      </a>
+    )
+  }
+
+  {
+    platforms.includes("discord") && (
+      <a
+        href={socials.discord}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={[iconWrapperClasses[variant]]}
+        aria-label="Discord Profile"
+      >
+        <DiscordIcon size={iconSize} class={color} />
+        {showLabels && <span>Discord</span>}
+      </a>
+    )
+  }
+</div>

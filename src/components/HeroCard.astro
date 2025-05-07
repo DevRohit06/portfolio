@@ -4,42 +4,50 @@ import LiveClock from "./svelte/LiveClock.svelte";
 import { socials } from "../lib/socials";
 import Pfp from "../assets/rohit.webp";
 import { Image } from "astro:assets";
+import SocialIcons from "./SocialIcons.astro";
 ---
 
 <div class="hero-container relative">
   <div
-    class="p-4 sm:p-6 md:p-12 relative border border-[#7B7B7B] hero-title-section"
+    class="p-4 sm:p-6 md:p-12 relative border border-[var(--border-color)] hero-title-section"
   >
-    <div class="size-4 bg-[#7B7B7B] absolute -top-2 -left-2"></div>
+    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
     <div class="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-0">
       <h1
-        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold hero-title split-text"
+        class="text-3xl pb-[4px] sm:text-4xl md:text-5xl lg:text-6xl font-semibold hero-title split-text"
       >
         A Vibe engineer*
       </h1>
-      <span class="text-sm sm:text-md md:text-lg text-black/60 hero-subtitle"
-        >/ Software Engineer</span
+      <span
+        class="text-sm sm:text-md md:text-lg text-[var(--text-secondary)] hero-subtitle"
+        >/ Full Stack Developer</span
       >
     </div>
     <div
       class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-6 hero-badges"
     >
-      <Badge size="lg" text="I believe in tech you use" />
+      <Badge size="lg" text="BSc Computer Science Student" />
       <Badge size="lg" text="Ambernath, India">
-        <div class="animate-pulse bg-[#0000CC] size-2 rounded-full"></div>
+        <div
+          class="animate-pulse bg-[var(--accent-primary)] size-2 rounded-full"
+        >
+        </div>
       </Badge>
     </div>
   </div>
-  <div class="border border-[#7B7B7B] border-t-0 hero-info-section">
+  <div class="border border-[var(--border-color)] border-t-0 hero-info-section">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-11 relative">
       <div class="sm:col-span-1 md:col-span-3">
-        <div class="border border-[#7B7B7B] hero-image relative">
+        <div class="border border-[var(--border-color)] hero-image relative">
           <Image
             src={Pfp}
             alt="Rohit Kushwaha"
             class="object-cover w-full aspect-square"
           />
-          <div class="size-4 bg-[#7B7B7B] absolute -bottom-2 -right-2 z-50">
+          <div
+            class="bg-black/50 flex justify-center items-center absolute inset-0 backdrop-blur-[1px] font-medium text-white opacity-0 hero-image-overlay"
+          >
+            <span class="text-lg">Rohit K.</span>
           </div>
         </div>
       </div>
@@ -50,332 +58,333 @@ import { Image } from "astro:assets";
         <h2 class="text-2xl sm:text-3xl md:text-4xl mt-6 hero-name split-text">
           Rohit Kushwaha
         </h2>
-        <div class="bio-wrapper mt-5">
-          <p class="text-sm sm:text-md md:text-lg text-black/60 hero-bio">
-            I am a software engineer with a passion for building things that
-            live on the internet. I am always looking for new challenges and I
-            am always eager to learn new things. I am currently working as a
-            software engineer at <a
+        <div class="bio-wrapper overflow-hidden mt-4">
+          <p class="text-sm sm:text-base md:text-lg hero-bio">
+            I'm a passionate Full Stack Developer and vibe engineer who
+            transforms ideas into innovative, scalable solutions. With expertise
+            in SvelteKit, Astro, React, Next.js, and TailwindCSS, I craft
+            pixel-perfect interfaces with an intuitive feel.
+          </p>
+          <p class="text-sm sm:text-base md:text-lg mt-3 hero-bio-2">
+            Currently pursuing a BSc in Computer Science at <a
+              href="https://www.chmcollege.in/"
+              target="_blank"
+              class="text-[var(--accent-primary)] hover:underline"
+              >SMT. CHM College</a
+            > (2023-2026) while working at
+            <a
               href="https://www.qbtrix.com"
-              class="text-[#0000CC] relative inline-flex items-center">Qbtrix</a
-            >.I am a big fan of technology and I love to explore new things. I
-            am also a big fan of music and I love to listen to music while I
-            work.
+              class="text-[var(--accent-primary)] hover:underline">Qbtrix</a
+            >, I blend theoretical knowledge with hands-on experience to stay at
+            the forefront of technology.
           </p>
         </div>
       </div>
     </div>
   </div>
   <div
-    class="border border-[#7B7B7B] border-t-0 px-4 sm:px-6 md:px-10 py-4 sm:py-6 flex flex-col items-center justify-between sm:flex-row gap-2 sm:gap-0 overflow-hidden hero-skills-section"
+    class="border border-[var(--border-color)] border-t-0 px-4 sm:px-6 md:px-10 py-4 sm:py-6 flex flex-col justify-between sm:flex-row gap-2 sm:gap-0 overflow-hidden hero-skills-section"
   >
     <Badge size="sm"
       ><span
         class="font-bold whitespace-nowrap text-xs px-3 sm:text-sm uppercase"
       >
-        You can find me on
+        Connect with me
       </span></Badge
     >
     <div
       class="social-icons-container flex flex-wrap items-center gap-3 sm:gap-4 ml-0 sm:ml-4 mt-3 sm:mt-0"
     >
-      <a
-        href={socials.github}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="social-icon-link"
-        aria-label="GitHub Profile"
-      >
-        <div
-          class="social-icon-wrapper flex items-center size-8 justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="256"
-            height="256"
-            class="text-[#7B7B7B]"
-            viewBox="0 0 256 256"
-            ><rect width="256" height="256" fill="none"></rect><path
-              fill="currentColor"
-              d="M208.31 75.68A59.78 59.78 0 0 0 202.93 28a8 8 0 0 0-6.93-4a59.75 59.75 0 0 0-48 24h-24a59.75 59.75 0 0 0-48-24a8 8 0 0 0-6.93 4a59.78 59.78 0 0 0-5.38 47.68A58.14 58.14 0 0 0 56 104v8a56.06 56.06 0 0 0 48.44 55.47A39.8 39.8 0 0 0 96 192v8H72a24 24 0 0 1-24-24a40 40 0 0 0-40-40a8 8 0 0 0 0 16a24 24 0 0 1 24 24a40 40 0 0 0 40 40h24v16a8 8 0 0 0 16 0v-40a24 24 0 0 1 48 0v40a8 8 0 0 0 16 0v-40a39.8 39.8 0 0 0-8.44-24.53A56.06 56.06 0 0 0 216 112v-8a58.14 58.14 0 0 0-7.69-28.32M200 112a40 40 0 0 1-40 40h-48a40 40 0 0 1-40-40v-8a41.74 41.74 0 0 1 6.9-22.48a8 8 0 0 0 1.1-7.69a43.8 43.8 0 0 1 .79-33.58a43.88 43.88 0 0 1 32.32 20.06a8 8 0 0 0 6.71 3.69h32.35a8 8 0 0 0 6.74-3.69a43.87 43.87 0 0 1 32.32-20.06a43.8 43.8 0 0 1 .77 33.58a8.09 8.09 0 0 0 1 7.65a41.7 41.7 0 0 1 7 22.52Z"
-            ></path></svg
-          >
-        </div>
-      </a>
-
-      <a
-        href={socials.twitter}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="social-icon-link"
-        aria-label="Twitter Profile"
-      >
-        <div
-          class="social-icon-wrapper flex size-8 items-center justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="256"
-            height="256"
-            viewBox="0 0 256 256"
-            class="text-[#7B7B7B]"
-            ><rect width="256" height="256" fill="none"></rect><path
-              fill="currentColor"
-              d="M247.39 68.94A8 8 0 0 0 240 64h-30.43a48.66 48.66 0 0 0-41.47-24a46.9 46.9 0 0 0-33.75 13.7A47.9 47.9 0 0 0 120 88v6.09C79.74 83.47 46.81 50.72 46.46 50.37a8 8 0 0 0-13.65 4.92c-4.31 47.79 9.57 79.77 22 98.18a111 111 0 0 0 21.88 24.2c-15.23 17.53-39.21 26.74-39.47 26.84a8 8 0 0 0-3.85 11.93c.75 1.12 3.75 5.05 11.08 8.72C53.51 229.7 65.48 232 80 232c70.67 0 129.72-54.42 135.75-124.44l29.91-29.9a8 8 0 0 0 1.73-8.72m-45 29.41a8 8 0 0 0-2.32 5.14C196 166.58 143.28 216 80 216c-10.56 0-18-1.4-23.22-3.08c11.51-6.25 27.56-17 37.88-32.48A8 8 0 0 0 92 169.08c-.47-.27-43.91-26.34-44-96c16 13 45.25 33.17 78.67 38.79A8 8 0 0 0 136 104V88a32 32 0 0 1 9.6-22.92A30.94 30.94 0 0 1 167.9 56c12.66.16 24.49 7.88 29.44 19.21a8 8 0 0 0 7.33 4.79h16Z"
-            ></path></svg
-          >
-        </div>
-      </a>
-
-      <a
-        href={socials.linkedIn}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="social-icon-link"
-        aria-label="LinkedIn Profile"
-      >
-        <div
-          class="social-icon-wrapper flex size-8 items-center justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="256"
-            height="256"
-            viewBox="0 0 256 256"
-            class="text-[#7B7B7B]"
-            ><rect width="256" height="256" fill="none"></rect><path
-              fill="currentColor"
-              d="M216 24H40a16 16 0 0 0-16 16v176a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V40a16 16 0 0 0-16-16m0 192H40V40h176zM96 112v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0m88 28v36a8 8 0 0 1-16 0v-36a20 20 0 0 0-40 0v36a8 8 0 0 1-16 0v-64a8 8 0 0 1 15.79-1.78A36 36 0 0 1 184 140m-84-56a12 12 0 1 1-12-12a12 12 0 0 1 12 12"
-            ></path></svg
-          >
-        </div>
-      </a>
-
-      <a href={socials.mail} class="social-icon-link" aria-label="Email">
-        <div
-          class="social-icon-wrapper flex size-8 items-center justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="256"
-            height="256"
-            viewBox="0 0 256 256"
-            class="text-[#7B7B7B]"
-          >
-            <rect width="256" height="256" fill="none"></rect><path
-              fill="currentColor"
-              d="M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8m-96 85.15L52.57 64h150.86ZM98.71 128L40 181.81V74.19Zm11.84 10.85l12 11.05a8 8 0 0 0 10.82 0l12-11.05l58 53.15H52.57ZM157.29 128L216 74.18v107.64Z"
-            ></path>
-          </svg>
-        </div>
-      </a>
-
-      <a
-        href={socials.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="social-icon-link"
-        aria-label="Instagram Profile"
-      >
-        <div
-          class="social-icon-wrapper flex size-8 items-center justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="256"
-            height="256"
-            viewBox="0 0 256 256"
-            class="text-[#7B7B7B]"
-            ><rect width="256" height="256" fill="none"></rect><path
-              fill="currentColor"
-              d="M128 80a48 48 0 1 0 48 48a48.05 48.05 0 0 0-48-48m0 80a32 32 0 1 1 32-32a32 32 0 0 1-32 32m48-136H80a56.06 56.06 0 0 0-56 56v96a56.06 56.06 0 0 0 56 56h96a56.06 56.06 0 0 0 56-56V80a56.06 56.06 0 0 0-56-56m40 152a40 40 0 0 1-40 40H80a40 40 0 0 1-40-40V80a40 40 0 0 1 40-40h96a40 40 0 0 1 40 40ZM192 76a12 12 0 1 1-12-12a12 12 0 0 1 12 12"
-            ></path></svg
-          >
-        </div>
-      </a>
+      <SocialIcons size="lg" />
     </div>
   </div>
 
   <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { SplitText } from "gsap/SplitText";
 
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, SplitText);
 
-    document.addEventListener("DOMContentLoaded", () => {
-      // Hero animations - simplified for better performance
-      const heroContainer = document.querySelector(".hero-container");
-
-      if (!heroContainer) return;
-
-      // Create a simpler hero animation timeline
-      const heroTl = gsap.timeline({
-        delay: 0.3,
-      });
-
-      // Top badges animation - simplified
-      heroTl.from(".hero-top-badges", {
-        opacity: 0,
-        y: -20,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-
-      // Hero title section animation - simplified
-      heroTl.from(
-        ".hero-title-section",
-        {
-          opacity: 0,
-          y: 15,
+    const initAnimations = () => {
+      // Create main timeline for hero animations
+      const mainTl = gsap.timeline({
+        delay: 0.2,
+        defaults: {
+          ease: "power3.out",
           duration: 0.7,
-          ease: "power2.out",
         },
-        "-=0.3"
-      );
-
-      // Text reveal animations for title - more responsive approach
-      const splitTextElements = document.querySelectorAll(".split-text");
-
-      splitTextElements.forEach((element) => {
-        const text = element.innerText;
-        let htmlContent = "";
-
-        // Create spans for each character for text animation
-        for (let i = 0; i < text.length; i++) {
-          if (text[i] === " ") {
-            htmlContent += '<span class="char-span">&nbsp;</span>';
-          } else {
-            htmlContent += `<span class="char-span">${text[i]}</span>`;
-          }
-        }
-
-        element.innerHTML = htmlContent;
-      });
-
-      // Hero title text animation - simplified for better performance
-      heroTl.from(
-        ".hero-title .char-span",
-        {
-          opacity: 0,
-          y: 15,
-          stagger: 0.02,
-          duration: 0.6,
-          ease: "power2.out",
-        },
-        "-=0.2"
-      );
-
-      // Hero subtitle animation - simplified
-      heroTl.from(
-        ".hero-subtitle",
-        {
-          opacity: 0,
-          x: -10,
-          duration: 0.5,
-          ease: "power2.out",
-        },
-        "-=0.4"
-      );
-
-      // Badges animation - simplified
-      heroTl.from(
-        ".hero-badges > *",
-        {
-          opacity: 0,
-          y: 10,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
-        },
-        "-=0.3"
-      );
-
-      // Hero info section animation - simplified
-      heroTl.from(
-        ".hero-info-section",
-        {
-          opacity: 0,
-          y: 20,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-        "-=0.1"
-      );
-
-      // Hero name text animation - simplified
-      heroTl.from(
-        ".hero-name .char-span",
-        {
-          opacity: 0,
-          y: 15,
-          stagger: 0.02,
-          duration: 0.5,
-          ease: "power2.out",
-        },
-        "-=0.6"
-      );
-
-      // Bio animation - simplified
-      heroTl.from(
-        ".hero-bio",
-        {
-          opacity: 0,
-          y: 20,
-          duration: 0.7,
-          ease: "power2.out",
-        },
-        "-=0.5"
-      );
-
-      // Skills section animation - simplified
-      heroTl.from(
-        ".hero-skills-section",
-        {
-          opacity: 0,
-          y: 20,
-          duration: 0.6,
-          ease: "power2.out",
-        },
-        "-=0.3"
-      );
-
-      // Simple scroll animation
-      ScrollTrigger.create({
-        trigger: ".hero-container",
-        start: "top top",
-        end: "bottom top-=200",
-        onUpdate: (self) => {
-          // Simple parallax effect
-          const yPercent = self.progress * -15;
-          gsap.to(".hero-container", {
-            y: yPercent,
-            ease: "none",
-            overwrite: "auto",
+        onStart: () => {
+          // Make container visible when animation starts
+          gsap.set(".hero-container", {
+            visibility: "visible",
+            opacity: 1,
           });
         },
       });
+
+      // Hide everything initially
+      gsap.set(".hero-container", {
+        visibility: "hidden",
+        opacity: 0,
+      });
+
+      gsap.set(
+        [".hero-title-section", ".hero-info-section", ".hero-skills-section"],
+        {
+          opacity: 0,
+          y: 20,
+        }
+      );
+
+      // Split text for character animations
+      const titleSplitter = new SplitText(".hero-title", { type: "chars" });
+      const nameSplitter = new SplitText(".hero-name", { type: "chars" });
+
+      // Start by making container visible
+      mainTl.to(".hero-container", {
+        visibility: "visible",
+        opacity: 1,
+        duration: 0.3,
+      });
+
+      // Animate title section
+      mainTl
+        .to(".hero-title-section", {
+          opacity: 1,
+          y: 0,
+        })
+        .to(
+          titleSplitter.chars,
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.015,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          "-=0.4"
+        )
+        .to(
+          ".hero-subtitle",
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.5,
+          },
+          "-=0.3"
+        )
+        .to(
+          ".hero-badges > *",
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.4,
+          },
+          "-=0.3"
+        );
+
+      // Animate info section
+      mainTl
+        .to(
+          ".hero-info-section",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+          },
+          "-=0.2"
+        )
+        .to(
+          ".hero-image",
+          {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            scale: 1,
+            duration: 0.9,
+          },
+          "-=0.6"
+        )
+        .to(
+          nameSplitter.chars,
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.015,
+            duration: 0.5,
+          },
+          "-=0.7"
+        )
+        .to(
+          ".hero-bio, .hero-bio-2, .hero-bio-3",
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.2,
+            duration: 0.6,
+          },
+          "-=0.5"
+        );
+
+      // Animate skills section
+      mainTl
+        .to(
+          ".hero-skills-section",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+          },
+          "-=0.3"
+        )
+        .to(
+          ".social-icon-link",
+          {
+            opacity: 1,
+            scale: 1,
+            stagger: 0.05,
+            duration: 0.4,
+            ease: "back.out(1.5)",
+          },
+          "-=0.4"
+        );
+
+      // Create scroll-based animations
+      ScrollTrigger.create({
+        trigger: ".hero-container",
+        start: "top top",
+        end: "bottom top-=300",
+        scrub: true,
+        onUpdate: (self) => {
+          // Enhanced parallax effect
+          const progress = self.progress;
+          gsap.to(".hero-title-section", {
+            y: progress * -25,
+            duration: 0.1,
+            ease: "none",
+          });
+          gsap.to(".hero-info-section", {
+            y: progress * -20,
+            duration: 0.1,
+            ease: "none",
+          });
+          gsap.to(".hero-skills-section", {
+            y: progress * -15,
+            duration: 0.1,
+            ease: "none",
+          });
+        },
+      });
+
+      // Add hover animations for social icons
+      gsap.utils.toArray(".social-icon-link").forEach((icon) => {
+        icon.addEventListener("mouseenter", () => {
+          gsap.to(icon, {
+            scale: 1.15,
+            color: getComputedStyle(document.documentElement)
+              .getPropertyValue("--accent-primary")
+              .trim(),
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        });
+
+        icon.addEventListener("mouseleave", () => {
+          gsap.to(icon, {
+            scale: 1,
+            color: getComputedStyle(document.documentElement)
+              .getPropertyValue("--text-secondary")
+              .trim(),
+            duration: 0.3,
+            ease: "power2.in",
+          });
+        });
+      });
+    };
+
+    // Initialize animations when DOM is ready
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check if GSAP is loaded and elements exist
+      if (gsap && document.querySelector(".hero-container")) {
+        // Small delay to ensure all resources are loaded
+        setTimeout(initAnimations, 100);
+      }
     });
   </script>
 
   <style>
-    /* Basic styling */
-    .char-span {
-      display: inline-block;
+    /* Essential styling */
+    .hero-container {
+      perspective: 1000px;
+      visibility: hidden; /* Hide entire container initially */
+      opacity: 0; /* Start completely invisible */
     }
 
+    /* Hero sections with initial state */
+    .hero-title-section,
+    .hero-info-section,
+    .hero-skills-section {
+      opacity: 0;
+    }
+
+    /* Style for split text characters */
+    .hero-title,
+    .hero-name {
+      overflow: hidden;
+    }
+
+    /* Image animation setup */
+    .hero-image {
+      overflow: hidden;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+      transform: scale(0.95);
+    }
+
+    /* Bio wrapper for text reveal */
     .bio-wrapper {
       overflow: hidden;
     }
 
-    /* Simplified responsive styles */
-    @media (max-width: 640px) {
-      .hero-content {
-        padding: 1rem;
-      }
+    .hero-bio,
+    .hero-bio-2,
+    .hero-bio-3 {
+      opacity: 0;
+      transform: translateY(20px);
+    }
 
+    /* Social icon animations */
+    .social-icon-link {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: color 0.3s ease;
+    }
+
+    .social-icon-wrapper {
+      will-change: transform;
+    }
+
+    /* Transition classes for animations */
+    .hero-container.loaded {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.3s ease-out;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .hero-content,
       .hero-skills-section {
         padding: 1rem;
       }
     }
   </style>
 </div>
+
+<script>
+  // Quick script to handle visibility
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.querySelector(".hero-container")?.classList.add("loaded");
+    }, 100);
+  });
+</script>

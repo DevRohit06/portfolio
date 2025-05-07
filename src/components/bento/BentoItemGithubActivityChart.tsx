@@ -55,6 +55,79 @@ const BentoGithubActivity = (props: Props) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [renderedOnce, setRenderedOnce] = useState(false);
 
+  // Get CSS variables for theme-aware colors
+  const [panelColors, setPanelColors] = useState({
+    1: "#ffffff",
+    4: "#9c9cde",
+    8: "#3939bd",
+    12: "#0707AC",
+  });
+
+  // Update colors based on CSS variables when component mounts
+  useEffect(() => {
+    const updateThemeColors = () => {
+      const accentPrimary = getComputedStyle(document.documentElement)
+        .getPropertyValue("--accent-primary")
+        .trim();
+
+      // Function to adjust shade (make lighter or darker)
+      const getShade = (hexColor: string, percent: number) => {
+        // Convert hex to RGB
+        let r = parseInt(hexColor.slice(1, 3), 16);
+        let g = parseInt(hexColor.slice(3, 5), 16);
+        let b = parseInt(hexColor.slice(5, 7), 16);
+
+        // Adjust brightness
+        // Positive percent brightens, negative percent darkens
+        if (percent > 0) {
+          // Brighten
+          r = Math.min(255, Math.floor(r + (255 - r) * percent));
+          g = Math.min(255, Math.floor(g + (255 - g) * percent));
+          b = Math.min(255, Math.floor(b + (255 - b) * percent));
+        } else {
+          // Darken
+          const absPercent = Math.abs(percent);
+          r = Math.floor(r * (1 - absPercent));
+          g = Math.floor(g * (1 - absPercent));
+          b = Math.floor(b * (1 - absPercent));
+        }
+
+        // Convert back to hex
+        return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+      };
+
+      // Create proper shades of the accent color
+      const isValidHex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(
+        accentPrimary
+      );
+
+      if (isValidHex) {
+        setPanelColors({
+          1: getShade(accentPrimary, 0.85), // Very light shade (85% brighter)
+          4: getShade(accentPrimary, 0.4), // Light shade (40% brighter)
+          8: getShade(accentPrimary, 0), // Base accent color
+          12: getShade(accentPrimary, -0.3), // Dark shade (30% darker)
+        });
+      } else {
+        // Fallback colors if CSS variable isn't a valid hex
+        setPanelColors({
+          1: "#e6e6ff",
+          4: "#9c9cde",
+          8: "#3939bd",
+          12: "#0707AC",
+        });
+      }
+    };
+
+    // Update colors immediately and when theme changes
+    updateThemeColors();
+    document.addEventListener("themeChanged", updateThemeColors);
+
+    return () => {
+      document.removeEventListener("themeChanged", updateThemeColors);
+    };
+  }, []);
+
   // Use intersection observer to only render when visible
   useEffect(() => {
     if (!chartRef.current || renderedOnce) return;
@@ -93,16 +166,11 @@ const BentoGithubActivity = (props: Props) => {
             monthLabels={false}
             legendCellSize={0}
             space={4}
-            style={{ color: "#fff" }}
+            style={{ color: "var(--text-primary)" }}
             rectProps={{ rx: 4 }}
             rectSize={16}
             rectRender={renderRect((date) => setHoveredTile(date))}
-            panelColors={{
-              1: "#ffffff",
-              4: "#9c9cde",
-              8: "#3939bd",
-              12: "#0707AC",
-            }}
+            panelColors={panelColors}
           />
         )}
       </div>

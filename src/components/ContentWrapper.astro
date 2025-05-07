@@ -15,7 +15,7 @@ const { content: Content } = Astro.props;
 
 <style>
   .blog-content {
-    color: #333;
+    color: var(--text-primary);
   }
 
   /* Additional styling for blog content carried over from existing styles */
@@ -33,7 +33,7 @@ const { content: Content } = Astro.props;
   :global(.blog-content h2) {
     font-size: 1.75rem;
     font-weight: 600;
-    border-bottom: 1px solid rgba(123, 123, 123, 0.3);
+    border-bottom: 1px solid rgba(var(--text-secondary-rgb), 0.3);
     padding-bottom: 0.3em;
   }
 
@@ -48,14 +48,14 @@ const { content: Content } = Astro.props;
   }
 
   :global(.blog-content a) {
-    color: #0000cc;
+    color: var(--accent-primary);
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.2s;
   }
 
   :global(.blog-content a:hover) {
-    color: #000088;
+    color: var(--accent-secondary);
   }
 
   :global(.blog-content img) {
@@ -64,7 +64,7 @@ const { content: Content } = Astro.props;
   }
 
   :global(.blog-content pre) {
-    background-color: #1e1e1e;
+    background-color: var(--code-bg);
     border-radius: 6px;
     padding: 1em;
     overflow-x: auto;
@@ -72,7 +72,7 @@ const { content: Content } = Astro.props;
   }
 
   :global(.blog-content code) {
-    background-color: rgba(123, 123, 123, 0.1);
+    background-color: rgba(var(--text-secondary-rgb), 0.1);
     padding: 0.2em 0.4em;
     border-radius: 3px;
     font-family: "RoobertMonoTRIAL-Regular", monospace;
@@ -86,11 +86,11 @@ const { content: Content } = Astro.props;
   }
 
   :global(.blog-content blockquote) {
-    border-left: 4px solid #0000cc;
+    border-left: 4px solid var(--accent-primary);
     padding-left: 1em;
     margin-left: 0;
     font-style: italic;
-    background-color: rgba(0, 0, 204, 0.05);
+    background-color: rgba(var(--accent-primary-rgb), 0.05);
     padding: 1em 1.2em;
     border-radius: 0 4px 4px 0;
   }

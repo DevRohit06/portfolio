@@ -91,12 +91,14 @@ const techStack = [
   <Marquee>
     {
       [...techStack, ...techStack].map((tech) => (
-        <div class="flex-shrink-0 mx-6 ">
-          <Image
-            src={tech.icon}
-            alt={tech.alt}
-            class="h-11 w-20 object-contain"
-          />
+        <div class="flex-shrink-0 mx-6">
+          <div class="tech-icon-wrapper">
+            <Image
+              src={tech.icon}
+              alt={tech.alt}
+              class="h-11 w-20 object-contain tech-icon"
+            />
+          </div>
         </div>
       ))
     }
@@ -128,5 +130,14 @@ const techStack = [
   }
   .animate-marquee-vertical {
     animation: marquee-vertical var(--duration, 40s) linear infinite;
+  }
+
+  /* Theme-aware technology icons */
+  html:not(.dark-theme) .tech-icon {
+    filter: brightness(0.9) invert(0.2);
+  }
+
+  html.dark-theme .tech-icon {
+    filter: brightness(08) invert(0.5);
   }
 </style>

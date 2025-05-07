@@ -1,0 +1,443 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { socials } from "../lib/socials";
+import Badge from "../components/Badge.astro";
+import ThemeChanger from "../components/svelte/ThemeChanger.svelte";
+import { Image } from "astro:assets";
+import Pfp from "../assets/rohit.webp";
+import DiscordActivity from "../components/DiscordActivity.astro";
+import Mail from "../components/icons/Mail.astro";
+import Discord from "../components/icons/Discord.astro";
+import Instagram from "../components/icons/Instagram.astro";
+import Twitter from "../components/icons/Twitter.astro";
+import LinkedIn from "../components/icons/LinkedIn.astro";
+import GitHub from "../components/icons/GitHub.astro";
+---
+
+<Layout title="Socials | Rohit Kushwaha">
+  <main class="socials-container">
+    <div class="theme-toggle-container">
+      <ThemeChanger client:load />
+    </div>
+
+    <div class="socials-content mt-24">
+      <div class="profile-card">
+        <div class="profile-section">
+          <Image src={Pfp} alt="Rohit Kushwaha" class="profile-image" />
+          <h1>Rohit Kushwaha</h1>
+          <p class="bio">Vibe Engineer</p>
+        </div>
+
+        <div class="discord-section">
+          <Badge size="xs"
+            ><span class="whitespace-nowrap text-xs uppercase"
+              >Discord Status</span
+            ></Badge
+          >
+          <div class="mt-3">
+            <DiscordActivity showButtons={false} />
+          </div>
+        </div>
+
+        <div class="links-section">
+          <!-- Portfolio Section Links -->
+          <div class="links-category">
+            <Badge size="xs"
+              ><span class="whitespace-nowrap text-xs uppercase">Portfolio</span
+              ></Badge
+            >
+
+            <div class="links-grid">
+              <a href="/" target="_blank" class="portfolio-link">
+                <span class="link-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+                    ></path><polyline points="9 22 9 12 15 12 15 22"
+                    ></polyline></svg
+                  >
+                </span>
+                <span class="link-text">Home</span>
+              </a>
+
+              <a href="/blogs" target="_blank" class="portfolio-link">
+                <span class="link-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
+                    ></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+                    ></path></svg
+                  >
+                </span>
+                <span class="link-text">Blog</span>
+              </a>
+
+              <a href="/coming-soon" target="_blank" class="portfolio-link">
+                <span class="link-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg
+                  >
+                </span>
+                <span class="link-text">Projects</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="links-category">
+            <Badge size="xs"
+              ><span class="whitespace-nowrap text-xs uppercase">Connect</span
+              ></Badge
+            >
+
+            <div class="social-links-grid">
+              <a
+                href={socials.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+              >
+                <span class="social-icon">
+                  <GitHub class="social-icon" />
+                </span>
+                <span class="link-text">GitHub</span>
+              </a>
+
+              <a
+                href={socials.linkedIn}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+              >
+                <span class="social-icon">
+                  <LinkedIn class="social-icon" />
+                </span>
+                <span class="link-text">LinkedIn</span>
+              </a>
+
+              <a
+                href={socials.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+              >
+                <span class="social-icon">
+                  <Twitter class="social-icon" />
+                </span>
+                <span class="link-text">Twitter</span>
+              </a>
+
+              <a
+                href={socials.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+              >
+                <span class="social-icon">
+                  <Instagram class="social-icon" />
+                </span>
+                <span class="link-text">Instagram</span>
+              </a>
+
+              <a
+                href={socials.discord}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+              >
+                <Discord class="social-icon" />
+                <span class="link-text">Discord</span>
+              </a>
+
+              <a
+                href={socials.mail}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+              >
+                <span class="social-icon">
+                  <Mail />
+                </span>
+                <span class="link-text">Email</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-text">
+          <p>&copy; {new Date().getFullYear()} Rohit Kushwaha</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <style>
+    .socials-container {
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem 1rem;
+    }
+
+    .socials-content {
+      max-width: 550px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .theme-toggle-container {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+    }
+
+    .profile-card {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      transition: transform 0.3s ease;
+      /* Make sure content is visible from the beginning */
+      opacity: 1;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      /* Make sure content is visible from the beginning */
+      opacity: 1;
+    }
+
+    .profile-image {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      transition: transform 0.5s ease;
+    }
+
+    .profile-image:hover {
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0.5rem 0 0.25rem;
+      color: var(--text-primary);
+    }
+
+    .bio {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin: 0;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .discord-section {
+      margin-top: 1rem;
+      /* Make sure content is visible from the beginning */
+      opacity: 1;
+    }
+
+    .links-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      width: 100%;
+      /* Make sure content is visible from the beginning */
+      opacity: 1;
+    }
+
+    .links-category {
+      margin-bottom: 0.5rem;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .social-links-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .portfolio-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      /* Make sure content is visible from the beginning */
+      opacity: 1;
+    }
+
+    .portfolio-link:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      margin-top: 0.75rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      /* Make sure content is visible from the beginning */
+      opacity: 1;
+    }
+
+    .social-link:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .social-icon,
+    .link-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .social-link:hover .social-icon,
+    .portfolio-link:hover .link-icon {
+      transform: scale(1.15);
+    }
+
+    .link-text {
+      font-weight: 500;
+    }
+
+    .footer-text {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.5rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .links-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .social-links-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-image {
+        width: 100px;
+        height: 100px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .links-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .portfolio-link,
+      .social-link,
+      .profile-card,
+      .profile-image {
+        transition: none;
+      }
+    }
+  </style>
+
+  <script>
+    import { gsap } from "gsap";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Make sure all elements are visible before animations start
+      document
+        .querySelectorAll(
+          ".profile-card, .profile-section, .discord-section, .links-section, .portfolio-link, .social-link"
+        )
+        .forEach((el) => {
+          if (el instanceof HTMLElement) {
+            el.style.opacity = "1";
+          }
+        });
+
+      // Simplified animations that won't hide content
+      gsap.from(".profile-card", {
+        y: 20,
+        duration: 0.6,
+        autoAlpha: 0.7, // Using autoAlpha instead of opacity to prevent visibility issues
+        ease: "power1.out",
+      });
+
+      // Staggered animation for links - without hiding them
+      gsap.from(".portfolio-link, .social-link", {
+        y: 10,
+        stagger: 0.05,
+        duration: 0.4,
+        delay: 0.3,
+        autoAlpha: 0.7, // Using autoAlpha instead of opacity to prevent visibility issues
+        ease: "power1.out",
+      });
+    });
+  </script>
+</Layout>

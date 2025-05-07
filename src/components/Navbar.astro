@@ -1,759 +1,393 @@
 ---
 import { gsap } from "gsap";
 import { Image } from "astro:assets";
+import { socials } from "../lib/socials";
+import ThemeChanger from "./svelte/ThemeChanger.svelte";
+import SocialIcons from "./SocialIcons.astro";
 ---
 
-<div class="navigation-overlay"></div>
+<!-- Mobile Navigation Sidebar (Fullscreen) -->
+<div
+  id="mobile-sidebar"
+  class="fixed inset-0 h-full w-full z-[40] bg-[var(--bg-secondary)] opacity-0 invisible transition-all duration-400 ease-in-out overflow-y-auto p-4 flex flex-col translate-y-8"
+>
+  <!-- Commented out original header with close button
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/" class="font-medium text-xl">Rohit K.</a>
+      <button
+        class="close-sidebar text-sm bg-transparent border-none cursor-pointer opacity-0 transform transition-all duration-300 delay-100 ease-out translate-y-2"
+        aria-label="Close menu"
+      >
+        Close
+      </button>
+    </div>
+  </div> -->
+
+  <nav class="flex flex-col justify-between h-full">
+    <div></div>
+    <ul class="list-none p-0 m-0">
+      <li class="mb-6">
+        <a
+          href="/"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          >Home</a
+        >
+      </li>
+      <li class="mb-6">
+        <a
+          href="/blogs"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          >Blog</a
+        >
+      </li>
+      <li class="mb-6">
+        <a
+          href="/coming-soon"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          >Projects</a
+        >
+      </li>
+      <li class="mb-6">
+        <a
+          href="/coming-soon"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          >Experience</a
+        >
+      </li>
+      <li class="mb-6">
+        <a
+          href="/coming-soon"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          >Contact</a
+        >
+      </li>
+    </ul>
+
+    <!-- Social Media Links and Theme Changer -->
+    <div>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <SocialIcons variant="button" size="md" />
+      </div>
+
+      <!-- <div class="w-fit"> -->
+      <!-- <ThemeChanger client:load /> -->
+      <!-- </div> -->
+    </div>
+    <div></div>
+  </nav>
+</div>
+
+<!-- Main Navigation Bar -->
 <nav
-  class="sticky top-0 z-50 bg-[#C9CDD1] bg-opacity-80 backdrop-blur-sm p-3 border-b border-[#7B7B7B]"
+  id="main-navbar"
+  class="sticky top-0 left-0 right-0 z-50 bg-[var(--bg-secondary)] border-b border-[var(--border-color)] bg-opacity-80 backdrop-blur-sm h-16 transition-all duration-300"
 >
   <div
-    class="w-[95%] sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto flex items-center justify-between"
+    class="w-full max-w-7xl mx-auto px-4 xl:px-8 h-full flex items-center justify-between"
   >
-    <a href="/" class="font-medium text-xl logo home-link">Rohit K.</a>
-
-    <!-- Menu Toggle Button -->
-    <button
-      class="menu-toggle z-50"
-      aria-label="Toggle Menu"
-      aria-expanded="false"
-      aria-controls="fullscreen-nav"
+    <a
+      href="/"
+      id="logo-link"
+      class="font-medium text-xl text-[var(--text-primary)]"
+      >Rohit <span class="text-[var(--accent-primary)] font-bold text-3xl"
+        >.</span
+      ></a
     >
-      <div class="menu-toggle-wrapper">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </button>
 
-    <!-- Full Screen Navigation Menu -->
-    <div
-      id="fullscreen-nav"
-      class="fullscreen-nav"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Main Navigation"
-    >
-      <div class="nav-content">
-        <div class="nav-header">
-          <div class="nav-badge">
-            <div
-              class="w-fit bg-[#C9CDD1] text-[#7B7B7B] border border-[#7B7B7B] px-1 py-0.5 text-xs inline-flex items-center"
-            >
-              <span class="font-bold uppercase">Navigate</span>
-            </div>
-          </div>
-        </div>
+    <!-- Desktop Navigation Links - Always visible on desktop regardless of menu state -->
+    <div class="hidden md:flex md:ml-8">
+      <ul class="flex list-none gap-8 p-0 m-0">
+        <li>
+          <a
+            href="/"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            >Home</a
+          >
+        </li>
+        <li>
+          <a
+            href="/blogs"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            >Blog</a
+          >
+        </li>
+        <li>
+          <a
+            href="/coming-soon"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            >Projects</a
+          >
+        </li>
+        <li>
+          <a
+            href="/coming-soon"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            >Experience</a
+          >
+        </li>
+        <li>
+          <a
+            href="/coming-soon"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            >Contact</a
+          >
+        </li>
+      </ul>
+    </div>
 
-        <ul class="nav-links" role="menu">
-          <li class="nav-item" role="menuitem">
-            <a href="/" class="home-link" data-text="Home" tabindex="0">Home</a>
-          </li>
-          <li class="nav-item" role="menuitem">
-            <a href="/coming-soon" data-text="Projects" tabindex="0">Projects</a
-            >
-          </li>
-          <li class="nav-item" role="menuitem">
-            <a href="/coming-soon" data-text="Experience" tabindex="0"
-              >Experience</a
-            >
-          </li>
-          <li class="nav-item" role="menuitem">
-            <a href="/blogs" data-text="Blog" tabindex="0">Blogs</a>
-          </li>
-        </ul>
-
-        <div class="nav-footer">
-          <div class="border-t border-[#7B7B7B] pt-6 mt-8">
-            <div
-              class="w-fit bg-[#C9CDD1] text-[#7B7B7B] border border-[#7B7B7B] px-1 py-0.5 text-xs mb-6 inline-flex items-center"
-            >
-              <span class="font-bold uppercase">Find me on</span>
-            </div>
-            <div class="social-links">
-              <a
-                href="https://github.com/devrohit06"
-                target="_blank"
-                class="social-link"
-                tabindex="0"
-                aria-label="GitHub Profile"
-              >
-                <span class="social-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.87 1.52 2.34 1.07 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.11.38-2 1.03-2.71c-.1-.25-.45-1.29.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33c.85 0 1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.35.2 2.39.1 2.64c.65.71 1.03 1.6 1.03 2.71c0 3.82-2.34 4.66-4.57 4.91c.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"
-                    ></path>
-                  </svg>
-                </span>
-                <span>GitHub</span>
-              </a>
-              <a
-                href="https://linkedin.com/in/devrohit06"
-                target="_blank"
-                class="social-link"
-                tabindex="0"
-                aria-label="LinkedIn Profile"
-              >
-                <span class="social-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
-                    ></path>
-                  </svg>
-                </span>
-                <span>LinkedIn</span>
-              </a>
-              <a
-                href="https://twitter.com/devrohit06"
-                target="_blank"
-                class="social-link"
-                tabindex="0"
-                aria-label="Twitter Profile"
-              >
-                <span class="social-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M22.46 6c-.77.35-1.6.58-2.46.69c.88-.53 1.56-1.37 1.88-2.38c-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29c0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15c0 1.49.75 2.81 1.91 3.56c-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07a4.28 4.28 0 0 0 4 2.98a8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21C16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56c.84-.6 1.56-1.36 2.14-2.23z"
-                    ></path>
-                  </svg>
-                </span>
-                <span>Twitter</span>
-              </a>
-              <a
-                href="mailto:hi@rohit.in"
-                class="social-link"
-                tabindex="0"
-                aria-label="Send Email"
-              >
-                <span class="social-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"
-                    ></path>
-                  </svg>
-                </span>
-                <span>Mail</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="md:hidden ml-4">
+      <button
+        class="menu-toggle text-sm font-medium bg-transparent border-none cursor-pointer"
+        aria-label="Toggle Menu"
+        aria-expanded="false"
+        aria-controls="mobile-sidebar"
+      >
+        <span class="toggle-text">Menu</span>
+      </button>
     </div>
   </div>
 </nav>
 
-<style>
-  /* Prevent horizontal scroll */
-  :global(body) {
-    overflow-x: hidden;
-    font-family: myFirstFont, sans-serif;
-  }
+<script is:inline>
+  // Immediately invoked function to avoid global scope pollution
+  (function () {
+    // Variables to track scroll position
+    let prevScrollPos = window.scrollY;
+    let ticking = false;
 
-  :global(body.menu-active) {
-    overflow: hidden;
-  }
-
-  .navigation-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: #c9cdd1;
-    z-index: 40;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease;
-  }
-
-  .menu-toggle {
-    position: relative;
-    width: 30px;
-    height: 30px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-  }
-
-  .menu-toggle-wrapper {
-    position: relative;
-    width: 30px;
-    height: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .menu-toggle span {
-    width: 100%;
-    height: 2px;
-    background: #000;
-    transition:
-      transform 0.3s ease,
-      opacity 0.2s ease;
-    transform-origin: center;
-    border-radius: 2px;
-  }
-
-  .menu-toggle.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-  }
-
-  .menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-
-  .menu-toggle.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-  }
-
-  .fullscreen-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: #c9cdd1;
-    z-index: 45;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    overflow-y: auto;
-    padding: 5vh 0;
-    outline: none; /* Remove default focus outline */
-  }
-
-  .nav-content {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    position: relative;
-  }
-
-  .nav-header {
-    margin-bottom: 5vh;
-  }
-
-  .nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .nav-item {
-    overflow: hidden;
-    margin: 2vh 0;
-    border-bottom: 1px solid rgba(123, 123, 123, 0.3);
-    padding-bottom: 1vh;
-    position: relative;
-  }
-
-  .nav-item:last-child {
-    border-bottom: none;
-  }
-
-  .nav-item a {
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    color: #000;
-    text-decoration: none;
-    display: block;
-    font-weight: 500;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    transition: color 0.3s ease;
-    transform-origin: left;
-    position: relative;
-    padding: 0.5vh 0;
-  }
-
-  .nav-item a:hover {
-    color: #0000cc;
-  }
-
-  .nav-item a::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    transform: scaleX(0);
-    height: 1px;
-    bottom: 0;
-    left: 0;
-    background-color: #0000cc;
-    transform-origin: bottom right;
-    transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
-  }
-
-  .nav-item a:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
-
-  .social-links {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .social-link {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    color: #7b7b7b;
-    text-decoration: none;
-    font-size: 1rem;
-    padding: 0.75rem 0;
-    font-weight: 500;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    position: relative;
-  }
-
-  .social-link:hover {
-    color: #0000cc;
-    transform: translateY(-3px);
-  }
-
-  .social-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: 1px solid #7b7b7b;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-  }
-
-  .social-link:hover .social-icon {
-    border-color: #0000cc;
-    background-color: rgba(0, 0, 204, 0.05);
-    transform: rotate(10deg);
-  }
-
-  /* Responsive adjustments */
-  @media (min-width: 768px) {
-    .social-links {
-      grid-template-columns: repeat(4, 1fr);
+    // Get navbar element
+    const navbar = document.getElementById("main-navbar");
+    navbar?.classList.add("border-transparent");
+    // Set initial state
+    if (window.scrollY > 100) {
+      // navbar?.classList.add("border-b", "border-[var(--border-color)]");
     }
 
-    .nav-item {
-      padding-left: 2rem;
-      border-bottom: none;
+    // Scroll handler function
+    function handleScroll() {
+      const currentScrollPos = window.scrollY;
+
+      // Determine scroll direction
+      const isScrollingUp = prevScrollPos > currentScrollPos;
+
+      // Add/remove border based on scroll position
+      if (currentScrollPos > 100) {
+        navbar?.classList.remove("border-transparent");
+      } else {
+        navbar?.classList.add("border-transparent");
+      }
+
+      // Show/hide navbar based on scroll direction
+      if (!isScrollingUp && currentScrollPos > 100) {
+        // Scrolling DOWN - hide navbar
+        navbar?.classList.add("-translate-y-full");
+      } else {
+        // Scrolling UP or at top - show navbar
+        navbar?.classList.remove("-translate-y-full");
+      }
+
+      // Update previous scroll position
+      prevScrollPos = currentScrollPos;
+      ticking = false;
     }
 
-    .nav-item::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 50%;
-      width: 10px;
-      height: 10px;
-      border: 1px solid #7b7b7b;
-      border-radius: 50%;
-      opacity: 0;
-      transform: translateY(-50%);
-      transition: opacity 0.3s ease;
+    // Throttle scroll events for performance
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(handleScroll);
+        ticking = true;
+      }
     }
 
-    .nav-item:hover::before {
-      opacity: 1;
-    }
-  }
+    // Add scroll listener
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-  @media (max-width: 767px) {
-    .social-links {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    // Ensure navbar is visible when page loads
+    navbar?.classList.remove("-translate-y-full");
 
-    .nav-item a {
-      font-size: clamp(2rem, 6vw, 3.5rem);
-    }
+    // Handle Astro page transitions
+    document.addEventListener("astro:page-load", () => {
+      // Reset variables
+      prevScrollPos = window.scrollY;
+      ticking = false;
 
-    .social-link {
-      font-size: 0.9rem;
-    }
+      // Re-get navbar as the DOM has been updated
+      const updatedNavbar = document.getElementById("main-navbar");
 
-    .social-icon {
-      width: 32px;
-      height: 32px;
-    }
+      // Set initial state after page transition
+      if (window.scrollY > 100) {
+        // updatedNavbar?.classList.add(
+        //   "border-b",
+        //   "border-[var(--border-color)]"
+        // );
+      } else {
+        // updatedNavbar?.classList.remove(
+        //   "border-b",
+        //   "border-[var(--border-color)]"
+        // );
+      }
 
-    .nav-content {
-      padding: 1rem 0.5rem;
-    }
-  }
-
-  @media (max-height: 600px) {
-    .fullscreen-nav {
-      align-items: flex-start;
-    }
-
-    .nav-header {
-      margin-bottom: 2vh;
-    }
-
-    .nav-item {
-      margin: 1vh 0;
-    }
-
-    .nav-item a {
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-    }
-
-    .social-links {
-      gap: 1rem;
-    }
-
-    .nav-footer {
-      margin-top: 2vh;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .menu-toggle span,
-    .nav-item a::after,
-    .social-link,
-    .social-icon {
-      transition: none !important;
-    }
-  }
-</style>
+      // Ensure navbar is visible
+      updatedNavbar?.classList.remove("-translate-y-full");
+    });
+  })();
+</script>
 
 <script>
-  import { gsap } from "gsap";
+  import { animateMenuText } from "../utils/animations.js";
 
   document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector(".menu-toggle");
-    const navbar = document.querySelector("nav");
-    const fullscreenNav = document.querySelector(".fullscreen-nav");
-    const navItems = document.querySelectorAll(".nav-item");
-    const socialLinks = document.querySelectorAll(".social-link");
-    const navBadge = document.querySelector(".nav-badge");
-    const navFooter = document.querySelector(".nav-footer");
+    const toggleText = document.querySelector(".toggle-text");
+    const mobileSidebar = document.getElementById("mobile-sidebar");
 
-    // Handle home links specially to prevent loader from showing
-    const homeLinks = document.querySelectorAll(".home-link");
-    homeLinks.forEach((link) => {
-      link.addEventListener("click", (e) => {
-        // Only handle this specially if we're not already on the homepage
+    // Menu state tracking
+    let isMenuOpen = false;
+
+    // Function to open the mobile sidebar
+    function openSidebarMenu() {
+      // Store current scroll position before opening menu
+      const scrollY = window.scrollY;
+
+      isMenuOpen = true;
+      mobileSidebar?.classList.add("active");
+      mobileSidebar?.classList.remove(
+        "invisible",
+        "opacity-0",
+        "translate-y-8"
+      );
+      mobileSidebar?.classList.add("opacity-100", "translate-y-0");
+
+      // Reset any manual positioning to ensure it covers the whole viewport
+      if (mobileSidebar) {
+        mobileSidebar.style.top = "0";
+      }
+
+      // Animate menu text from "Menu" to "Close"
+      if (menuToggle) {
+        animateMenuText(menuToggle, "Menu", "Close", false, {
+          duration: 0.5,
+          fade: true,
+          yOffset: 8,
+        });
+      }
+
+      // Lock body scroll while preserving position
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflowY = "scroll"; // Keep scrollbar to prevent layout shift
+      document.body.dataset.scrollPosition = scrollY.toString();
+
+      menuToggle?.setAttribute("aria-expanded", "true");
+    }
+
+    // Close mobile sidebar
+    function closeSidebarMenu() {
+      isMenuOpen = false;
+
+      // Animate menu text back from "Close" to "Menu"
+      if (menuToggle) {
+        animateMenuText(menuToggle, "Menu", "Close", true, {
+          duration: 0.5,
+          fade: true,
+          yOffset: 8,
+        });
+      }
+
+      // Then animate the sidebar out with a slight delay
+      setTimeout(() => {
+        mobileSidebar?.classList.remove(
+          "active",
+          "opacity-100",
+          "translate-y-0"
+        );
+        mobileSidebar?.classList.add("opacity-0", "translate-y-8");
+
+        // Restore scroll position
+        const scrollY = parseInt(document.body.dataset.scrollPosition || "0");
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        document.body.style.overflowY = "";
+        window.scrollTo(0, scrollY);
+
+        // Delay setting invisible to allow for transition
+        setTimeout(() => {
+          if (!mobileSidebar?.classList.contains("active")) {
+            mobileSidebar?.classList.add("invisible");
+          }
+        }, 400);
+
+        menuToggle?.setAttribute("aria-expanded", "false");
+      }, 100);
+    }
+
+    // Toggle mobile sidebar - open or close based on current state
+    menuToggle?.addEventListener("click", (e) => {
+      e.preventDefault(); // Prevent default behavior that causes the scroll to top
+      if (isMenuOpen) {
+        closeSidebarMenu();
+      } else {
+        openSidebarMenu();
+      }
+    });
+
+    // Handle links in mobile sidebar
+    const sidebarLinks = document.querySelectorAll("#mobile-sidebar a");
+    sidebarLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        closeSidebarMenu();
+      });
+    });
+
+    // Enhanced keyboard navigation
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && mobileSidebar?.classList.contains("active")) {
+        closeSidebarMenu();
+      }
+    });
+
+    // Logo click handler
+    const logoLink = document.getElementById("logo-link");
+    if (logoLink) {
+      logoLink.addEventListener("click", (e) => {
+        // Check if we're already on the home page
         if (
-          window.location.pathname !== "/" &&
-          window.location.pathname !== ""
+          window.location.pathname === "/" ||
+          window.location.pathname === ""
         ) {
           e.preventDefault();
 
-          // Mark that we've already loaded the site so loader won't show
-          sessionStorage.setItem("hasLoadedSite", "true");
-
-          // Clean up any animations that might be running
-          if (window.cleanupGSAPAnimations) {
-            window.cleanupGSAPAnimations();
-          }
-
-          // Navigate to home
-          window.location.href = "/";
-        }
-      });
-    });
-
-    // Create GSAP timeline for menu animation
-    const menuTl = gsap.timeline({ paused: true });
-
-    // Set initial states
-    gsap.set(navItems, {
-      y: 40,
-      opacity: 0,
-      skewY: 3,
-    });
-    gsap.set(socialLinks, {
-      y: 20,
-      opacity: 0,
-    });
-    gsap.set(navBadge, {
-      y: -20,
-      opacity: 0,
-    });
-    gsap.set(navFooter, {
-      opacity: 0,
-    });
-
-    // Build the timeline
-    menuTl
-      .to(fullscreenNav, {
-        opacity: 1,
-        visibility: "visible",
-        duration: 0.4,
-        ease: "power2.inOut",
-      })
-      .to(
-        navBadge,
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: "back.out(1.7)",
-        },
-        "-=0.1"
-      )
-      .to(
-        navItems,
-        {
-          y: 0,
-          opacity: 1,
-          skewY: 0,
-          stagger: 0.08,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        "-=0.3"
-      )
-      .to(
-        navFooter,
-        {
-          opacity: 1,
-          duration: 0.6,
-          ease: "power2.out",
-        },
-        "-=0.5"
-      )
-      .to(
-        socialLinks,
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.06,
-          duration: 0.6,
-          ease: "power3.out",
-        },
-        "-=0.4"
-      );
-
-    // Toggle menu with enhanced animation
-    menuToggle?.addEventListener("click", () => {
-      const isActive = menuToggle.classList.contains("active");
-      menuToggle.classList.toggle("active");
-      document.body.classList.toggle("menu-active");
-
-      // Update ARIA attributes
-      menuToggle.setAttribute("aria-expanded", !isActive ? "true" : "false");
-
-      if (!isActive) {
-        // Opening menu animation
-        menuTl.timeScale(1).play();
-
-        // Focus the menu container after animation completes
-        setTimeout(() => {
-          fullscreenNav.focus();
-          enableFocusTrap();
-        }, 400);
-      } else {
-        // Closing menu animation (slightly faster)
-        menuTl.timeScale(1.5).reverse();
-
-        // Return focus to the toggle button after closing
-        setTimeout(() => {
-          menuToggle.focus();
-          disableFocusTrap();
-        }, 300);
-      }
-    });
-
-    // Handle link clicks
-    navItems.forEach((item) => {
-      const link = item.querySelector("a");
-      link.addEventListener("click", () => {
-        menuToggle?.classList.remove("active");
-        document.body.classList.remove("menu-active");
-        menuToggle.setAttribute("aria-expanded", "false");
-        menuTl.timeScale(1.5).reverse();
-
-        // Return focus to menu toggle
-        setTimeout(() => {
-          menuToggle.focus();
-          disableFocusTrap();
-        }, 300);
-      });
-    });
-
-    // Hover effect for menu items
-    navItems.forEach((item) => {
-      const link = item.querySelector("a");
-
-      link.addEventListener("mouseenter", () => {
-        gsap.to(navItems, {
-          opacity: 0.5,
-          duration: 0.3,
-          ease: "power1.out",
-        });
-
-        gsap.to(item, {
-          opacity: 1,
-          duration: 0.3,
-          ease: "power1.out",
-        });
-      });
-
-      link?.addEventListener("mouseleave", () => {
-        gsap.to(navItems, {
-          opacity: 1,
-          duration: 0.3,
-          ease: "power1.out",
-        });
-      });
-    });
-
-    // Navbar scroll effect with smoother animation
-    let lastScrollTop = 0;
-    let scrollTimeout: number | undefined;
-
-    window.addEventListener("scroll", () => {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-
-      // Clear the previous timeout
-      clearTimeout(scrollTimeout);
-
-      // Set a new timeout
-      scrollTimeout = setTimeout(() => {
-        // Always keep navbar visible by removing the hide logic
-        // Only add subtle shadow/highlight effect on scroll
-        if (scrollTop > 50) {
-          gsap.to(navbar, {
-            boxShadow:
-              "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-            duration: 0.3,
-            ease: "power2.out",
+          // Provide visual feedback with a smooth scroll to top
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
           });
-        } else {
-          gsap.to(navbar, {
-            boxShadow: "none",
-            borderBottomColor: "#7B7B7B",
-            duration: 0.3,
-            ease: "power2.out",
-          });
+
+          // Optional: Add a subtle flash animation to indicate refresh
+          const flashElement = document.createElement("div");
+          flashElement.style.position = "fixed";
+          flashElement.style.inset = "0";
+          flashElement.style.backgroundColor = "var(--accent-primary)";
+          flashElement.style.opacity = "0.1";
+          flashElement.style.zIndex = "100";
+          flashElement.style.pointerEvents = "none";
+          document.body.appendChild(flashElement);
+
+          // Animate the flash in and out
+          setTimeout(() => {
+            flashElement.style.transition = "opacity 0.3s ease";
+            flashElement.style.opacity = "0";
+
+            // Remove the element after animation completes
+            setTimeout(() => {
+              document.body.removeChild(flashElement);
+            }, 300);
+          }, 50);
         }
-
-        lastScrollTop = scrollTop;
-      }, 50); // Small delay to debounce scroll events
-    });
-
-    // Add keyboard navigation for menu items
-    const focusableElements = fullscreenNav.querySelectorAll(
-      'a[href], button, [tabindex="0"]'
-    );
-    const firstFocusableElement = focusableElements[0];
-    const lastFocusableElement =
-      focusableElements[focusableElements.length - 1];
-
-    // Handle keyboard navigation
-    fullscreenNav.addEventListener("keydown", (e) => {
-      // Close menu on Escape key
-      if (e.key === "Escape") {
-        menuToggle.click();
-      }
-
-      // Handle Tab key for focus trapping
-      if (e.key === "Tab") {
-        // Shift + Tab - moving backward
-        if (e.shiftKey) {
-          if (document.activeElement === firstFocusableElement) {
-            e.preventDefault();
-            lastFocusableElement.focus();
-          }
-        }
-        // Tab - moving forward
-        else {
-          if (document.activeElement === lastFocusableElement) {
-            e.preventDefault();
-            firstFocusableElement.focus();
-          }
-        }
-      }
-    });
-
-    // Add arrow key navigation for menu items
-    navItems.forEach((item, index) => {
-      const link = item.querySelector("a");
-
-      link.addEventListener("keydown", (e) => {
-        // Down arrow or Right arrow
-        if (e.key === "ArrowDown" || e.key === "ArrowRight") {
-          e.preventDefault();
-          const nextIndex = (index + 1) % navItems.length;
-          navItems[nextIndex].querySelector("a").focus();
-        }
-
-        // Up arrow or Left arrow
-        if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-          e.preventDefault();
-          const prevIndex = (index - 1 + navItems.length) % navItems.length;
-          navItems[prevIndex].querySelector("a").focus();
-        }
-
-        // Enter or Space to activate link
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          link.click();
-        }
-      });
-    });
-
-    // Focus trap management
-    let originalTabIndex = [];
-
-    function enableFocusTrap() {
-      // Store original tabindex values
-      originalTabIndex = [];
-      document.querySelectorAll("a[href], button, [tabindex]").forEach((el) => {
-        if (!fullscreenNav.contains(el) && el !== menuToggle) {
-          originalTabIndex.push({
-            element: el,
-            tabIndex: el.getAttribute("tabindex"),
-          });
-          el.setAttribute("tabindex", "-1");
-        }
-      });
-    }
-
-    function disableFocusTrap() {
-      // Restore original tabindex values
-      originalTabIndex.forEach((item) => {
-        if (item.tabIndex === null) {
-          item.element.removeAttribute("tabindex");
-        } else {
-          item.element.setAttribute("tabindex", item.tabIndex);
-        }
+        // Otherwise, let the default link behavior happen (navigate to home)
       });
     }
   });

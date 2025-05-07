@@ -1,0 +1,348 @@
+---
+import TextReveal from "./TextReveal.astro";
+import Badge from "./Badge.astro";
+
+interface Props {
+  className?: string;
+}
+
+const { className = "" } = Astro.props;
+
+// Personal description sections to be revealed in sequence
+const introSection =
+  "I'm a vibe engineer who transforms conversations into code and code into conversations, crafting intuitive digital experiences that resonate with users.";
+const skillsSection =
+  "My toolkit thrives on Svelte, SvelteKit, and Tailwind CSS, complemented by React, Next.js, TypeScript, and Node.js to build performant and elegant applications.";
+const interestsSection =
+  "Beyond traditional coding, I embrace the vibe engineering philosophy—focusing on intent rather than syntax, and giving in to the exponential possibilities of modern development.";
+const valuesSection =
+  "I value intuitive design, efficient architecture, and solving complex problems with elegant solutions that prioritize both developer experience and user delight.";
+
+// SEO-friendly content summary from the sections above
+const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${valuesSection}`;
+---
+
+<div
+  class={`about-me-container relative ${className}`}
+  itemscope
+  itemtype="https://schema.org/Person"
+>
+  <div
+    class="border border-[var(--border-color)] p-4 sm:p-6 md:p-12 relative about-title-section"
+  >
+    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
+    <Badge size="sm" className="mb-4">
+      <span class="text-xs font-bold uppercase">About Me</span>
+    </Badge>
+
+    <TextReveal
+      element="h2"
+      text="My Story"
+      className="text-3xl sm:text-4xl md:text-5xl font-semibold about-title split-text"
+      splitBy="chars"
+      stagger={0.03}
+      from="bottom"
+    />
+  </div>
+
+  <div
+    class="border border-[var(--border-color)] border-t-0 p-4 sm:p-6 md:p-12 about-content-section"
+  >
+    <div class="space-y-6 text-reveal-container bio-wrapper">
+      <TextReveal
+        text={introSection}
+        className="text-sm sm:text-md md:text-lg text-[var(--text-secondary)] about-bio"
+        splitBy="lines"
+        stagger={0.1}
+        from="left"
+        itemprop="description"
+      />
+
+      <TextReveal
+        text={skillsSection}
+        className="text-sm sm:text-md md:text-lg text-[var(--text-secondary)] about-bio"
+        splitBy="words"
+        stagger={0.02}
+        from="bottom"
+        delay={0.2}
+      />
+
+      <TextReveal
+        text={interestsSection}
+        className="text-sm sm:text-md md:text-lg text-[var(--text-secondary)] about-bio"
+        splitBy="lines"
+        stagger={0.1}
+        from="right"
+        delay={0.3}
+      />
+
+      <TextReveal
+        text={valuesSection}
+        className="text-sm sm:text-md md:text-lg text-[var(--text-secondary)] about-bio"
+        splitBy="words"
+        stagger={0.02}
+        from="bottom"
+        delay={0.4}
+      />
+    </div>
+  </div>
+
+  <!-- Education Section -->
+  <div
+    class="border border-[var(--border-color)] border-t-0 p-4 sm:p-6 md:p-12 about-education-section"
+  >
+    <div class="flex items-center gap-2 mb-6">
+      <Badge size="sm">
+        <span class="text-xs font-bold uppercase">Education</span>
+      </Badge>
+      <span class="text-sm text-[var(--text-secondary)]"
+        >— Building the foundation</span
+      >
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+      <div class="md:col-span-3 education-content">
+        <h3
+          class="text-xl sm:text-2xl font-medium education-title"
+          itemprop="alumniOf"
+        >
+          Bachelor of Science in Computer Science
+        </h3>
+        <p
+          class="text-sm sm:text-base mt-2 text-[var(--text-secondary)] education-period"
+          itemprop="eduTimeframe"
+        >
+          SMT. CHM College, Ulhasnagar · 2023 - 2026 (Expected)
+        </p>
+        <p
+          class="text-sm sm:text-base mt-4 education-desc text-[var(--text-secondary)]"
+        >
+          Cultivating a strong theoretical foundation in computer science while
+          applying practical skills to real-world problems. Focusing on
+          algorithms, data structures, and advanced programming concepts to
+          complement my professional development as a vibe engineer.
+        </p>
+      </div>
+      <div
+        class="md:col-span-2 flex items-center justify-center md:justify-end education-visual"
+      >
+        <span
+          class="text-6xl sm:text-7xl font-bold text-[var(--accent-primary)] opacity-[0.15] education-highlight"
+          >BSc</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="border border-[var(--border-color)] border-t-0 px-4 sm:px-6 md:px-10 p-4 sm:py-6 flex flex-col items-start gap-4 about-cta-section"
+  >
+    <TextReveal
+      element="h3"
+      text="Let's Connect"
+      className="text-xl font-medium"
+      splitBy="chars"
+      stagger={0.03}
+      from="top"
+      delay={0.5}
+    />
+
+    <TextReveal
+      text="I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision."
+      className="text-sm sm:text-base text-[var(--text-secondary)]"
+      splitBy="words"
+      stagger={0.02}
+      from="left"
+      delay={0.6}
+    />
+
+    <a
+      href="mailto:rohitk290106@gmail.com"
+      class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-[var(--border-color)] hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 cta-button"
+      itemprop="email"
+    >
+      Get in Touch
+    </a>
+  </div>
+  <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10">
+  </div>
+
+  <!-- Hidden SEO metadata -->
+  <meta itemprop="name" content="Rohit Kushwaha" />
+  <meta itemprop="jobTitle" content="Web Developer & Software Engineer" />
+  <meta itemprop="description" content={bioSummary} />
+  <meta
+    itemprop="knowsAbout"
+    content="Web Development, Svelte, SvelteKit, React, Next.js, TypeScript, Node.js, Tailwind CSS"
+  />
+</div>
+
+<style>
+  /* Essential styling matching your design system */
+  .about-me-container {
+    perspective: 1000px;
+  }
+
+  /* Section styling with initial states */
+  .about-title-section,
+  .about-content-section,
+  .about-education-section,
+  .about-cta-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  /* Text styling */
+  .about-title {
+    overflow: hidden;
+  }
+
+  /* Bio wrapper for text reveal */
+  .bio-wrapper {
+    overflow: hidden;
+  }
+
+  .about-bio {
+    transform: translateY(20px);
+  }
+
+  /* Education section styling */
+  .education-title,
+  .education-period,
+  .education-desc {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  .education-highlight {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  /* CTA button hover effect */
+  .cta-button:hover {
+    background-color: var(--accent-primary);
+    color: white;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .about-content-section,
+    .about-education-section,
+    .about-cta-section {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Initialize animations when DOM is ready
+  document.addEventListener("DOMContentLoaded", () => {
+    // Animate sections on scroll
+    const aboutSections = [
+      ".about-title-section",
+      ".about-content-section",
+      ".about-education-section",
+      ".about-cta-section",
+    ];
+
+    aboutSections.forEach((section, index) => {
+      gsap.set(section, {
+        opacity: 0,
+      });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          gsap.to(section, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: index * 0.1,
+            ease: "power3.out",
+          });
+
+          // If this is the education section, animate its contents
+          if (section === ".about-education-section") {
+            gsap.to(".education-title", {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              delay: index * 0.1 + 0.2,
+              ease: "power2.out",
+            });
+
+            gsap.to(".education-period", {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              delay: index * 0.1 + 0.3,
+              ease: "power2.out",
+            });
+
+            gsap.to(".education-desc", {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              delay: index * 0.1 + 0.4,
+              ease: "power2.out",
+            });
+
+            gsap.to(".education-highlight", {
+              opacity: 0.15,
+              scale: 1,
+              duration: 0.7,
+              delay: index * 0.1 + 0.3,
+              ease: "back.out(1.2)",
+            });
+          }
+        },
+      });
+    });
+
+    // Create parallax scroll effect for about section
+    ScrollTrigger.create({
+      trigger: ".about-me-container",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        gsap.to(".about-title-section", {
+          duration: 0.1,
+          ease: "none",
+        });
+        gsap.to(".about-content-section", {
+          duration: 0.1,
+          ease: "none",
+        });
+        gsap.to(".about-education-section", {
+          y: progress * -10,
+          duration: 0.1,
+          ease: "none",
+        });
+        gsap.to(".about-cta-section", {
+          y: progress * -15,
+          duration: 0.1,
+          ease: "none",
+        });
+      },
+    });
+  });
+
+  // Listen for theme changes to update animations if needed
+  document.addEventListener("themeChanged", () => {
+    // Refresh scroll triggers to ensure any color-dependent animations work properly
+    ScrollTrigger.refresh();
+  });
+</script>

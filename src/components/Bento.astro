@@ -10,23 +10,16 @@ import Marquee from "./Marquee.astro";
   class="w-[90%] md:w-[80%] lg:w-[70%] mx-auto mt-[50px] sm:mt/[100px] md:mt/[120px] lg:mt/[150px] xl:mt/[200px]"
 >
   <div
-    class="p-4 sm:p-6 lg:p-12 border border-[#7B7B7B] bento-wrapper opacity-0 invisible bento-container"
+    class="p-4 sm:p-6 lg:p-12 border border-[var(--border-color)] bento-wrapper opacity-0 invisible bento-container"
   >
     <div class="grid grid-cols-1 lg:grid-cols-8 gap-4 md:gap-6 lg:gap-8">
       <div class="col-span-1 lg:col-span-5 bento-left">
         <div class="flex flex-col gap-4 w-full">
-          <!-- <GitHubActivity
-              title="GITHUB ACTIVITY"
-              username="devrohit06"
-              showTooltip={true}
-              enableInteraction={true}
-              weeks={48}
-            /> -->
           <BentoItemGithubActivity server:defer />
 
           <div class="gap-4 sm:gap-6 md:gap-8 mt-4 bento-bottom-cards">
             <div
-              class="h-full w-full relative flex flex-col gap-2 sm:gap-0 overflow-hidden hero-skills-section bento-scroll-reveal border border-[#7B7B7B]"
+              class="h-full w-full relative flex flex-col gap-2 sm:gap-0 overflow-hidden hero-skills-section bento-scroll-reveal border border-[var(--border-color)]"
             >
               <div class="p-4 pb-1.5" data-delay="0.2">
                 <Badge size="xs"
@@ -38,11 +31,11 @@ import Marquee from "./Marquee.astro";
               <div class="relative mb-2">
                 <Marquee />
                 <div
-                  class="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#C9CDD1]"
+                  class="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[var(--bg-secondary)]"
                 >
                 </div>
                 <div
-                  class="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[#C9CDD1]"
+                  class="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[var(--bg-secondary)]"
                 >
                 </div>
               </div>
@@ -193,33 +186,33 @@ import Marquee from "./Marquee.astro";
               !isPerformanceCritical &&
               !lowPerformanceMode
             ) {
-              gsap.to(element, {
-                y: "+=3",
-                duration: 2 + Math.random() * 1.5,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut",
-                delay: Math.random() * 0.5,
-              });
+              // gsap.to(element, {
+              //   y: "+=3",
+              //   duration: 2 + Math.random() * 1.5,
+              //   yoyo: true,
+              //   repeat: -1,
+              //   ease: "sine.inOut",
+              //   delay: Math.random() * 0.5,
+              // });
             }
           },
         });
 
         // Enhanced glow effect with better timing - skip for performance critical elements
-        if (!isPerformanceCritical && !lowPerformanceMode) {
-          gsap.fromTo(
-            element,
-            { boxShadow: "0 0 0 rgba(0, 0, 204, 0)" },
-            {
-              boxShadow:
-                "0 8px 25px rgba(0, 0, 204, 0.18), 0 0 0 rgba(0, 0, 204, 0)",
-              duration: 1.8,
-              delay: 0.4 + delay,
-              ease: "power2.out",
-              clearProps: "boxShadow",
-            }
-          );
-        }
+        // if (!isPerformanceCritical && !lowPerformanceMode) {
+        //   gsap.fromTo(
+        //     element,
+        //     { boxShadow: "0 0 0 rgba(0, 0, 204, 0)" },
+        //     {
+        //       boxShadow:
+        //         "0 8px 25px rgba(0, 0, 204, 0.18), 0 0 0 rgba(0, 0, 204, 0)",
+        //       duration: 1.8,
+        //       delay: 0.4 + delay,
+        //       ease: "power2.out",
+        //       clearProps: "boxShadow",
+        //     }
+        //   );
+        // }
       });
 
       // Enhanced magnetic effect to interactive elements with better sensitivity - skip in low performance mode
@@ -229,209 +222,209 @@ import Marquee from "./Marquee.astro";
       }
 
       // Create improved scene for advanced animations
-      createScene(
-        ".bento-wrapper",
-        [
-          {
-            element: ".bento-github-card",
-            props: {
-              x: 0,
-              rotation: 0,
-              transformOrigin: "center center",
-            },
-          },
-          {
-            element: ".bento-testimonials",
-            props: {
-              x: 0,
-              rotation: 0,
-              transformOrigin: "center center",
-            },
-            position: "-=0.3",
-          },
-        ],
-        {
-          start: "top 60%",
-          end: "bottom 40%",
-          scrub: 1.2, // Smoother scrubbing
-          markers: false,
-        }
-      );
+      // createScene(
+      //   ".bento-wrapper",
+      //   [
+      //     {
+      //       element: ".bento-github-card",
+      //       props: {
+      //         x: 0,
+      //         rotation: 0,
+      //         transformOrigin: "center center",
+      //       },
+      //     },
+      //     {
+      //       element: ".bento-testimonials",
+      //       props: {
+      //         x: 0,
+      //         rotation: 0,
+      //         transformOrigin: "center center",
+      //       },
+      //       position: "-=0.3",
+      //     },
+      //   ],
+      //   {
+      //     start: "top 60%",
+      //     end: "bottom 40%",
+      //     scrub: 1.2, // Smoother scrubbing
+      //     markers: false,
+      //   }
+      // );
 
       // Add enhanced hover effects to all cards
-      const bentoCards = document.querySelectorAll(".bento-scroll-reveal");
-      bentoCards.forEach((card) => {
-        const isPerformanceCritical = card.hasAttribute(
-          "data-performance-critical"
-        );
+      // const bentoCards = document.querySelectorAll(".bento-scroll-reveal");
+      // bentoCards.forEach((card) => {
+      //   const isPerformanceCritical = card.hasAttribute(
+      //     "data-performance-critical"
+      //   );
 
-        // Skip intensive hover animations for GitHub activity card
-        if (isPerformanceCritical && lowPerformanceMode) return;
+      //   // Skip intensive hover animations for GitHub activity card
+      //   if (isPerformanceCritical && lowPerformanceMode) return;
 
-        card.addEventListener("mouseenter", () => {
-          // Find the pseudo-element highlight if present
-          const highlightEl = card.querySelector(".highlight-effect");
+      //   card.addEventListener("mouseenter", () => {
+      //     // Find the pseudo-element highlight if present
+      //     const highlightEl = card.querySelector(".highlight-effect");
 
-          gsap.to(card, {
-            scale: isPerformanceCritical ? 1.01 : 1.03, // Reduced scale for GitHub activity
-            boxShadow: isPerformanceCritical
-              ? "0 10px 25px rgba(0, 0, 204, 0.15)"
-              : "0 15px 40px rgba(0, 0, 204, 0.2)",
-            y: isPerformanceCritical ? -4 : -8, // Reduced movement for GitHub activity
-            duration: isPerformanceCritical ? 0.4 : 0.5,
-            ease: "power2.out",
-          });
+      //     gsap.to(card, {
+      //       scale: isPerformanceCritical ? 1.01 : 1.03, // Reduced scale for GitHub activity
+      //       boxShadow: isPerformanceCritical
+      //         ? "0 10px 25px rgba(0, 0, 204, 0.15)"
+      //         : "0 15px 40px rgba(0, 0, 204, 0.2)",
+      //       y: isPerformanceCritical ? -4 : -8, // Reduced movement for GitHub activity
+      //       duration: isPerformanceCritical ? 0.4 : 0.5,
+      //       ease: "power2.out",
+      //     });
 
-          // Add subtle highlight animation
-          if (highlightEl && !isPerformanceCritical) {
-            gsap.to(highlightEl, {
-              opacity: 0.6,
-              duration: 0.4,
-            });
-          }
+      //     // Add subtle highlight animation
+      //     if (highlightEl && !isPerformanceCritical) {
+      //       gsap.to(highlightEl, {
+      //         opacity: 0.6,
+      //         duration: 0.4,
+      //       });
+      //     }
 
-          // Apply rotation only for non-performance-critical elements
-          if (!isPerformanceCritical) {
-            // Calculate rotation based on card position relative to viewport center
-            const rect = card.getBoundingClientRect();
-            const cardCenterX = rect.left + rect.width / 2;
-            const windowCenterX = window.innerWidth / 2;
-            const rotationY = (cardCenterX - windowCenterX) * 0.008; // Reduced intensity
+      //     // Apply rotation only for non-performance-critical elements
+      //     if (!isPerformanceCritical) {
+      //       // Calculate rotation based on card position relative to viewport center
+      //       const rect = card.getBoundingClientRect();
+      //       const cardCenterX = rect.left + rect.width / 2;
+      //       const windowCenterX = window.innerWidth / 2;
+      //       const rotationY = (cardCenterX - windowCenterX) * 0.008; // Reduced intensity
 
-            gsap.to(card, {
-              rotationY: rotationY,
-              rotationX: -1.5, // Reduced intensity
-              duration: 0.5,
-              ease: "power3.out",
-            });
-          }
-        });
+      //       gsap.to(card, {
+      //         rotationY: rotationY,
+      //         rotationX: -1.5, // Reduced intensity
+      //         duration: 0.5,
+      //         ease: "power3.out",
+      //       });
+      //     }
+      //   });
 
-        card.addEventListener("mousemove", (e) => {
-          // Skip intensive mousemove animations for performance-critical elements
-          if (isPerformanceCritical) return;
+      //   card.addEventListener("mousemove", (e) => {
+      //     // Skip intensive mousemove animations for performance-critical elements
+      //     if (isPerformanceCritical) return;
 
-          // More natural and responsive mouse movement
-          const rect = card.getBoundingClientRect();
-          const mouseX = e.clientX - rect.left;
-          const mouseY = e.clientY - rect.top;
+      //     // More natural and responsive mouse movement
+      //     const rect = card.getBoundingClientRect();
+      //     const mouseX = e.clientX - rect.left;
+      //     const mouseY = e.clientY - rect.top;
 
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
+      //     const centerX = rect.width / 2;
+      //     const centerY = rect.height / 2;
 
-          // Reduce rotation intensity for more subtle effect
-          const rotateY =
-            ((mouseX - centerX) / 35) * Math.min(1, rect.width / 500);
-          const rotateX =
-            ((centerY - mouseY) / 35) * Math.min(1, rect.height / 500);
+      //     // Reduce rotation intensity for more subtle effect
+      //     const rotateY =
+      //       ((mouseX - centerX) / 35) * Math.min(1, rect.width / 500);
+      //     const rotateX =
+      //       ((centerY - mouseY) / 35) * Math.min(1, rect.height / 500);
 
-          gsap.to(card, {
-            rotateY: rotateY,
-            rotateX: rotateX,
-            duration: 0.4,
-            ease: "power1.out", // Smoother response
-            overwrite: "auto", // Prevent animation queue buildup
-          });
+      //     gsap.to(card, {
+      //       rotateY: rotateY,
+      //       rotateX: rotateX,
+      //       duration: 0.4,
+      //       ease: "power1.out", // Smoother response
+      //       overwrite: "auto", // Prevent animation queue buildup
+      //     });
 
-          // Add subtle highlight following cursor
-          const highlightEl = card.querySelector(".highlight-effect");
-          if (highlightEl) {
-            gsap.to(highlightEl, {
-              x: mouseX,
-              y: mouseY,
-              duration: 0.3,
-              ease: "power1.out",
-            });
-          }
-        });
+      //     // Add subtle highlight following cursor
+      //     const highlightEl = card.querySelector(".highlight-effect");
+      //     if (highlightEl) {
+      //       gsap.to(highlightEl, {
+      //         x: mouseX,
+      //         y: mouseY,
+      //         duration: 0.3,
+      //         ease: "power1.out",
+      //       });
+      //     }
+      //   });
 
-        card.addEventListener("mouseleave", () => {
-          // Smoother return to original state
-          gsap.to(card, {
-            scale: 1,
-            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.08)",
-            y: 0,
-            rotateX: 0,
-            rotateY: 0,
-            duration: isPerformanceCritical ? 0.6 : 0.9, // Faster animation for GitHub activity
-            ease: isPerformanceCritical ? "power2.out" : "power4.out",
-          });
+      //   card.addEventListener("mouseleave", () => {
+      //     // Smoother return to original state
+      //     gsap.to(card, {
+      //       scale: 1,
+      //       boxShadow: "0 5px 15px rgba(0, 0, 0, 0.08)",
+      //       y: 0,
+      //       rotateX: 0,
+      //       rotateY: 0,
+      //       duration: isPerformanceCritical ? 0.6 : 0.9, // Faster animation for GitHub activity
+      //       ease: isPerformanceCritical ? "power2.out" : "power4.out",
+      //     });
 
-          // Fade out highlight for non-performance-critical elements
-          if (!isPerformanceCritical) {
-            const highlightEl = card.querySelector(".highlight-effect");
-            if (highlightEl) {
-              gsap.to(highlightEl, {
-                opacity: 0,
-                duration: 0.6,
-              });
-            }
-          }
-        });
-      });
+      //     // Fade out highlight for non-performance-critical elements
+      //     if (!isPerformanceCritical) {
+      //       const highlightEl = card.querySelector(".highlight-effect");
+      //       if (highlightEl) {
+      //         gsap.to(highlightEl, {
+      //           opacity: 0,
+      //           duration: 0.6,
+      //         });
+      //       }
+      //     }
+      //   });
+      // });
 
       // Add subtle floating effect to selected elements with varied movement
-      if (!lowPerformanceMode) {
-        const floatingElements = [".bento-testimonials button"];
+      // if (!lowPerformanceMode) {
+      //   const floatingElements = [".bento-testimonials button"];
 
-        floatingElements.forEach((selector, index) => {
-          const elements = document.querySelectorAll(selector);
-          elements.forEach((element) => {
-            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-              return;
+      //   floatingElements.forEach((selector, index) => {
+      //     const elements = document.querySelectorAll(selector);
+      //     elements.forEach((element) => {
+      //       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      //         return;
 
-            const delay = index * 0.3 + Math.random() * 0.3;
-            const direction = index % 2 === 0 ? 1 : -1;
-            const amplitude = 3 + Math.random() * 3; // Varied movement amplitude
+      //       const delay = index * 0.3 + Math.random() * 0.3;
+      //       const direction = index % 2 === 0 ? 1 : -1;
+      //       const amplitude = 3 + Math.random() * 3; // Varied movement amplitude
 
-            // Use a more complex animation with rotation
-            gsap.to(element, {
-              y: direction * amplitude,
-              rotation: direction * 0.5, // Very subtle rotation
-              duration: 2.5 + index * 0.4,
-              repeat: -1,
-              yoyo: true,
-              ease: "sine.inOut",
-              delay: delay,
-            });
-          });
-        });
-      }
+      //       // Use a more complex animation with rotation
+      //       gsap.to(element, {
+      //         y: direction * amplitude,
+      //         rotation: direction * 0.5, // Very subtle rotation
+      //         duration: 2.5 + index * 0.4,
+      //         repeat: -1,
+      //         yoyo: true,
+      //         ease: "sine.inOut",
+      //         delay: delay,
+      //       });
+      //     });
+      //   });
+      // }
     }
 
     // Enhanced parallax scroll effect with depth - simplified for performance
-    ScrollTrigger.create({
-      trigger: bentoContainer,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: lowPerformanceMode ? 0.5 : 1.5, // Adjust scrub for performance
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const yPos = (1 - progress) * (lowPerformanceMode ? 25 : 35); // Reduced movement for low-end devices
+    // ScrollTrigger.create({
+    //   trigger: bentoContainer,
+    //   start: "top bottom",
+    //   end: "bottom top",
+    //   scrub: lowPerformanceMode ? 0.5 : 1.5, // Adjust scrub for performance
+    //   onUpdate: (self) => {
+    //     const progress = self.progress;
+    //     const yPos = (1 - progress) * (lowPerformanceMode ? 25 : 35); // Reduced movement for low-end devices
 
-        // Apply different parallax speeds to different elements for depth
-        gsap.to(".bento-container", {
-          y: yPos,
-          ease: "none",
-          overwrite: "auto",
-        });
+    //     // Apply different parallax speeds to different elements for depth
+    //     gsap.to(".bento-container", {
+    //       y: yPos,
+    //       ease: "none",
+    //       overwrite: "auto",
+    //     });
 
-        // Skip additional parallax for nested elements in low performance mode
-        if (!lowPerformanceMode) {
-          gsap.to(".bento-left", {
-            y: yPos * 0.7, // Different speed for layered effect
-            ease: "none",
-            overwrite: "auto",
-          });
+    //     // Skip additional parallax for nested elements in low performance mode
+    //     if (!lowPerformanceMode) {
+    //       gsap.to(".bento-left", {
+    //         y: yPos * 0.7, // Different speed for layered effect
+    //         ease: "none",
+    //         overwrite: "auto",
+    //       });
 
-          gsap.to(".bento-right", {
-            y: yPos * 1.2, // Different speed for layered effect
-            ease: "none",
-            overwrite: "auto",
-          });
-        }
-      },
-    });
+    //       gsap.to(".bento-right", {
+    //         y: yPos * 1.2, // Different speed for layered effect
+    //         ease: "none",
+    //         overwrite: "auto",
+    //       });
+    //     }
+    //   },
+    // });
 
     // Add event listener to pause animations when scrolling for better performance
     let scrollTimeout;
@@ -485,7 +478,7 @@ import Marquee from "./Marquee.astro";
     background: linear-gradient(
       135deg,
       transparent 96%,
-      rgba(0, 0, 204, 0.3) 100%
+      rgba(var(--accent-primary-rgb, 7, 7, 172), 0.3) 100%
     );
     opacity: 0;
     transition: opacity 0.4s ease;
@@ -511,7 +504,7 @@ import Marquee from "./Marquee.astro";
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(0, 0, 204, 0.5),
+      rgba(var(--accent-primary-rgb, 7, 7, 172), 0.5),
       transparent
     );
     opacity: 0;
@@ -537,7 +530,7 @@ import Marquee from "./Marquee.astro";
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(0, 0, 204, 0.15) 0%,
+      rgba(var(--accent-primary-rgb, 7, 7, 172), 0.15) 0%,
       transparent 70%
     );
     opacity: 0;

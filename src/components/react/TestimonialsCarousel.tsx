@@ -80,28 +80,28 @@ export function TestimonialsCarousel({
   return (
     <div
       className={cn(
-        "w-full h-full border border-[#7B7B7B] p-4 flex flex-col  max-w-full overflow-hidden",
+        "w-full h-full border border-[var(--border-color)] p-4 flex flex-col max-w-full overflow-hidden",
         className
       )}
     >
-      <div className=" w-full ">
+      <div className="w-full">
         <div className="overflow-hidden w-full" ref={emblaRef}>
           <div className="flex w-full">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="flex-shrink-0 w-fit p-4 box-border">
+              <div key={index} className="flex-shrink-0 w-fit p-2 box-border">
                 <div className="w-full">
-                  <p className="text-base leading-relaxed text-[#7B7B7B]/80 mb-6 font-mono">
+                  <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-6 font-mono">
                     "{testimonial.content}"
                   </p>
                   <div className="flex items-center">
-                    <div className="w-[36px] h-[36px] rounded-full mr-3 flex items-center justify-center text-base font-bold bg-transparent border border-[#7B7B7B]">
+                    <div className="w-[36px] h-[36px] rounded-full mr-3 flex items-center justify-center text-base font-bold bg-transparent border border-[var(--border-color)]">
                       {testimonial.name.charAt(0)}
                     </div>
                     <div className="text-left">
-                      <h3 className="text-base font-medium m-0 text-black">
+                      <h3 className="text-base font-medium m-0 text-[var(--text-primary)]">
                         {testimonial.name}
                       </h3>
-                      <p className="text-xs text-[#7B7B7B] m-0">
+                      <p className="text-xs text-[var(--text-secondary)] m-0">
                         {testimonial.position}
                       </p>
                     </div>
@@ -118,8 +118,10 @@ export function TestimonialsCarousel({
           <button
             key={index}
             className={cn(
-              "w-2 h-2 rounded-full border border-[#7B7B7B] p-0 cursor-pointer transition-colors duration-300",
-              index === selectedIndex ? "bg-[#0000CC]" : "bg-transparent"
+              "w-2 h-2 rounded-full border border-[var(--border-color)] p-0 cursor-pointer transition-colors duration-300",
+              index === selectedIndex
+                ? "bg-[var(--accent-primary)]"
+                : "bg-transparent"
             )}
             onClick={() => scrollTo(index)}
             aria-label={`Go to testimonial ${index + 1}`}

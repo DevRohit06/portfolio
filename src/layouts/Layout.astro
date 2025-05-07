@@ -9,12 +9,33 @@ interface Props {
   showLoader?: boolean;
   description?: string;
   title?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+  keywords?: string[];
 }
 
 const {
   showLoader = false,
   description = mainMetaData.description,
   title = mainMetaData.title,
+  ogImage = "/images/og.webp",
+  canonicalURL = Astro.url.href,
+  keywords = [
+    "web development",
+    "portfolio",
+    "software engineer",
+    "full stack developer",
+    "Rohit Kushwaha",
+    "rohitk06",
+    "vibe coding",
+    "vibe engineering",
+    "vibe coder",
+    "vibe engineer",
+    "windsurf",
+    "claude",
+    "cusror ai",
+    "openai",
+  ],
 } = Astro.props;
 ---
 
@@ -26,25 +47,74 @@ const {
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <meta
-      name="description"
-      content="Rohit Kushwaha - Software Engineer and Web Developer Portfolio"
+
+    <!-- Enhanced SEO implementation -->
+    <Seo
+      slot="seo"
+      title={title}
+      description={description}
+      openGraph={{
+        basic: {
+          title: title,
+          type: "website",
+          image: ogImage,
+        },
+        optional: {
+          siteName: mainMetaData.title,
+          description: description,
+          locale: "en_US",
+        },
+      }}
+      twitter={{
+        card: "summary_large_image",
+        site: "@rohitk_06",
+        creator: "@rohitk_06",
+        title: title,
+        description: description,
+        image: ogImage,
+      }}
+      extend={{
+        link: [
+          { rel: "canonical", href: canonicalURL },
+          {
+            rel: "alternate",
+            type: "application/rss+xml",
+            href: "/rss.xml",
+            title: "Rohit Kushwaha's Blog RSS Feed",
+          },
+        ],
+        meta: [
+          { name: "author", content: "Rohit Kushwaha" },
+          {
+            name: "theme-color",
+            content: "#202020",
+            media: "(prefers-color-scheme: dark)",
+          },
+          {
+            name: "theme-color",
+            content: "#C9CDD1",
+            media: "(prefers-color-scheme: light)",
+          },
+          ...(Array.isArray(keywords)
+            ? keywords.map((keyword) => ({
+                name: "keywords",
+                content: keyword,
+              }))
+            : []),
+        ],
+      }}
     />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
       rel="stylesheet"
     />
-    <Seo {title} {description} />
-    <meta name="theme-color" content="#C9CDD1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <ClientRouter />
-    <title>{title}</title>
   </head>
-  <body class="page-transition antialiased">
-    {showLoader && <Loader />}
+  <body class="antialiased">
     <main>
       <slot />
     </main>
@@ -64,10 +134,6 @@ const {
     overflow: hidden;
   }
 
-  .page-transition {
-    overflow: hidden;
-  }
-
   main {
     opacity: 1; /* Will be animated by GSAP */
   }
@@ -81,54 +147,91 @@ const {
   // Check if this is the first load of the site during this session
   const isFirstLoad = !sessionStorage.getItem("hasLoadedSite");
 
-  // Initialize animations for page elements
+  // Track if Astro navigation is in progress
+  let isNavigating = false;
+
+  // Theme management - initialize on page load
+  function initTheme() {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    // Set theme based on saved preference or system preference
+    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add("dark-theme");
+    } else {
+      document.documentElement.classList.remove("dark-theme");
+    }
+
+    // Update theme color meta tag
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute(
+        "content",
+        document.documentElement.classList.contains("dark-theme")
+          ? "#202020"
+          : "#C9CDD1"
+      );
+    }
+  }
+
+  // Initialize theme as early as possible
   document.addEventListener("DOMContentLoaded", () => {
-    if (!isFirstLoad) {
-      const loaderWrapper = document.getElementById("loader-wrapper");
-      // If not first load, remove the page-transition class immediately
-      document.body.classList.remove("page-transition");
-    }
-    // The loading animation will be handled by the Loader component
+    // Mark that the site has been loaded once during this session
+    sessionStorage.setItem("hasLoadedSite", "true");
+
+    // Initialize theme
+    initTheme();
+
+    // Track when scrolling is happening to optimize performance
+    let scrollTimeout: string | number | NodeJS.Timeout | undefined;
+    window.addEventListener(
+      "scroll",
+      () => {
+        document.body.classList.add("is-scrolling");
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          document.body.classList.remove("is-scrolling");
+        }, 100);
+      },
+      { passive: true }
+    );
+
+    // Theme toggle handling
+    document.addEventListener("themeChanged", () => {
+      // Force GSAP to refresh any related animations
+      window.dispatchEvent(new Event("resize"));
+    });
   });
 
-  // Handle Astro view transitions
-  document.addEventListener("astro:page-load", () => {
-    // For subsequent page loads, we want to remove any loading classes
-    if (!isFirstLoad) {
-      document.body.classList.remove("page-transition");
-      document.body.classList.remove("loading");
-
-      // Apply simple fade-in for page transitions without the loader
-      const pageElements = document.querySelectorAll(
-        "nav, main, section, footer, .hero-card, .bento, .experience"
-      );
-
-      gsap.fromTo(
-        pageElements,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: "power2.out",
-        }
-      );
-    }
-  });
-
-  // Cleanup animations before navigating away
+  // Handle Astro page transitions
   document.addEventListener("astro:before-preparation", () => {
-    console.log("Preparing for navigation, cleaning up GSAP animations");
+    isNavigating = true;
+
+    // Clean up existing animations to prevent memory leaks
     cleanupGSAPAnimations();
+
+    // Optional: Add page transition out animation
+    gsap.to("main", {
+      opacity: 0.8,
+      duration: 0.2,
+      ease: "power1.out",
+    });
   });
 
-  // Additional failsafe cleanup on any navigation events
+  document.addEventListener("astro:after-preparation", () => {
+    // Preparation done, content is loaded but not yet swapped
+  });
+
   document.addEventListener("astro:after-swap", () => {
     // This runs after the new page content is in the DOM but before it's visible
     cleanupGSAPAnimations();
 
     // Make sure we're not blocking scrolling during transitions
-    document.body.classList.remove("loading");
+    document.body.style.overflow = "";
+    document.body.style.height = "";
+    document.body.style.position = "";
+    document.body.style.width = "";
   });
 </script>

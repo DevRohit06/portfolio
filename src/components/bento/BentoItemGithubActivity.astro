@@ -86,13 +86,12 @@ Astro.response.headers.set("Cache-Control", "public, max-age=86400");
           </svg>
         </Badge>
         <div>
-          <p class="text-xs  text-[#696969] font-semibold">
+          <p class="text-xs  text-[#696969] font-semibold sm:block hidden">
             Last pushed on{" "}
             <span class="">{formatDate(new Date(data.lastPushedAt))}</span>
           </p>
         </div>
       </div>
-      <!-- Use client:visible for lazy loading -->
       <BentoGithubActivityChart {...data} client:visible />
     </div>
   ) : (
@@ -104,21 +103,24 @@ Astro.response.headers.set("Cache-Control", "public, max-age=86400");
 
 <script>
   // Add intersection observer for performance optimizations
-  document.addEventListener('DOMContentLoaded', () => {
-    const bentoGithubCard = document.querySelector('.bento-github-card');
+  document.addEventListener("DOMContentLoaded", () => {
+    const bentoGithubCard = document.querySelector(".bento-github-card");
     if (!bentoGithubCard) return;
-    
+
     // Create an intersection observer to optimize animations when GitHub card is visible
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          bentoGithubCard.setAttribute('data-visible', 'true');
-        } else {
-          bentoGithubCard.setAttribute('data-visible', 'false');
-        }
-      });
-    }, { threshold: 0.1 });
-    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            bentoGithubCard.setAttribute("data-visible", "true");
+          } else {
+            bentoGithubCard.setAttribute("data-visible", "false");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
     observer.observe(bentoGithubCard);
   });
 </script>

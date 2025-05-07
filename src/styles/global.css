@@ -1,13 +1,56 @@
 @font-face {
   font-family: "Roobert Mono";
-  src:
-    url("/fonts/RoobertMonoTRIAL-Regular.woff2") format("woff2"),
-    url("/fonts/RoobertMonoTRIAL-Regular.woff") format("woff"),
-    url("/fonts/RoobertMonoTRIAL-Regular.ttf") format("truetype");
+  src: url("/fonts/RoobertTRIAL-Regular.woff2") format("woff2");
   font-weight: normal;
+}
+@font-face {
+  font-family: "Roobert Mono";
+  src: url("/fonts/RoobertTRIAL-Bold.woff2") format("woff2");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Roobert Mono";
+  src: url("/fonts/RoobertTRIAL-SemiBold.woff2") format("woff2");
+  font-weight: 600;
 }
 
 @import "tailwindcss";
+
+/* Theme Variables */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #c9cdd1;
+  --text-primary: #333333;
+  --text-secondary: #7b7b7b;
+  --accent-primary: #0707ac;
+  --accent-secondary: #000088;
+  --border-color: #7b7b7b;
+  --card-bg: #c9cdd1;
+  --code-bg: rgba(123, 123, 123, 0.1);
+  --blockquote-bg: rgba(7, 7, 172, 0.05);
+  --progress-bar-bg: #0707ac;
+  --accent-primary-rgb: 7, 7, 172;
+  --select-bg: rgba(123, 123, 123, 0.1);
+  --select-hover: rgba(123, 123, 123, 0.2);
+}
+
+:root.dark-theme {
+  --bg-primary: #121212;
+  --bg-secondary: #202020;
+  --text-primary: #e0e0e0;
+  --text-secondary: #c0bebe;
+  --accent-primary: #ff5533;
+  --accent-secondary: #a0a0a0;
+  --border-color: #555555;
+  --card-bg: #202020;
+  --code-bg: rgba(123, 123, 123, 0.2);
+  --blockquote-bg: rgba(123, 123, 123, 0.1);
+  --progress-bar-bg: #ff5533;
+  --accent-primary-rgb: 255, 85, 51;
+  --select-bg: rgba(123, 123, 123, 0.2);
+  --select-hover: rgba(123, 123, 123, 0.3);
+}
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -19,5 +62,31 @@ body {
   font-family: "Roobert Mono", sans-serif;
   /* font-family: "Cascadia Mono", sans-serif; */
   /* font-family: "Playfair Display", serif; */
-  background-color: #c9cdd1;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+/* Custom scrollbar for the page */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--text-secondary);
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body,
+  * {
+    transition: none !important;
+  }
 }
