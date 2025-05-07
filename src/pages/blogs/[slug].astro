@@ -18,7 +18,7 @@ import ThemeChanger from "../../components/svelte/ThemeChanger.svelte";
 export const getStaticPaths = (async () => {
   const blogEntries = await getCollection("blog");
   return blogEntries.map((entry) => ({
-    params: { slug: entry.slug || entry.id },
+    params: { slug: entry.data.slug || entry.id },
     props: { entry },
   }));
 }) satisfies GetStaticPaths;
@@ -70,9 +70,7 @@ const metaDescription = entry.data.description
   : "Read this article by Rohit Kushwaha on web development, software engineering, and tech insights.";
 
 // 9. Use the hero image for social sharing
-const ogImage = entry.data.heroImage
-  ? entry.data.heroImage.src
-  : "/images/og.webp";
+const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
 ---
 
 <script>
@@ -340,7 +338,7 @@ const ogImage = entry.data.heroImage
               <h3 class="text-base font-medium mb-2">Share</h3>
               <div class="flex gap-2">
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(`https://rohitk06.dev/blogs/${entry.slug || entry.id}`)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(`https://rohitk06.dev/blogs/${entry.data.slug || entry.id}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="share-button w-8 h-8 flex items-center justify-center border border-secondary hover:bg-accent hover:text-white hover:border-accent transition-colors"
