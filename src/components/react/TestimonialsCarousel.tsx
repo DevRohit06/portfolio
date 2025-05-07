@@ -80,7 +80,7 @@ export function TestimonialsCarousel({
   return (
     <div
       className={cn(
-        "w-full h-full border border-[var(--border-color)] p-2 flex flex-col max-w-full overflow-hidden",
+        "w-full h-full border border-[var(--border-color)] p-4 flex flex-col max-w-full overflow-hidden",
         className
       )}
     >
