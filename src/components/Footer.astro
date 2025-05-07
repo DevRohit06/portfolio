@@ -3,17 +3,18 @@ import { Image } from "astro:assets";
 import dialogh from "../assets/dialogh-typo.png";
 import Badge from "./Badge.astro";
 import { socials } from "../lib/socials";
+import SocialIcons from "./SocialIcons.astro";
 ---
 
 <footer id="footer" class="footer-section mt-20 mb-2">
   <div
-    class="footer-container w-[90%] md:w-[80%] lg:w-[70%] mx-auto border border-[#7B7B7B] opacity-0 invisible footer-scroll-reveal"
+    class="footer-container w-[90%] md:w-[80%] lg:w-[70%] mx-auto border border-[var(--border-color)] opacity-0 invisible footer-scroll-reveal"
   >
     <!-- Grid containing all sections with their headings and links together -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 footer-grid">
       <!-- Column 1: Rohit Kushwaha -->
       <div
-        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[#7B7B7B] footer-scroll-reveal"
+        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[var(--border-color)] footer-scroll-reveal"
         data-delay="0.1"
       >
         <h2
@@ -24,17 +25,17 @@ import { socials } from "../lib/socials";
         <div class="flex flex-col gap-3 sm:gap-4 footer-links">
           <a
             href="/coming-soon"
-            class="footer-link text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300 footer-magnetic-item"
+            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300 footer-magnetic-item"
             >About me</a
           >
           <a
             href="/coming-soon"
-            class="footer-link text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300 footer-magnetic-item"
+            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300 footer-magnetic-item"
             >Experience</a
           >
           <a
             href="/blogs"
-            class="footer-link text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300 footer-magnetic-item"
+            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300 footer-magnetic-item"
             >Blogs</a
           >
         </div>
@@ -42,7 +43,7 @@ import { socials } from "../lib/socials";
 
       <!-- Column 2: Contact & Socials -->
       <div
-        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[#7B7B7B] footer-scroll-reveal"
+        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[var(--border-color)] footer-scroll-reveal"
         data-delay="0.2"
       >
         <h2 class="footer-heading text-lg sm:text-xl mb-4 split-text">
@@ -53,42 +54,42 @@ import { socials } from "../lib/socials";
             href={socials.linkedIn}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
             >LinkedIn</a
           >
           <a
             href={socials.discord}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
             >Discord</a
           >
           <a
             href={socials.github}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
             >GitHub</a
           >
           <a
             href={socials.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
             >Instagram</a
           >
           <a
             href={socials.mail}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
             >Mail</a
           >
           <a
             href={socials.twitter}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[#0000CC] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
             >X [Twitter]</a
           >
         </div>
@@ -96,18 +97,15 @@ import { socials } from "../lib/socials";
 
       <!-- Column 3: Open Source Projects -->
       <div
-        class="footer-col border-b sm:border-b-0 sm:border-r border-[#7B7B7B] footer-scroll-reveal"
+        class="footer-col border-b sm:border-b-0 sm:border-r border-[var(--border-color)] footer-scroll-reveal"
         data-delay="0.3"
       >
         <div class="p-4 sm:p-6 md:p-8">
-          <!-- <h3 class="footer-heading text-lg sm:text-xl font-medium split-text">
-            Open Source
-          </h3> -->
           <p class="footer-desc text-sm sm:text-base">Open Source on Github</p>
           <div class="mt-4 sm:mt-4 flex flex-col gap-3">
             <a
               href="https://github.com/devrohit06/portfolio/issues/new"
-              class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[#0000CC] font-medium group flex items-center"
+              class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[var(--accent-primary)] font-medium group flex items-center"
             >
               <span>Check Out</span>
               <span
@@ -117,21 +115,21 @@ import { socials } from "../lib/socials";
             </a>
           </div>
         </div>
-        <div class="border-t border-[#7B7B7B] p-4 sm:p-6 md:p-8">
+        <div class="border-t border-[var(--border-color)] p-4 sm:p-6 md:p-8">
           <div class="flex flex-col gap-3">
             <h3 class="text-base sm:text-lg font-medium">Contribute</h3>
-            <p class="text-xs sm:text-sm text-[#4B4B4B] mb-2">
+            <p class="text-xs sm:text-sm text-[var(--text-secondary)] mb-2">
               Want to contribute to this project?
             </p>
             <div class="flex justify-between items-center">
               <a
                 href="https://github.com/devrohit06/portfolio/fork"
-                class="footer-link-subtle text-xs sm:text-sm text-[#5C5C5C] hover:text-[#7B7B7B] transition-colors duration-300"
+                class="footer-link-subtle text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300"
                 >Fork this repo</a
               >
               <a
                 href="https://github.com/devrohit06/portfolio/issues/new"
-                class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[#0000CC] font-medium group flex items-center"
+                class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[var(--accent-primary)] font-medium group flex items-center"
               >
                 <span>Create Issue</span>
                 <span
@@ -146,14 +144,18 @@ import { socials } from "../lib/socials";
 
       <!-- Column 4: Core Team -->
       <div
-        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[#7B7B7B] footer-scroll-reveal"
+        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[var(--border-color)] footer-scroll-reveal"
         data-delay="0.3"
       >
         <div
           class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4 footer-dialogh-header"
         >
           <div class="footer-logo">
-            <Image src={dialogh} class="h-6 sm:h-8 w-fit" alt="dialogh" />
+            <Image
+              src={dialogh}
+              class="h-6 sm:h-8 w-fit dark:invert"
+              alt="dialogh"
+            />
           </div>
           <div class="footer-badge">
             <Badge text="TECH COMMUNITY" size="sm" />
@@ -168,12 +170,12 @@ import { socials } from "../lib/socials";
         >
           <a
             href="https://dialogh.in"
-            class="footer-link-subtle text-xs sm:text-sm text-[#5C5C5C]"
+            class="footer-link-subtle text-xs sm:text-sm text-[var(--text-secondary)]"
             >dialogh.in</a
           >
           <a
             href="https://dialogh.in"
-            class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[#0000CC] font-medium"
+            class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[var(--accent-primary)] font-medium"
             >Join Now →</a
           >
         </div>
@@ -182,7 +184,7 @@ import { socials } from "../lib/socials";
 
     <!-- Copyright row -->
     <div
-      class="footer-copyright border-t border-[#7B7B7B] p-3 sm:p-4 flex justify-between items-center footer-scroll-reveal"
+      class="footer-copyright border-t border-[var(--border-color)] p-3 sm:p-4 flex justify-between items-center footer-scroll-reveal"
       data-delay="0.4"
     >
       <span class="footer-copyright-text text-xs sm:text-sm"
@@ -193,20 +195,6 @@ import { socials } from "../lib/socials";
         class="footer-website-link text-xs sm:text-sm flex items-center group footer-magnetic-item"
       >
         <span class="mr-1">rohitk06.dev</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:rotate-12"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"
-          ></path>
-        </svg>
       </a>
     </div>
   </div>
@@ -320,7 +308,7 @@ import { socials } from "../lib/socials";
       });
 
       // Add magnetic effect to links
-      createMagneticEffect(".footer-magnetic-item", 0.3);
+      // createMagneticEffect(".footer-magnetic-item", 0.3);
 
       // Create scene for advanced animations
       createScene(
@@ -353,61 +341,6 @@ import { socials } from "../lib/socials";
       );
 
       // Add hover effects like those in Bento.astro
-      const footerCols = document.querySelectorAll(".footer-col");
-      footerCols.forEach((col) => {
-        col.addEventListener("mouseenter", () => {
-          gsap.to(col, {
-            scale: 1.02,
-            boxShadow: "0 15px 35px rgba(0, 0, 0, 0.15)",
-            y: -5,
-            duration: 0.4,
-            ease: "power2.out",
-          });
-
-          const rect = col.getBoundingClientRect();
-          const cardCenterX = rect.left + rect.width / 2;
-          const windowCenterX = window.innerWidth / 2;
-          const rotationY = (cardCenterX - windowCenterX) * 0.01;
-
-          gsap.to(col, {
-            rotationY: rotationY,
-            rotationX: -2,
-            duration: 0.4,
-            ease: "power2.out",
-          });
-        });
-
-        col.addEventListener("mousemove", (e) => {
-          const rect = col.getBoundingClientRect();
-          const mouseX = e.clientX - rect.left;
-          const mouseY = e.clientY - rect.top;
-
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-
-          const rotateY = (mouseX - centerX) / 30;
-          const rotateX = (centerY - mouseY) / 30;
-
-          gsap.to(col, {
-            rotateY: rotateY,
-            rotateX: rotateX,
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-
-        col.addEventListener("mouseleave", () => {
-          gsap.to(col, {
-            scale: 1,
-            boxShadow: "none",
-            y: 0,
-            rotateX: 0,
-            rotateY: 0,
-            duration: 0.7,
-            ease: "elastic.out(1, 0.5)",
-          });
-        });
-      });
     }
 
     // Add parallax scroll effect
@@ -478,7 +411,7 @@ import { socials } from "../lib/socials";
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(0, 0, 204, 0.3),
+      rgba(var(--accent-primary-rgb, 0, 0, 204), 0.3),
       transparent
     );
     opacity: 0;
