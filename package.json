@@ -12,6 +12,7 @@
     "@astrojs/mdx": "^4.2.6",
     "@astrojs/node": "^9.2.1",
     "@astrojs/react": "^4.2.7",
+    "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.3.1",
     "@astrojs/svelte": "^7.0.13",
     "@astrojs/vercel": "^8.1.4",
