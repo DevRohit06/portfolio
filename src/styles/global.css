@@ -33,6 +33,13 @@
   --accent-primary-rgb: 7, 7, 172;
   --select-bg: rgba(123, 123, 123, 0.1);
   --select-hover: rgba(123, 123, 123, 0.2);
+
+  /* GitHub activity chart colors - light mode */
+  --github-activity-level0: #f0f0f0;
+  --github-activity-level1: #d3ddee;
+  --github-activity-level4: #9db3d9;
+  --github-activity-level8: #3939bd;
+  --github-activity-level12: #0707ac;
 }
 
 :root.dark-theme {
@@ -50,6 +57,13 @@
   --accent-primary-rgb: 255, 85, 51;
   --select-bg: rgba(123, 123, 123, 0.2);
   --select-hover: rgba(123, 123, 123, 0.3);
+
+  /* GitHub activity chart colors - dark mode */
+  --github-activity-level0: #1a2233;
+  --github-activity-level1: #2d3342;
+  --github-activity-level4: #ff7a60;
+  --github-activity-level8: #ff5533;
+  --github-activity-level12: #ff3311;
 }
 
 * {

@@ -13,52 +13,45 @@ const getDateProps = () => {
   return { startDate: oneYearAgo, endDate: today };
 };
 
-// Function to get dark mode colors with high contrast
-const getDarkModeColors = () => ({
-  0: "#1a2233", // Darker background (no contributions)
-  1: "#1d344d", // Very low activity
-  4: "#2d6fa3", // More vibrant blue for level 4
-  8: "#30a5e8", // Bright blue for level 8
-  12: "#78d3ff", // Very light bright blue for highest activity
-});
-
-// Function to get light mode colors based on accent
-const getLightModeColors = (accentPrimary = "#3939bd") => {
-  const getShade = (hexColor: string, percent: number) => {
-    // Convert hex to RGB
-    let r = parseInt(hexColor.slice(1, 3), 16);
-    let g = parseInt(hexColor.slice(3, 5), 16);
-    let b = parseInt(hexColor.slice(5, 7), 16);
-
-    // Adjust brightness
-    if (percent > 0) {
-      // Brighten
-      r = Math.min(255, Math.floor(r + (255 - r) * percent));
-      g = Math.min(255, Math.floor(g + (255 - g) * percent));
-      b = Math.min(255, Math.floor(b + (255 - b) * percent));
-    } else {
-      // Darken
-      const absPercent = Math.abs(percent);
-      r = Math.floor(r * (1 - absPercent));
-      g = Math.floor(g * (1 - absPercent));
-      b = Math.floor(b * (1 - absPercent));
-    }
-
-    // Convert back to hex
-    return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
-  };
-
-  return {
-    0: "#f0f0f0", // No contributions
-    1: getShade(accentPrimary, 0.85), // Very light shade
-    4: getShade(accentPrimary, 0.4), // Light shade
-    8: getShade(accentPrimary, 0), // Base accent color
-    12: getShade(accentPrimary, -0.3), // Dark shade
-  };
-};
-
 // Check if code is running in browser
 const isBrowser = typeof window !== "undefined";
+
+// Get CSS variable with fallback
+const getCSSVariable = (name: string, fallback: string): string => {
+  if (!isBrowser) return fallback;
+
+  try {
+    const value = window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue(name)
+      .trim();
+    return value || fallback;
+  } catch (e) {
+    console.warn(`Error getting CSS variable ${name}:`, e);
+    return fallback;
+  }
+};
+
+// Function to get colors from CSS variables
+const getChartColors = (isDark: boolean) => {
+  if (isDark) {
+    return {
+      0: getCSSVariable("--github-activity-level0", "#1a2233"),
+      1: getCSSVariable("--github-activity-level1", "#2d3342"),
+      4: getCSSVariable("--github-activity-level4", "#ff7a60"),
+      8: getCSSVariable("--github-activity-level8", "#ff5533"),
+      12: getCSSVariable("--github-activity-level12", "#ff3311"),
+    };
+  } else {
+    return {
+      0: getCSSVariable("--github-activity-level0", "#f0f0f0"),
+      1: getCSSVariable("--github-activity-level1", "#d3ddee"),
+      4: getCSSVariable("--github-activity-level4", "#9db3d9"),
+      8: getCSSVariable("--github-activity-level8", "#3939bd"),
+      12: getCSSVariable("--github-activity-level12", "#0707AC"),
+    };
+  }
+};
 
 // Optimize rect rendering with throttling
 const renderRect =
@@ -111,78 +104,66 @@ const BentoGithubActivity = (props: Props) => {
   const [renderedOnce, setRenderedOnce] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [forceRender, setForceRender] = useState(0);
+  const [panelColors, setPanelColors] = useState(getChartColors(false));
 
   // Get current theme - safely handles server-side rendering
   const getCurrentTheme = useCallback(() => {
     if (!isBrowser) return false;
-    return document.documentElement.getAttribute("data-theme") === "dark";
+
+    // Check both the data-theme attribute and the dark-theme class
+    const hasDataTheme =
+      document.documentElement.getAttribute("data-theme") === "dark";
+    const hasDarkClass =
+      document.documentElement.classList.contains("dark-theme");
+
+    return hasDataTheme || hasDarkClass;
   }, []);
 
-  // Create memoized panelColors getter that's safe for SSR
-  const getPanelColors = useCallback(() => {
-    let accentPrimary = "#3939bd"; // Default accent color
-
-    // Only try to access CSS variables in the browser
-    if (isBrowser) {
-      try {
-        const cssAccent = window
-          .getComputedStyle(document.documentElement)
-          .getPropertyValue("--accent-primary")
-          .trim();
-
-        if (cssAccent && /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(cssAccent)) {
-          accentPrimary = cssAccent;
-        }
-      } catch (e) {
-        console.warn("Error accessing CSS variables:", e);
-      }
-    }
-
-    if (isDarkMode) {
-      return getDarkModeColors();
-    } else {
-      return getLightModeColors(accentPrimary);
-    }
-  }, [isDarkMode]);
-
-  // Update theme and force re-render when theme changes - only run in browser
+  // Update theme and colors when needed
   useEffect(() => {
     if (!isBrowser) return;
 
     // Initial theme check
-    setIsDarkMode(getCurrentTheme());
+    const isDark = getCurrentTheme();
+    setIsDarkMode(isDark);
+    setPanelColors(getChartColors(isDark));
 
-    const updateThemeAndRerender = () => {
+    const updateThemeAndColors = () => {
       const newDarkMode = getCurrentTheme();
       if (newDarkMode !== isDarkMode) {
         setIsDarkMode(newDarkMode);
+        setPanelColors(getChartColors(newDarkMode));
         // Force a re-render of the component
         setForceRender((prev) => prev + 1);
       }
     };
 
     // Listen for theme change events
-    document.addEventListener("themeChanged", updateThemeAndRerender);
+    document.addEventListener("themeChanged", updateThemeAndColors);
 
-    // Also observe data-theme attribute changes on document.documentElement
+    // Also observe data-theme attribute and class changes on document.documentElement
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
-          mutation.type === "attributes" &&
-          mutation.attributeName === "data-theme"
+          (mutation.type === "attributes" &&
+            (mutation.attributeName === "data-theme" ||
+              mutation.attributeName === "class")) ||
+          (mutation.type === "childList" &&
+            mutation.target === document.documentElement)
         ) {
-          updateThemeAndRerender();
+          updateThemeAndColors();
         }
       });
     });
 
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme"],
+      attributeFilter: ["data-theme", "class"],
+      childList: true,
     });
 
     return () => {
-      document.removeEventListener("themeChanged", updateThemeAndRerender);
+      document.removeEventListener("themeChanged", updateThemeAndColors);
       observer.disconnect();
     };
   }, [getCurrentTheme, isDarkMode]);
@@ -208,9 +189,6 @@ const BentoGithubActivity = (props: Props) => {
 
     return () => observer.disconnect();
   }, [renderedOnce]);
-
-  // Get current panel colors based on theme
-  const panelColors = getPanelColors();
 
   return (
     <div
