@@ -70,6 +70,13 @@ const uniqueId = `text-reveal-${Math.random().toString(36).substring(2, 9)}`;
     window.addEventListener("load", initTextReveal);
   }
 
+  // Utility function to decode HTML entities
+  function decodeHtmlEntities(text) {
+    const textArea = document.createElement("textarea");
+    textArea.innerHTML = text;
+    return textArea.value;
+  }
+
   function initTextReveal() {
     const textRevealElements = document.querySelectorAll(".text-reveal");
 
@@ -95,7 +102,7 @@ const uniqueId = `text-reveal-${Math.random().toString(36).substring(2, 9)}`;
       const once = element.getAttribute("data-once") === "true";
 
       // Create a custom SplitText-like functionality since SplitText is a premium GSAP plugin
-      let textContent = element.innerHTML.trim();
+      let textContent = decodeHtmlEntities(element.innerHTML.trim());
       let splitContent = "";
 
       if (splitBy === "chars") {

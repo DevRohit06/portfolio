@@ -35,22 +35,22 @@ type MetaData = z.output<typeof metaDataSchema>;
 type MetaDataInput = z.input<typeof metaDataSchema>;
 
 const _mainMetaData: MetaDataInput = {
-  title: "Rohit Kushwaha",
+  title: "Hey, I'm Rohit Kushwaha | AI Enthusiast & Creative Developer",
   description:
-    "An ordnary developer with an extraordinary passion for learning.{n}Join me on my journey as I explore the world of technology, one project at a time.{nMd}From coding challenges to innovative solutions, I’m here to share my experiences and insights.",
+    "Hi there! I'm Rohit, crafting digital vibes with AI and modern tech.{n}I love building smart, intuitive experiences that merge AI with React, Svelte, and Node.js.{nMd}When I'm not coding, I'm exploring how human creativity and artificial intelligence can create something amazing together.",
 };
 export const mainMetaData = metaDataSchema.parse(_mainMetaData);
 
 const _projectMetaData: MetaDataInput = {
-  title: "Milestones in the{n}learning journey",
+  title: "Cool stuff I've built{n}along the way",
   description:
-    "Each project marks a step forward, showcasing my growth and journey as a developer.{nMd}Explore how I’ve tackled challenges and built solutions along the way.",
+    "Every project here tells a story about a problem I wanted to solve.{nMd}Dig in to see how I've tackled interesting challenges and what I've learned from them!",
 };
 export const projectMetaData: MetaData = metaDataSchema.parse(_projectMetaData);
 
 const _blogMetaData: MetaDataInput = {
   title: "Learning, Building, and{nSm}Documenting",
   description:
-    "Insights and experiences from my journey as a developer—exploring ideas,{nSm}overcoming challenges, and sharing lessons learned along the way.",
+    "Welcome to my digital garden! Here I share what I'm learning, building, and thinking about.{nSm}Join me as I navigate the ups and downs of development and share the cool stuff I discover.",
 };
 export const blogMetaData: MetaData = metaDataSchema.parse(_blogMetaData);

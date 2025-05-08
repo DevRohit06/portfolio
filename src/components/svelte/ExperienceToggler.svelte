@@ -29,7 +29,7 @@
       company: "Qbtrix",
       duration: "DEC 2024 -  PRESENT",
       description:
-        "Continuing my journey with Qbtrix, working on various projects and enhancing my skills.",
+        "I'm currently creating cool stuff at Qbtrix! Every day brings new challenges that push my skills to the next level. I love how each project teaches me something new about building intuitive digital experiences.",
       isActive: true,
       links: [
         { id: 1, title: "Qbtrix", url: "https://qbtrix.com" },
@@ -43,7 +43,7 @@
       company: "Qbtrix",
       duration: "DEC 2023 -  DEC 2024",
       description:
-        "Built a complete frontend of Interacly.com, also various other projects, experimented with various technologies, and learned a lot about the industry.",
+        "This was where I really found my groove! I built the entire frontend for Interacly.com (check it out!) and got to play with tons of exciting tech. Learned so much about how real teams ship amazing products together.",
       isActive: false,
       links: [
         { id: 1, title: "Qbtrix", url: "https://qbtrix.com" },
@@ -57,7 +57,7 @@
       company: "Freelance",
       duration: "2020 - 2023",
       description:
-        "Started my professional journey with frontend development focusing on HTML, CSS, and JavaScript.",
+        "My first steps into the coding world! Started with the basics - HTML, CSS, and JavaScript - building small websites for local businesses. Every project was both terrifying and thrilling, but that's how I caught the development bug!",
       isActive: false,
     },
   ];

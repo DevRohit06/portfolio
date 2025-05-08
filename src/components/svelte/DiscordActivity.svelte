@@ -583,8 +583,11 @@
             >
               {#if currentActivity.type === ACTIVITY_TYPES.LISTENING}
                 {currentActivity.state || "Unknown Artist"}
-              {:else if currentActivity.details}
-                {currentActivity.details}
+              {:else if currentActivity.type === ACTIVITY_TYPES.PLAYING}
+                <p>
+                  {currentActivity.details || ""} - {currentActivity.state}
+                </p>
+                <!-- {currentActivity.state || "Unknown Game"} -->
               {:else if currentActivity.state}
                 {currentActivity.state}
               {/if}
@@ -867,7 +870,6 @@
   .activity-subtitle:hover {
     overflow: visible;
     white-space: nowrap;
-    animation: scroll-text 8s linear infinite;
   }
 
   @keyframes scroll-text {

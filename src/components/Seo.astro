@@ -1,5 +1,6 @@
 ---
 import { type Props as SEOProps, SEO as AstroSEO } from "astro-seo";
+import { getBaseUrl } from "../lib/baseUrl";
 
 import { mainMetaData } from "../lib/metaData";
 
@@ -7,9 +8,11 @@ interface Props extends SEOProps {
   imageUrl?: string;
   type?: "article" | "website" | "profile";
   slot: "seo";
+  canonicalPath?: string;
 }
 
 const { props } = Astro;
+const baseUrl = getBaseUrl();
 
 const metaData = {
   title: props.title ?? mainMetaData.title,
@@ -17,15 +20,24 @@ const metaData = {
   image: props.imageUrl ?? `images/og.webp`,
 };
 
+// Build canonical URL
+const canonicalUrl = props.canonicalPath
+  ? new URL(props.canonicalPath, baseUrl).toString()
+  : Astro.url.pathname === "/"
+    ? baseUrl
+    : new URL(Astro.url.pathname, baseUrl).toString();
+
 const defaultProps: SEOProps = {
   title: metaData.title,
   titleDefault: metaData.title,
   description: metaData.description,
+  canonical: canonicalUrl,
   openGraph: {
     basic: {
       image: metaData.image,
       title: metaData.title,
       type: props.type ?? "website",
+      url: baseUrl,
       ...props.openGraph?.basic,
     },
     optional: {
@@ -42,9 +54,67 @@ const defaultProps: SEOProps = {
     image: metaData.image,
     imageAlt: metaData.title,
   },
+  extend: {
+    meta: [
+      { name: "author", content: "Rohit Kushwaha" },
+      {
+        name: "keywords",
+        content:
+          "Rohit Kushwaha, AI Vibe Engineer, Vibe Engineering, AI Developer, Full Stack Developer, Artificial Intelligence, Human-AI Collaboration, React, Svelte, Node.js",
+      },
+      ...(props.extend?.meta || []),
+    ],
+    link: [...(props.extend?.link || [])],
+  },
 };
 
 const combinedProps = { ...defaultProps, ...props };
 ---
 
 <AstroSEO {...combinedProps} />
+
+<!-- Add JSON-LD structured data for Person -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Rohit Kushwaha",
+    url: baseUrl,
+    image: `${baseUrl}/images/rohit.webp`,
+    jobTitle: "AI Vibe Engineer & Full Stack Developer",
+    sameAs: [
+      "https://github.com/devrohit06",
+      "https://linkedin.com/in/rohitk06",
+      "https://twitter.com/rohitk_06",
+    ],
+    description:
+      "AI Vibe Engineer specializing in creating intelligent digital experiences through human-AI collaboration and modern web technologies.",
+    knowsAbout: [
+      "Artificial Intelligence",
+      "Web Development",
+      "Human-AI Collaboration",
+      "User Experience Design",
+      "Vibe Engineering",
+    ],
+  })}
+/>
+
+<!-- Add JSON-LD structured data for WebSite -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: baseUrl,
+    name: mainMetaData.title,
+    description: mainMetaData.description,
+    keywords:
+      "AI Vibe Engineer, Rohit Kushwaha, Artificial Intelligence, Human-AI Collaboration",
+    author: {
+      "@type": "Person",
+      name: "Rohit Kushwaha",
+      jobTitle: "AI Vibe Engineer",
+    },
+  })}
+/>

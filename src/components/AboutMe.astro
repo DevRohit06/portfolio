@@ -8,15 +8,15 @@ interface Props {
 
 const { className = "" } = Astro.props;
 
-// Personal description sections to be revealed in sequence
+// Personal description sections with enhanced AI and vibe engineering focus
 const introSection =
-  "I'm a vibe engineer who transforms conversations into code and code into conversations, crafting intuitive digital experiences that resonate with users.";
+  "Hey there! I'm Rohit, and I love turning AI-human conversations into digital experiences that actually feel good to use. Think of me as the person who makes tech feel less robotic and more like talking to a friend.";
 const skillsSection =
-  "My toolkit thrives on Svelte, SvelteKit, and Tailwind CSS, complemented by React, Next.js, TypeScript, and Node.js to build performant and elegant applications.";
+  "I'm a bit of a tech mixologist—combining AI with Svelte, React, and Node.js to build apps that understand what you're trying to do, not just what you're typing. The kind of stuff that makes you go 'finally, something that gets me!'";
 const interestsSection =
-  "Beyond traditional coding, I embrace the vibe engineering philosophy—focusing on intent rather than syntax, and giving in to the exponential possibilities of modern development.";
+  "What really gets me excited? It's what I call 'vibe engineering'—making technology that doesn't just work, but feels right. I spend my days exploring how humans and AI can create amazing things together that neither could build alone.";
 const valuesSection =
-  "I value intuitive design, efficient architecture, and solving complex problems with elegant solutions that prioritize both developer experience and user delight.";
+  "I believe technology should understand you, not the other way around. My goal is to build digital experiences that feel as natural as talking to a friend—systems that respond to your emotions and intentions, not just your commands.";
 
 // SEO-friendly content summary from the sections above
 const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${valuesSection}`;
@@ -42,6 +42,7 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
       splitBy="chars"
       stagger={0.03}
       from="bottom"
+      itemprop="name"
     />
   </div>
 
@@ -117,10 +118,11 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
         <p
           class="text-sm sm:text-base mt-4 education-desc text-[var(--text-secondary)]"
         >
-          Cultivating a strong theoretical foundation in computer science while
-          applying practical skills to real-world problems. Focusing on
-          algorithms, data structures, and advanced programming concepts to
-          complement my professional development as a vibe engineer.
+          College is where I'm diving deeper into the "why" behind the code I
+          write. While I'm busy building real projects in my spare time, my
+          classes help me understand the foundations that make everything tick.
+          I'm especially into algorithms and data structures—they're like the
+          secret recipes that make good software great!
         </p>
       </div>
       <div
@@ -139,7 +141,7 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
   >
     <TextReveal
       element="h3"
-      text="Let's Connect"
+      text="Let's Chat & Create Something Cool Together!"
       className="text-xl font-medium"
       splitBy="chars"
       stagger={0.03}
@@ -148,7 +150,7 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
     />
 
     <TextReveal
-      text="I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision."
+      text="Got a wild idea or a tricky problem? Drop me a line! I'm always up for brainstorming over virtual coffee or diving into exciting new projects."
       className="text-sm sm:text-base text-[var(--text-secondary)]"
       splitBy="words"
       stagger={0.02}
@@ -161,20 +163,29 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
       class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-[var(--border-color)] hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 cta-button"
       itemprop="email"
     >
-      Get in Touch
+      Say Hello 👋
     </a>
   </div>
   <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10">
   </div>
 
-  <!-- Hidden SEO metadata -->
+  <!-- Enhanced SEO metadata -->
   <meta itemprop="name" content="Rohit Kushwaha" />
-  <meta itemprop="jobTitle" content="Web Developer & Software Engineer" />
+  <meta
+    itemprop="jobTitle"
+    content="Full Stack Developer & Software Engineer"
+  />
   <meta itemprop="description" content={bioSummary} />
   <meta
     itemprop="knowsAbout"
     content="Web Development, Svelte, SvelteKit, React, Next.js, TypeScript, Node.js, Tailwind CSS"
   />
+  <meta itemprop="url" content="https://www.yourportfolio.com" />
+  <meta itemprop="birthPlace" content="India" />
+  <meta itemprop="nationality" content="Indian" />
+  <link itemprop="sameAs" href="https://github.com/rohitkushwaha0" />
+  <link itemprop="sameAs" href="https://linkedin.com/in/rohit-kushwaha" />
+  <link itemprop="sameAs" href="https://twitter.com/rohitk_06" />
 </div>
 
 <style>
