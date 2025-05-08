@@ -1,0 +1,73 @@
+---
+// ThreeBackground.astro - Wrapper for the Three.js background component
+
+import ThreeBackground from "./react/ThreeBackground";
+---
+
+<script>
+  // Track theme changes to provide to the React component
+  let isDarkTheme = document.documentElement.classList.contains("dark-theme");
+
+  // Create a custom event for the component to listen to
+  const themeChangeEvent = new CustomEvent("themechange", {
+    detail: { isDarkTheme },
+  });
+
+  // Dispatch the event on the document
+  document.dispatchEvent(themeChangeEvent);
+
+  // Setup mutation observer to watch for theme changes
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === "class") {
+        const newIsDarkTheme =
+          document.documentElement.classList.contains("dark-theme");
+        if (newIsDarkTheme !== isDarkTheme) {
+          isDarkTheme = newIsDarkTheme;
+          document.dispatchEvent(
+            new CustomEvent("themechange", {
+              detail: { isDarkTheme },
+            })
+          );
+        }
+      }
+    });
+  });
+
+  // Start observing when document is ready
+  document.addEventListener("DOMContentLoaded", () => {
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  });
+
+  // Also listen for the custom themeChanged event from your theme toggle
+  document.addEventListener("themeChanged", () => {
+    const newIsDarkTheme =
+      document.documentElement.classList.contains("dark-theme");
+    if (newIsDarkTheme !== isDarkTheme) {
+      isDarkTheme = newIsDarkTheme;
+      document.dispatchEvent(
+        new CustomEvent("themechange", {
+          detail: { isDarkTheme },
+        })
+      );
+    }
+  });
+</script>
+
+<div id="three-background-container">
+  <ThreeBackground client:load client:only="react" />
+</div>
+<style>
+  #three-background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 50;
+    overflow: hidden;
+  }
+</style>

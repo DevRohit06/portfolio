@@ -14,6 +14,7 @@ import LiveClock from "../components/svelte/LiveClock.svelte";
 import TextReveal from "../components/TextReveal.astro";
 import AboutMe from "../components/AboutMe.astro";
 import Projects from "../components/Projects.astro";
+import ThreeBackground from "../components/ThreeBackground.astro";
 // Set showLoader to true only for the first visit in a session
 // We'll handle this client-side to avoid hydration issues
 const showLoader = true;
@@ -82,8 +83,7 @@ const jsonLd = {
 
   // Create smoother scroll with Lenis - with menu toggle protection
   let lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // improved easing
+    // improved easing
   });
 
   // Store the current scroll position for menu toggle operations
@@ -147,14 +147,18 @@ const jsonLd = {
   keywords={keywords}
   showLoader={showLoader}
 >
-  <div class="page-content relative">
+  <div class="page-content relative z-0">
     <!-- <div class="sticky top-0 z-20"> -->
     <Navbar />
-    <!-- </div> -->
-
+    <!-- Replace the old Bg component with our new ThreeBackground component -->
+    <!-- <div
+      class="absolute top-0 left-0 w-full h-screen z-10 max-h-[80dvh] overflow-hidden"
+    >
+      <ThreeBackground />
+    </div> -->
     <!-- Hero Section with increased bottom margin -->
     <div
-      class="w-[90%] md:w-[80%] lg:w-[70%] mx-auto mt-[120px] md:mt-[160px] lg:mt-[220px] mb-32 md:mb-40 lg:mb-48"
+      class="w-[90%] relative z-20 md:w-[80%] lg:w-[70%] mx-auto mt-[120px] md:mt-[160px] lg:mt-[220px] mb-32 md:mb-40 lg:mb-48"
     >
       <div
         class="flex flex-row justify-between items-center gap-2 mb-4 px-2 sm:px-8 hero-top-badges"
@@ -164,7 +168,10 @@ const jsonLd = {
         </Badge>
         <Badge text="En / Hi" />
       </div>
-      <div class="main-border-container relative w-full" id="main-container">
+      <div
+        class="main-border-container bg-[var(--bg-secondary)] relative w-full"
+        id="main-container"
+      >
         <!-- Border elements for animation -->
         <div class="animated-border border-right"></div>
         <div class="animated-border border-bottom"></div>

@@ -43,6 +43,10 @@
     "svelte": "^5.28.2",
     "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.1.4",
+    "three": "^0.176.0",
     "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/three": "^0.176.0"
   }
 }

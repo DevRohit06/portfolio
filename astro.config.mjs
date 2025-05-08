@@ -17,6 +17,8 @@ import vercel from "@astrojs/vercel";
 
 import sitemap from "@astrojs/sitemap";
 
+import partytown from "@astrojs/partytown";
+
 // https://astro.build/config
 export default defineConfig({
   output: "static",
@@ -60,7 +62,14 @@ export default defineConfig({
     defaultStrategy: "load",
   },
 
-  integrations: [svelte(), react(), mdx(), playformCompress(), sitemap()],
+  integrations: [
+    svelte(),
+    react(),
+    mdx(),
+    playformCompress(),
+    sitemap(),
+    partytown(),
+  ],
 
   adapter: vercel(),
 });

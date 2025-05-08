@@ -104,3 +104,7 @@ body {
     transition: none !important;
   }
 }
+
+.dg {
+  display: none;
+}

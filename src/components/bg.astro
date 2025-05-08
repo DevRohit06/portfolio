@@ -1,0 +1,351 @@
+---
+
+---
+
+<shader-art autoplay controls="hidden">
+    <uniform type="float" name="scale" value=".4" min="0.1" max="4" step="0.01" />
+    <uniform type="float" name="ax" value="5" min="1" max="15" step=".01" />
+    <uniform type="float" name="ay" value="7" min="1" max="15" step=".01" />
+    <uniform type="float" name="az" value="9" min="1" max="15" step=".01" />
+    <uniform type="float" name="aw" value="13" min="1" max="15" step=".01" />
+    <uniform type="float" name="bx" value="1" min="-1" max="1" step="0.01" />
+    <uniform type="float" name="by" value="1" min="-1" max="1" step="0.01" />
+    <!-- Using actual hex colors instead of CSS variables -->
+    <uniform type="color" name="color1" value="#ffffff" />
+    <uniform type="color" name="color2" value="#d0d0ff" />
+    <uniform type="color" name="color3" value="#5050dd" />
+    <uniform type="color" name="color4" value="#0707ac" />
+    
+    <script type="buffer" name="position" data-size="2">
+      [-1, 1, -1,-1, 1,1, 1, 1, -1,-1, 1,-1]
+    </script>
+    <script type="buffer" name="uv" data-size="2">
+      [ 0, 0,  0, 1, 1,0, 1, 0,  0, 1, 1, 1]
+    </script>
+    
+    <script is:raw type="vert">
+      precision highp float;
+      attribute vec4 position;
+      attribute vec2 uv;
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = position;
+      }
+    </script>
+    <script is:raw type="frag">
+      precision highp float;
+      varying vec2 vUv;
+      uniform float time;
+      uniform float scale;
+      uniform vec2 resolution;
+      uniform vec3 color1, color2, color3, color4;
+      uniform int numOctaves;
+      const float PI = 3.141592654;
+      uniform float ax, ay, az, aw;
+      uniform float bx, by;
+      
+      // just a bunch of sin & cos to generate an interesting pattern
+      float cheapNoise(vec3 stp) {
+        vec3 p = vec3(stp.st, stp.p);
+        vec4 a = vec4(ax, ay, az, aw);
+        return mix(
+          sin(p.z + p.x * a.x + cos(p.x * a.x - p.z)) * 
+          cos(p.z + p.y * a.y + cos(p.y * a.x + p.z)),
+          sin(1. + p.x * a.z + p.z + cos(p.y * a.w - p.z)) * 
+          cos(1. + p.y * a.w + p.z + cos(p.x * a.x + p.z)), 
+          .436
+        );
+      }
+      
+      void main() {
+        
+        vec2 aR = vec2(resolution.x/resolution.y, 1.);
+        vec2 st = vUv * aR * scale;
+        float S = sin(time * .005);
+        float C = cos(time * .005);
+        vec2 v1 = vec2(cheapNoise(vec3(st, 2.)), cheapNoise(vec3(st, 1.)));
+        vec2 v2 = vec2(
+          cheapNoise(vec3(st + bx*v1 + vec2(C * 1.7, S * 9.2), 0.15 * time)),
+          cheapNoise(vec3(st + by*v1 + vec2(S * 8.3, C * 2.8), 0.126 * time))
+        );
+        float n = .5 + .5 * cheapNoise(vec3(st + v2, 0.));
+        
+        vec3 color = mix(color1,
+          color2,
+          clamp((n*n)*8.,0.0,1.0));
+  
+        color = mix(color,
+          color3,
+          clamp(length(v1),0.0,1.0));
+  
+        color = mix(color,
+                  color4,
+                  clamp(length(v2.x),0.0,1.0));
+        
+        //       color *= n * n * n + .6  * n * n + .5 * n;
+        color /= n*n + n * 7.;
+        gl_FragColor = vec4(color,1.);
+      }
+    </script>
+  </shader-art>
+
+
+
+  <style>
+  :root {
+    /* Shader colors for light theme - based on blue accent #0707ac */
+    --shader-color1: #ffffff;
+    --shader-color2: #d0d0ff; /* Light shade of accent */
+    --shader-color3: #5050dd; /* Medium shade of accent */
+    --shader-color4: #0707ac; /* Accent primary color */
+  }
+
+  :root.dark-theme {
+    /* Shader colors for dark theme - based on reddish accent #ff5533 */
+    --shader-color1: #121212;
+    --shader-color2: #983a26; /* Darker shade of accent */
+    --shader-color3: #ff7a60; /* Lighter shade of accent */
+    --shader-color4: #ff5533; /* Accent primary color */
+  }
+
+shader-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+shader-art canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Hide the controls with specific class targeting */
+shader-art::part(controls),
+shader-art .uniform-controls,
+shader-art div[class*="control"],
+shader-art div[class*="panel"],
+.dg.ac,
+.dg,
+.ac {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
+  </style>
+
+  <script>
+  import { ShaderArt } from "https://esm.sh/shader-art";
+  import { UniformPlugin } from "https://esm.sh/@shader-art/plugin-uniform";
+    
+  ShaderArt.register([() => new UniformPlugin()]);
+  
+  // Function to create a new shader element with specific colors
+  function createShader(isDarkTheme) {
+    // Define colors based on theme
+    const colors = isDarkTheme 
+      ? {
+          color1: '#121212',
+          color2: '#983a26',
+          color3: '#ff7a60',
+          color4: '#ff5533'
+        }
+      : {
+          color1: '#ffffff',
+          color2: '#d0d0ff', 
+          color3: '#5050dd',
+          color4: '#0707ac'
+        };
+    
+    // Create the new shader element
+    const newShader = document.createElement('shader-art');
+    newShader.setAttribute('autoplay', '');
+    newShader.setAttribute('controls', 'hidden');
+    
+    // Add uniforms
+    const uniformParams = [
+      { type: 'float', name: 'scale', value: '.4', min: '0.1', max: '4', step: '0.01' },
+      { type: 'float', name: 'ax', value: '5', min: '1', max: '15', step: '.01' },
+      { type: 'float', name: 'ay', value: '7', min: '1', max: '15', step: '.01' },
+      { type: 'float', name: 'az', value: '9', min: '1', max: '15', step: '.01' },
+      { type: 'float', name: 'aw', value: '13', min: '1', max: '15', step: '.01' },
+      { type: 'float', name: 'bx', value: '1', min: '-1', max: '1', step: '0.01' },
+      { type: 'float', name: 'by', value: '1', min: '-1', max: '1', step: '0.01' },
+      { type: 'color', name: 'color1', value: colors.color1 },
+      { type: 'color', name: 'color2', value: colors.color2 },
+      { type: 'color', name: 'color3', value: colors.color3 },
+      { type: 'color', name: 'color4', value: colors.color4 }
+    ];
+    
+    // Add uniform elements to shader
+    uniformParams.forEach(param => {
+      const uniform = document.createElement('uniform');
+      Object.entries(param).forEach(([key, value]) => {
+        uniform.setAttribute(key, value);
+      });
+      newShader.appendChild(uniform);
+    });
+    
+    // Add buffer scripts
+    const bufferPosition = document.createElement('script');
+    bufferPosition.setAttribute('type', 'buffer');
+    bufferPosition.setAttribute('name', 'position');
+    bufferPosition.setAttribute('data-size', '2');
+    bufferPosition.textContent = '[-1, 1, -1,-1, 1,1, 1, 1, -1,-1, 1,-1]';
+    newShader.appendChild(bufferPosition);
+    
+    const bufferUv = document.createElement('script');
+    bufferUv.setAttribute('type', 'buffer');
+    bufferUv.setAttribute('name', 'uv');
+    bufferUv.setAttribute('data-size', '2');
+    bufferUv.textContent = '[ 0, 0,  0, 1, 1,0, 1, 0,  0, 1, 1, 1]';
+    newShader.appendChild(bufferUv);
+    
+    // Add vertex shader
+    const vertScript = document.createElement('script');
+    vertScript.setAttribute('type', 'vert');
+    vertScript.textContent = `
+      precision highp float;
+      attribute vec4 position;
+      attribute vec2 uv;
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = position;
+      }
+    `;
+    newShader.appendChild(vertScript);
+    
+    // Add fragment shader
+    const fragScript = document.createElement('script');
+    fragScript.setAttribute('type', 'frag');
+    fragScript.textContent = `
+      precision highp float;
+      varying vec2 vUv;
+      uniform float time;
+      uniform float scale;
+      uniform vec2 resolution;
+      uniform vec3 color1, color2, color3, color4;
+      uniform int numOctaves;
+      const float PI = 3.141592654;
+      uniform float ax, ay, az, aw;
+      uniform float bx, by;
+      
+      // just a bunch of sin & cos to generate an interesting pattern
+      float cheapNoise(vec3 stp) {
+        vec3 p = vec3(stp.st, stp.p);
+        vec4 a = vec4(ax, ay, az, aw);
+        return mix(
+          sin(p.z + p.x * a.x + cos(p.x * a.x - p.z)) * 
+          cos(p.z + p.y * a.y + cos(p.y * a.x + p.z)),
+          sin(1. + p.x * a.z + p.z + cos(p.y * a.w - p.z)) * 
+          cos(1. + p.y * a.w + p.z + cos(p.x * a.x + p.z)), 
+          .436
+        );
+      }
+      
+      void main() {
+        vec2 aR = vec2(resolution.x/resolution.y, 1.);
+        vec2 st = vUv * aR * scale;
+        float S = sin(time * .005);
+        float C = cos(time * .005);
+        vec2 v1 = vec2(cheapNoise(vec3(st, 2.)), cheapNoise(vec3(st, 1.)));
+        vec2 v2 = vec2(
+          cheapNoise(vec3(st + bx*v1 + vec2(C * 1.7, S * 9.2), 0.15 * time)),
+          cheapNoise(vec3(st + by*v1 + vec2(S * 8.3, C * 2.8), 0.126 * time))
+        );
+        float n = .5 + .5 * cheapNoise(vec3(st + v2, 0.));
+        
+        vec3 color = mix(color1,
+          color2,
+          clamp((n*n)*8.,0.0,1.0));
+  
+        color = mix(color,
+          color3,
+          clamp(length(v1),0.0,1.0));
+  
+        color = mix(color,
+                  color4,
+                  clamp(length(v2.x),0.0,1.0));
+        
+        color /= n*n + n * 7.;
+        gl_FragColor = vec4(color,1.);
+      }
+    `;
+    newShader.appendChild(fragScript);
+    
+    return newShader;
+  }
+  
+  function updateShader() {
+    const isDarkTheme = document.documentElement.classList.contains('dark-theme');
+    console.log('Updating shader for theme:', isDarkTheme ? 'dark' : 'light');
+    
+    // Get shader container
+    const container = document.querySelector('.shader-container');
+    if (!container) {
+      console.warn('Shader container not found');
+      return;
+    }
+    
+    // Remove old shader if it exists
+    const oldShader = container.querySelector('shader-art');
+    if (oldShader) {
+      container.removeChild(oldShader);
+    }
+    
+    // Create and append new shader
+    const newShader = createShader(isDarkTheme);
+    container.appendChild(newShader);
+    
+    // Hide any controls that might appear
+    setTimeout(() => {
+      const controlElements = document.querySelectorAll('.dg.ac, .dg, .ac');
+      controlElements.forEach(element => {
+        element.remove();
+      });
+    }, 100);
+  }
+  
+  // Wait for component to initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    // Wrap the shader element in a container if not already wrapped
+    const shaderElement = document.querySelector('shader-art');
+    if (shaderElement && !shaderElement.parentElement.classList.contains('shader-container')) {
+      const container = document.createElement('div');
+      container.className = 'shader-container';
+      shaderElement.parentNode.insertBefore(container, shaderElement);
+      container.appendChild(shaderElement);
+    }
+    
+    // Set up theme change detection
+    // Method 1: Listen for theme changed custom event
+    document.addEventListener('themeChanged', updateShader);
+    
+    // Method 2: Watch for changes to the html class attribute
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "attributes" && 
+            (mutation.attributeName === "class" || mutation.attributeName === "data-theme")) {
+          updateShader();
+        }
+      });
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'data-theme']
+    });
+    
+    // Set initial shader state
+    updateShader();
+  });
+  </script>
