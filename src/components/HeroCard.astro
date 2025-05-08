@@ -41,6 +41,8 @@ import SocialIcons from "./SocialIcons.astro";
         <div class="border border-[var(--border-color)] hero-image relative">
           <Image
             src={Pfp}
+            loading="eager"
+            decoding="async"
             alt="Rohit Kushwaha"
             class="object-cover w-full aspect-square"
           />
