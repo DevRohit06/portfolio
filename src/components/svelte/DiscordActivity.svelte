@@ -98,11 +98,21 @@
     }
   };
 
-  // Parse image URL from Discord's format with proxy fallback for Google URLs
+  // Parse image URL from Discord's format with special handling for Spotify
   const parseImageUrl = (imageUrl: string): string => {
     if (!imageUrl) return "";
 
-    // Handle mp:external format
+    // Special handling for Spotify
+    if (activityData?.spotify) {
+      // Extract the Spotify album art ID from the URL
+      // The format from Discord is typically "spotify:albumid"
+      if (imageUrl.includes("spotify:")) {
+        const spotifyId = imageUrl.split(":").pop();
+        return `https://i.scdn.co/image/${spotifyId}`;
+      }
+    }
+
+    // Handle mp:external format (for Google images, etc.)
     if (imageUrl.startsWith("mp:external")) {
       // For URLs like mp:external/44eWiHhVcx8AfXTwgTwcJP80yehaivaQnW1uVMamnGQ/https/lh3.googleusercontent.com/...
       const httpsIndex = imageUrl.indexOf("/https/");
