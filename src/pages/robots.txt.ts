@@ -22,7 +22,7 @@ Allow: /images/
 Crawl-delay: 5
 
 # Sitemaps
-Sitemap: ${siteUrl}/sitemap.xml
+Sitemap: ${siteUrl}sitemap-index.xml
 `;
 
   return new Response(robotsTxt, {
