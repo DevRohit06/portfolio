@@ -39,7 +39,7 @@ const {
   ],
 } = Astro.props;
 
-// Get Umami website ID from environment variable
+// Get Google Analytics ID from environment variable
 const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
 ---
 
@@ -113,20 +113,42 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <script
-      type="text/partytown"
-      async
-      src=`https://www.googletagmanager.com/gtag/js?id=${googleTagKey}`
-    ></script>
-    <script type="text/partytown">
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", `${googleTagKey}`);
-    </script>
+    
+    <!-- Google Analytics - Updated implementation -->
+    {googleTagKey && (
+      <>
+        <script
+          async
+          src=`https://www.googletagmanager.com/gtag/js?id=${googleTagKey}`
+        ></script>
+        <script define:vars={{ googleTagKey }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", googleTagKey, {
+            send_page_view: false // Will manually track page views for SPA navigation
+          });
+          
+          // Track initial page view
+          gtag("event", "page_view", {
+            page_title: document.title,
+            page_location: window.location.href,
+            page_path: window.location.pathname
+          });
+          
+          // Add view tracking for SPA navigation
+          document.addEventListener("astro:page-load", () => {
+            gtag("event", "page_view", {
+              page_title: document.title,
+              page_location: window.location.href,
+              page_path: window.location.pathname
+            });
+          });
+        </script>
+      </>
+    )}
   </head>
   <body class="antialiased">
     <main>
