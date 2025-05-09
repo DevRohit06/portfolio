@@ -11,7 +11,7 @@
   export let inviteCode = ""; // Discord server invite code (optional)
   export let showButtons = true; // Whether to show action buttons
   export let avatarUrl = ""; // Custom avatar URL (optional)
-  export let showActivity = false; // Whether to show activity or not
+  export let showActivity = true; // Whether to show activity or not
   export let showAllActivities = false; // Whether to show all activities or just the first one
 
   // State variables
@@ -29,6 +29,13 @@
   let pulseAnimation = true; // Control the pulse animation
   let remainingTime = "";
   let totalTime = "";
+
+  // Multiple activities progress tracking - use plain object for better reactivity
+  let progressValues: Record<string, number> = {};
+  let progressIntervals: Record<string, ReturnType<typeof setInterval>> = {};
+
+  // Force reactivity updates
+  let progressUpdateCounter = 0;
 
   // Discord activity types
   const ACTIVITY_TYPES = {
@@ -296,6 +303,63 @@
     return Math.min(Math.max((elapsed / total) * 100, 0), 100);
   };
 
+  // Setup progress tracking for multiple activities
+  const setupActivityProgress = (activity: any, activityId: string) => {
+    if (activity?.timestamps?.start && activity?.timestamps?.end) {
+      // Set initial progress value
+      progressValues[activityId] = calculateProgress(
+        activity.timestamps.start,
+        activity.timestamps.end
+      );
+
+      // Force reactivity update
+      progressUpdateCounter++;
+
+      // Clear any existing interval for this activity
+      if (progressIntervals[activityId]) {
+        clearInterval(progressIntervals[activityId]);
+      }
+
+      // Set up a new interval to update this activity's progress
+      const interval = setInterval(() => {
+        progressValues[activityId] = calculateProgress(
+          activity.timestamps.start,
+          activity.timestamps.end
+        );
+
+        // Force reactivity update
+        progressUpdateCounter++;
+
+        // Clear interval when activity ends
+        if (progressValues[activityId] >= 100) {
+          clearInterval(interval);
+          delete progressIntervals[activityId];
+        }
+      }, 1000);
+
+      // Store the interval reference
+      progressIntervals[activityId] = interval;
+    }
+  };
+
+  // Get progress for a specific activity
+  const getActivityProgress = (activity: any, activityId: string): number => {
+    if (!activity?.timestamps?.start || !activity?.timestamps?.end) {
+      return 0;
+    }
+
+    // If we have a stored progress value, use it
+    if (activityId in progressValues) {
+      return progressValues[activityId] || 0;
+    }
+
+    // Otherwise calculate it once
+    return calculateProgress(
+      activity.timestamps.start,
+      activity.timestamps.end
+    );
+  };
+
   // Setup progress interval to keep the progress bar updated
   const setupProgressInterval = () => {
     // Clear any existing interval
@@ -454,10 +518,29 @@
       clearInterval(progressInterval);
     }
 
+    // Clear all progress intervals for multiple activities
+    Object.values(progressIntervals).forEach((interval) => {
+      clearInterval(interval);
+    });
+
+    progressIntervals = {};
+
     if (timeInterval) {
       clearInterval(timeInterval);
     }
   };
+
+  // Watch for changes in activityData to setup progress tracking
+  $: if (activityData?.activities && showActivity) {
+    // Setup progress tracking for each activity
+    activityData.activities.forEach((activity: any, index: number) => {
+      const activityId = `activity-${index}-${activity.application_id || activity.name || index}`;
+      setupActivityProgress(activity, activityId);
+    });
+  }
+
+  // Create a reactive statement to force updates
+  $: forceRender = progressUpdateCounter;
 
   onMount(() => {
     connectWebSocket();
@@ -485,152 +568,163 @@
 
 {#if showAllActivities}
   {#if activityData?.activities && activityData.activities.length > 0}
-    {#each activityData.activities as activity, index}
-      <div
-        class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height mb-2"
-      >
-        {#if loading}
-          <div class="loading-container" in:fade={{ duration: 300 }}>
-            <div class="loading-spinner"></div>
-            <p class="text-[var(--text-secondary)]">
-              Loading Discord activity...
-            </p>
-          </div>
-        {:else if error}
-          <div class="error-container" in:fade={{ duration: 300 }}>
-            <p class="text-[var(--text-secondary)]">{error}</p>
-            <button
-              on:click={connectWebSocket}
-              class="retry-button mt-2 text-sm text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/5"
+    <!-- Using a key to force re-render when activities change -->
+    {#key forceRender}
+      {#each activityData.activities as activity, index}
+        {@const activityId = `activity-${index}-${activity.application_id || activity.name || index}`}
+        <div
+          class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height mb-2"
+        >
+          {#if loading}
+            <div class="loading-container" in:fade={{ duration: 300 }}>
+              <div class="loading-spinner"></div>
+              <p class="text-[var(--text-secondary)]">
+                Loading Discord activity...
+              </p>
+            </div>
+          {:else if error}
+            <div class="error-container" in:fade={{ duration: 300 }}>
+              <p class="text-[var(--text-secondary)]">{error}</p>
+              <button
+                on:click={connectWebSocket}
+                class="retry-button mt-2 text-sm text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/5"
+              >
+                Retry
+              </button>
+            </div>
+          {:else}
+            <!-- Activity Display -->
+            <div
+              class="activity-card p-4"
+              in:fade={{ duration: 400, delay: 100 }}
             >
-              Retry
-            </button>
-          </div>
-        {:else}
-          <!-- Activity Display -->
-          <div
-            class="activity-card p-4"
-            in:fade={{ duration: 400, delay: 100 }}
-          >
-            <div class="flex items-start">
-              <!-- Activity image -->
-              <div class="relative min-w-[56px]">
-                {#if activity.assets?.large_image && !imageLoadError}
-                  <div
-                    class="activity-image-wrapper"
-                    style="--activity-color: {getActivityColor(activity.type)}"
-                  >
-                    <img
-                      src={parseImageUrl(activity.assets.large_image, activity)}
-                      alt={activity.assets?.large_text || "Activity Image"}
-                      class="size-18 {pulseAnimation ? 'pulse' : ''}"
-                      on:error={handleImageError}
-                    />
-                  </div>
-                {:else}
-                  <!-- Placeholder for missing or failed images -->
-                  <div
-                    class="activity-placeholder"
-                    style="--activity-color: {getActivityColor(activity.type)}"
-                  >
-                    <span>
-                      {#if activity.type === ACTIVITY_TYPES.LISTENING}
-                        ♪
-                      {:else if activity.type === ACTIVITY_TYPES.PLAYING}
-                        {activity.name?.charAt(0) || "?"}
-                      {:else if activity.type === ACTIVITY_TYPES.WATCHING}
-                        📺
-                      {:else if activity.type === ACTIVITY_TYPES.STREAMING}
-                        🎥
-                      {:else}
-                        🏆
-                      {/if}
-                    </span>
-                  </div>
-                {/if}
-              </div>
-
-              <!-- Activity details -->
-              <div class="ml-3 flex-1 min-w-0">
-                <div
-                  class="activity-label flex items-center gap-3 whitespace-nowrap"
-                  in:slide={{ duration: 300, delay: 200 }}
-                >
-                  {getActivityTypeLabel(activity.type)}
-                  {#if activityData?.spotify || activity.application_id === "463151177836658699"}
+              <div class="flex items-start">
+                <!-- Activity image -->
+                <div class="relative min-w-[56px]">
+                  {#if activity.assets?.large_image && !imageLoadError}
                     <div
-                      class="service-badge whitespace-nowrap"
-                      in:fade={{ duration: 400, delay: 500 }}
+                      class="activity-image-wrapper"
+                      style="--activity-color: {getActivityColor(
+                        activity.type
+                      )}"
                     >
-                      {#if activityData?.spotify && activity.type === ACTIVITY_TYPES.LISTENING}
-                        <img
-                          src="https://open.spotify.com/favicon.ico"
-                          alt="Spotify"
-                          class="service-icon"
-                        />
-                        <span class="service-name">Spotify</span>
-                      {:else if activity.application_id === "463151177836658699"}
-                        <img
-                          src="https://music.youtube.com/favicon.ico"
-                          alt="YouTube Music"
-                          class="service-icon"
-                        />
-                        <span class="service-name">YouTube Music</span>
-                      {/if}
+                      <img
+                        src={parseImageUrl(
+                          activity.assets.large_image,
+                          activity
+                        )}
+                        alt={activity.assets?.large_text || "Activity Image"}
+                        class="size-18 {pulseAnimation ? 'pulse' : ''}"
+                        on:error={handleImageError}
+                      />
+                    </div>
+                  {:else}
+                    <!-- Placeholder for missing or failed images -->
+                    <div
+                      class="activity-placeholder"
+                      style="--activity-color: {getActivityColor(
+                        activity.type
+                      )}"
+                    >
+                      <span>
+                        {#if activity.type === ACTIVITY_TYPES.LISTENING}
+                          ♪
+                        {:else if activity.type === ACTIVITY_TYPES.PLAYING}
+                          {activity.name?.charAt(0) || "?"}
+                        {:else if activity.type === ACTIVITY_TYPES.WATCHING}
+                          📺
+                        {:else if activity.type === ACTIVITY_TYPES.STREAMING}
+                          🎥
+                        {:else}
+                          🏆
+                        {/if}
+                      </span>
                     </div>
                   {/if}
                 </div>
 
-                <div
-                  class="activity-title"
-                  in:slide={{ duration: 300, delay: 250 }}
-                >
-                  {activity.type === ACTIVITY_TYPES.LISTENING
-                    ? activity.details || "Unknown Track"
-                    : activity.name || "Unknown Activity"}
-                </div>
-
-                <div
-                  class="activity-subtitle"
-                  in:slide={{ duration: 300, delay: 300 }}
-                >
-                  {#if activity.type === ACTIVITY_TYPES.LISTENING}
-                    {activity.state || "Unknown Artist"}
-                  {:else if activity.type === ACTIVITY_TYPES.PLAYING}
-                    <p>
-                      {activity.details || ""}
-                      {activity.state ? `- ${activity.state}` : ""}
-                    </p>
-                  {:else if activity.state}
-                    {activity.state}
-                  {/if}
-                </div>
-
-                <!-- Progress bar with enhanced styling -->
-                {#if activity.timestamps?.start && activity.timestamps?.end}
+                <!-- Activity details -->
+                <div class="ml-3 flex-1 min-w-0">
                   <div
-                    class="progress-container"
-                    in:slide={{ duration: 300, delay: 400 }}
+                    class="activity-label flex items-center gap-3 whitespace-nowrap"
+                    in:slide={{ duration: 300, delay: 200 }}
                   >
-                    <div class="progress-bar">
+                    {getActivityTypeLabel(activity.type)}
+                    {#if activityData?.spotify || activity.application_id === "463151177836658699"}
                       <div
-                        class="progress-fill"
-                        style="width: {calculateProgress(
-                          activity.timestamps.start,
-                          activity.timestamps.end
-                        )}%; background-color: {getActivityColor(
-                          activity.type
-                        )}"
-                      ></div>
-                    </div>
+                        class="service-badge whitespace-nowrap"
+                        in:fade={{ duration: 400, delay: 500 }}
+                      >
+                        {#if activityData?.spotify && activity.type === ACTIVITY_TYPES.LISTENING}
+                          <img
+                            src="https://open.spotify.com/favicon.ico"
+                            alt="Spotify"
+                            class="service-icon"
+                          />
+                          <span class="service-name">Spotify</span>
+                        {:else if activity.application_id === "463151177836658699"}
+                          <img
+                            src="https://music.youtube.com/favicon.ico"
+                            alt="YouTube Music"
+                            class="service-icon"
+                          />
+                          <span class="service-name">YouTube Music</span>
+                        {/if}
+                      </div>
+                    {/if}
                   </div>
-                {/if}
+
+                  <div
+                    class="activity-title"
+                    in:slide={{ duration: 300, delay: 250 }}
+                  >
+                    {activity.type === ACTIVITY_TYPES.LISTENING
+                      ? activity.details || "Unknown Track"
+                      : activity.name || "Unknown Activity"}
+                  </div>
+
+                  <div
+                    class="activity-subtitle"
+                    in:slide={{ duration: 300, delay: 300 }}
+                  >
+                    {#if activity.type === ACTIVITY_TYPES.LISTENING}
+                      {activity.state || "Unknown Artist"}
+                    {:else if activity.type === ACTIVITY_TYPES.PLAYING}
+                      <p>
+                        {activity.details || ""}
+                        {activity.state ? `- ${activity.state}` : ""}
+                      </p>
+                    {:else if activity.state}
+                      {activity.state}
+                    {/if}
+                  </div>
+
+                  <!-- Progress bar with enhanced styling -->
+                  {#if activity.timestamps?.start && activity.timestamps?.end}
+                    <div
+                      class="progress-container"
+                      in:slide={{ duration: 300, delay: 400 }}
+                    >
+                      <div class="progress-bar">
+                        <div
+                          class="progress-fill"
+                          style="width: {getActivityProgress(
+                            activity,
+                            activityId
+                          )}%; background-color: {getActivityColor(
+                            activity.type
+                          )}"
+                        ></div>
+                      </div>
+                    </div>
+                  {/if}
+                </div>
               </div>
             </div>
-          </div>
-        {/if}
-      </div>
-    {/each}
+          {/if}
+        </div>
+      {/each}
+    {/key}
   {:else if activityData}
     <!-- Show user profile when no activities are present -->
     <div
