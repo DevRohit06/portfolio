@@ -9,6 +9,7 @@ interface Props {
   username?: string;
   inviteCode?: string;
   showButtons?: boolean;
+  showAllActivities?: boolean;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   username = "rohitk06", // Discord username for add friend button
   inviteCode = "", // Discord server invite code
   showButtons = true, // Whether to show action buttons
+  showAllActivities = false, // Whether to show all activities or just the most relevant one
 } = Astro.props;
 ---
 
@@ -27,5 +29,6 @@ const {
     username={username}
     inviteCode={inviteCode}
     showButtons={showButtons}
+    showAllActivities={showAllActivities}
   />
 </div>

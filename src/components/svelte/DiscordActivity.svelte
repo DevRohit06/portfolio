@@ -11,6 +11,8 @@
   export let inviteCode = ""; // Discord server invite code (optional)
   export let showButtons = true; // Whether to show action buttons
   export let avatarUrl = ""; // Custom avatar URL (optional)
+  export let showActivity = false; // Whether to show activity or not
+  export let showAllActivities = false; // Whether to show all activities or just the first one
 
   // State variables
   let isConnected = false;
@@ -99,19 +101,15 @@
   };
 
   // Parse image URL from Discord's format with special handling for Spotify
-  const parseImageUrl = (imageUrl: string): string => {
+  const parseImageUrl = (imageUrl: string, activity: any): string => {
+    console.log("activity", activity);
     if (!imageUrl) return "";
 
-    // Special handling for Spotify
-    if (activityData?.spotify) {
-      // Extract the Spotify album art ID from the URL
-      // The format from Discord is typically "spotify:albumid"
-      if (imageUrl.includes("spotify:")) {
-        const spotifyId = imageUrl.split(":").pop();
-        return `https://i.scdn.co/image/${spotifyId}`;
-      }
+    // The format from Discord is typically "spotify:albumid"
+    if (imageUrl.startsWith("spotify:")) {
+      const spotifyId = imageUrl.split(":").pop();
+      return `https://i.scdn.co/image/${spotifyId}`;
     }
-
     // Handle mp:external format (for Google images, etc.)
     if (imageUrl.startsWith("mp:external")) {
       // For URLs like mp:external/44eWiHhVcx8AfXTwgTwcJP80yehaivaQnW1uVMamnGQ/https/lh3.googleusercontent.com/...
@@ -127,8 +125,8 @@
     }
 
     // Handle standard Discord CDN URLs
-    if (currentActivity && currentActivity.application_id) {
-      return `https://cdn.discordapp.com/app-assets/${currentActivity.application_id}/${imageUrl}.png`;
+    if (activity && activity.application_id) {
+      return `https://cdn.discordapp.com/app-assets/${activity.application_id}/${imageUrl}.png`;
     }
 
     return imageUrl;
@@ -485,142 +483,159 @@
   onDestroy(cleanup);
 </script>
 
-<div
-  class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height"
->
-  {#if loading}
-    <div class="loading-container" in:fade={{ duration: 300 }}>
-      <div class="loading-spinner"></div>
-      <p class="text-[var(--text-secondary)]">Loading Discord activity...</p>
-    </div>
-  {:else if error}
-    <div class="error-container" in:fade={{ duration: 300 }}>
-      <p class="text-[var(--text-secondary)]">{error}</p>
-      <button
-        on:click={connectWebSocket}
-        class="retry-button mt-2 text-sm text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/5"
+{#if showAllActivities}
+  {#if activityData?.activities && activityData.activities.length > 0}
+    {#each activityData.activities as activity, index}
+      <div
+        class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height mb-2"
       >
-        Retry
-      </button>
-    </div>
-  {:else}
-    <!-- User Profile Header -->
-
-    <!-- Activity Display -->
-    {#if currentActivity}
-      <div class="activity-card p-4" in:fade={{ duration: 400, delay: 100 }}>
-        <div class="flex items-start">
-          <!-- Activity image -->
-          <div class="relative min-w-[56px]">
-            {#if currentActivity.assets?.large_image && !imageLoadError}
-              <div
-                class="activity-image-wrapper"
-                style="--activity-color: {activityColor}"
-              >
-                <img
-                  src={parseImageUrl(currentActivity.assets.large_image)}
-                  alt={currentActivity.assets?.large_text || "Activity Image"}
-                  class="size-18 {pulseAnimation ? 'pulse' : ''}"
-                  on:error={handleImageError}
-                />
-              </div>
-            {:else}
-              <!-- Placeholder for missing or failed images -->
-              <div
-                class="activity-placeholder"
-                style="--activity-color: {activityColor}"
-              >
-                <span>
-                  {#if currentActivity.type === ACTIVITY_TYPES.LISTENING}
-                    ♪
-                  {:else if currentActivity.type === ACTIVITY_TYPES.PLAYING}
-                    {currentActivity.name?.charAt(0) || "?"}
-                  {:else if currentActivity.type === ACTIVITY_TYPES.WATCHING}
-                    📺
-                  {:else if currentActivity.type === ACTIVITY_TYPES.STREAMING}
-                    🎥
-                  {:else}
-                    🏆
-                  {/if}
-                </span>
-              </div>
-            {/if}
+        {#if loading}
+          <div class="loading-container" in:fade={{ duration: 300 }}>
+            <div class="loading-spinner"></div>
+            <p class="text-[var(--text-secondary)]">
+              Loading Discord activity...
+            </p>
           </div>
-
-          <!-- Activity details -->
-          <div class="ml-3 flex-1 min-w-0">
-            <div
-              class="activity-label flex items-center gap-3 whitespace-nowrap"
-              in:slide={{ duration: 300, delay: 200 }}
+        {:else if error}
+          <div class="error-container" in:fade={{ duration: 300 }}>
+            <p class="text-[var(--text-secondary)]">{error}</p>
+            <button
+              on:click={connectWebSocket}
+              class="retry-button mt-2 text-sm text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/5"
             >
-              {getActivityTypeLabel(currentActivity.type)}
-              {#if activityData?.spotify || currentActivity.application_id === "463151177836658699"}
-                <div
-                  class="service-badge whitespace-nowrap"
-                  in:fade={{ duration: 400, delay: 500 }}
-                >
-                  {#if activityData?.spotify}
-                    <img
-                      src="https://open.spotify.com/favicon.ico"
-                      alt="Spotify"
-                      class="service-icon"
-                    />
-                    <span class="service-name">Spotify</span>
-                  {:else if currentActivity.application_id === "463151177836658699"}
-                    <img
-                      src="https://music.youtube.com/favicon.ico"
-                      alt="YouTube Music"
-                      class="service-icon"
-                    />
-                    <span class="service-name">YouTube Music</span>
-                  {/if}
-                </div>
-              {/if}
-            </div>
-
-            <div
-              class="activity-title"
-              in:slide={{ duration: 300, delay: 250 }}
-            >
-              {currentActivity.type === ACTIVITY_TYPES.LISTENING
-                ? currentActivity.details || "Unknown Track"
-                : currentActivity.name || "Unknown Activity"}
-            </div>
-
-            <div
-              class="activity-subtitle"
-              in:slide={{ duration: 300, delay: 300 }}
-            >
-              {#if currentActivity.type === ACTIVITY_TYPES.LISTENING}
-                {currentActivity.state || "Unknown Artist"}
-              {:else if currentActivity.type === ACTIVITY_TYPES.PLAYING}
-                <p>
-                  {currentActivity.details || ""} - {currentActivity.state}
-                </p>
-                <!-- {currentActivity.state || "Unknown Game"} -->
-              {:else if currentActivity.state}
-                {currentActivity.state}
-              {/if}
-            </div>
-
-            <!-- Progress bar with enhanced styling -->
-            {#if currentActivity.timestamps?.start && currentActivity.timestamps?.end}
-              <div
-                class="progress-container"
-                in:slide={{ duration: 300, delay: 400 }}
-              >
-                <div class="progress-bar">
+              Retry
+            </button>
+          </div>
+        {:else}
+          <!-- Activity Display -->
+          <div
+            class="activity-card p-4"
+            in:fade={{ duration: 400, delay: 100 }}
+          >
+            <div class="flex items-start">
+              <!-- Activity image -->
+              <div class="relative min-w-[56px]">
+                {#if activity.assets?.large_image && !imageLoadError}
                   <div
-                    class="progress-fill"
-                    style="width: {currentProgress}%; background-color: {activityColor}"
-                  ></div>
-                </div>
+                    class="activity-image-wrapper"
+                    style="--activity-color: {getActivityColor(activity.type)}"
+                  >
+                    <img
+                      src={parseImageUrl(activity.assets.large_image, activity)}
+                      alt={activity.assets?.large_text || "Activity Image"}
+                      class="size-18 {pulseAnimation ? 'pulse' : ''}"
+                      on:error={handleImageError}
+                    />
+                  </div>
+                {:else}
+                  <!-- Placeholder for missing or failed images -->
+                  <div
+                    class="activity-placeholder"
+                    style="--activity-color: {getActivityColor(activity.type)}"
+                  >
+                    <span>
+                      {#if activity.type === ACTIVITY_TYPES.LISTENING}
+                        ♪
+                      {:else if activity.type === ACTIVITY_TYPES.PLAYING}
+                        {activity.name?.charAt(0) || "?"}
+                      {:else if activity.type === ACTIVITY_TYPES.WATCHING}
+                        📺
+                      {:else if activity.type === ACTIVITY_TYPES.STREAMING}
+                        🎥
+                      {:else}
+                        🏆
+                      {/if}
+                    </span>
+                  </div>
+                {/if}
               </div>
-            {/if}
+
+              <!-- Activity details -->
+              <div class="ml-3 flex-1 min-w-0">
+                <div
+                  class="activity-label flex items-center gap-3 whitespace-nowrap"
+                  in:slide={{ duration: 300, delay: 200 }}
+                >
+                  {getActivityTypeLabel(activity.type)}
+                  {#if activityData?.spotify || activity.application_id === "463151177836658699"}
+                    <div
+                      class="service-badge whitespace-nowrap"
+                      in:fade={{ duration: 400, delay: 500 }}
+                    >
+                      {#if activityData?.spotify && activity.type === ACTIVITY_TYPES.LISTENING}
+                        <img
+                          src="https://open.spotify.com/favicon.ico"
+                          alt="Spotify"
+                          class="service-icon"
+                        />
+                        <span class="service-name">Spotify</span>
+                      {:else if activity.application_id === "463151177836658699"}
+                        <img
+                          src="https://music.youtube.com/favicon.ico"
+                          alt="YouTube Music"
+                          class="service-icon"
+                        />
+                        <span class="service-name">YouTube Music</span>
+                      {/if}
+                    </div>
+                  {/if}
+                </div>
+
+                <div
+                  class="activity-title"
+                  in:slide={{ duration: 300, delay: 250 }}
+                >
+                  {activity.type === ACTIVITY_TYPES.LISTENING
+                    ? activity.details || "Unknown Track"
+                    : activity.name || "Unknown Activity"}
+                </div>
+
+                <div
+                  class="activity-subtitle"
+                  in:slide={{ duration: 300, delay: 300 }}
+                >
+                  {#if activity.type === ACTIVITY_TYPES.LISTENING}
+                    {activity.state || "Unknown Artist"}
+                  {:else if activity.type === ACTIVITY_TYPES.PLAYING}
+                    <p>
+                      {activity.details || ""}
+                      {activity.state ? `- ${activity.state}` : ""}
+                    </p>
+                  {:else if activity.state}
+                    {activity.state}
+                  {/if}
+                </div>
+
+                <!-- Progress bar with enhanced styling -->
+                {#if activity.timestamps?.start && activity.timestamps?.end}
+                  <div
+                    class="progress-container"
+                    in:slide={{ duration: 300, delay: 400 }}
+                  >
+                    <div class="progress-bar">
+                      <div
+                        class="progress-fill"
+                        style="width: {calculateProgress(
+                          activity.timestamps.start,
+                          activity.timestamps.end
+                        )}%; background-color: {getActivityColor(
+                          activity.type
+                        )}"
+                      ></div>
+                    </div>
+                  </div>
+                {/if}
+              </div>
+            </div>
           </div>
-        </div>
+        {/if}
       </div>
-    {:else if activityData}
+    {/each}
+  {:else if activityData}
+    <!-- Show user profile when no activities are present -->
+    <div
+      class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height"
+    >
       <div class="profile-header p-4 flex items-center">
         <div class="avatar-container flex-shrink-0 relative">
           <img
@@ -725,11 +740,260 @@
             {/if}
           </div>
         </div>
-        <!-- Action Buttons -->
       </div>
-    {/if}
+    </div>
   {/if}
-</div>
+{:else}
+  <!-- The non-showActivity view can remain as is since it's already designed to show one activity -->
+  <div
+    class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height"
+  >
+    {#if loading}
+      <div class="loading-container" in:fade={{ duration: 300 }}>
+        <div class="loading-spinner"></div>
+        <p class="text-[var(--text-secondary)]">Loading Discord activity...</p>
+      </div>
+    {:else if error}
+      <div class="error-container" in:fade={{ duration: 300 }}>
+        <p class="text-[var(--text-secondary)]">{error}</p>
+        <button
+          on:click={connectWebSocket}
+          class="retry-button mt-2 text-sm text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/5"
+        >
+          Retry
+        </button>
+      </div>
+    {:else}
+      <!-- User Profile Header -->
+
+      <!-- Activity Display -->
+      {#if currentActivity}
+        <div class="activity-card p-4" in:fade={{ duration: 400, delay: 100 }}>
+          <div class="flex items-start">
+            <!-- Activity image -->
+            <div class="relative min-w-[56px]">
+              {#if currentActivity.assets?.large_image && !imageLoadError}
+                <div
+                  class="activity-image-wrapper"
+                  style="--activity-color: {activityColor}"
+                >
+                  <img
+                    src={parseImageUrl(
+                      currentActivity.assets.large_image,
+                      currentActivity
+                    )}
+                    alt={currentActivity.assets?.large_text || "Activity Image"}
+                    class="size-18 {pulseAnimation ? 'pulse' : ''}"
+                    on:error={handleImageError}
+                  />
+                </div>
+              {:else}
+                <!-- Placeholder for missing or failed images -->
+                <div
+                  class="activity-placeholder"
+                  style="--activity-color: {activityColor}"
+                >
+                  <span>
+                    {#if currentActivity.type === ACTIVITY_TYPES.LISTENING}
+                      ♪
+                    {:else if currentActivity.type === ACTIVITY_TYPES.PLAYING}
+                      {currentActivity.name?.charAt(0) || "?"}
+                    {:else if currentActivity.type === ACTIVITY_TYPES.WATCHING}
+                      📺
+                    {:else if currentActivity.type === ACTIVITY_TYPES.STREAMING}
+                      🎥
+                    {:else}
+                      🏆
+                    {/if}
+                  </span>
+                </div>
+              {/if}
+            </div>
+
+            <!-- Activity details -->
+            <div class="ml-3 flex-1 min-w-0">
+              <div
+                class="activity-label flex items-center gap-3 whitespace-nowrap"
+                in:slide={{ duration: 300, delay: 200 }}
+              >
+                {getActivityTypeLabel(currentActivity.type)}
+                {#if activityData?.spotify || currentActivity.application_id === "463151177836658699"}
+                  <div
+                    class="service-badge whitespace-nowrap"
+                    in:fade={{ duration: 400, delay: 500 }}
+                  >
+                    {#if activityData?.spotify}
+                      <img
+                        src="https://open.spotify.com/favicon.ico"
+                        alt="Spotify"
+                        class="service-icon"
+                      />
+                      <span class="service-name">Spotify</span>
+                    {:else if currentActivity.application_id === "463151177836658699"}
+                      <img
+                        src="https://music.youtube.com/favicon.ico"
+                        alt="YouTube Music"
+                        class="service-icon"
+                      />
+                      <span class="service-name">YouTube Music</span>
+                    {/if}
+                  </div>
+                {/if}
+              </div>
+
+              <div
+                class="activity-title"
+                in:slide={{ duration: 300, delay: 250 }}
+              >
+                {currentActivity.type === ACTIVITY_TYPES.LISTENING
+                  ? currentActivity.details || "Unknown Track"
+                  : currentActivity.name || "Unknown Activity"}
+              </div>
+
+              <div
+                class="activity-subtitle"
+                in:slide={{ duration: 300, delay: 300 }}
+              >
+                {#if currentActivity.type === ACTIVITY_TYPES.LISTENING}
+                  {currentActivity.state || "Unknown Artist"}
+                {:else if currentActivity.type === ACTIVITY_TYPES.PLAYING}
+                  <p>
+                    {currentActivity.details || ""} - {currentActivity.state}
+                  </p>
+                  <!-- {currentActivity.state || "Unknown Game"} -->
+                {:else if currentActivity.state}
+                  {currentActivity.state}
+                {/if}
+              </div>
+
+              <!-- Progress bar with enhanced styling -->
+              {#if currentActivity.timestamps?.start && currentActivity.timestamps?.end}
+                <div
+                  class="progress-container"
+                  in:slide={{ duration: 300, delay: 400 }}
+                >
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      style="width: {currentProgress}%; background-color: {activityColor}"
+                    ></div>
+                  </div>
+                </div>
+              {/if}
+            </div>
+          </div>
+        </div>
+      {:else if activityData}
+        <div class="profile-header p-4 flex items-center">
+          <div class="avatar-container flex-shrink-0 relative">
+            <img
+              src={getAvatarUrl()}
+              alt="Discord Avatar"
+              class="avatar-image w-12 h-12 rounded-full object-cover border border-[var(--border-color)]/40"
+            />
+            <div
+              class="status-dot"
+              class:online={activityData.discord_status === "online"}
+              class:idle={activityData.discord_status === "idle"}
+              class:dnd={activityData.discord_status === "dnd"}
+              class:offline={activityData.discord_status === "offline" ||
+                !activityData.discord_status}
+            ></div>
+          </div>
+          <div class="flex items-center justify-between w-full">
+            <div class="user-info ml-3 flex-1">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="user-name font-medium text-[var(--text-primary)]">
+                    {getDisplayName()}
+                  </div>
+                  {#if activityData?.discord_user?.discriminator && activityData?.discord_user?.discriminator !== "0"}
+                    <div class="user-tag text-xs text-[var(--text-secondary)]">
+                      {activityData.discord_user.username}#{activityData
+                        .discord_user.discriminator}
+                    </div>
+                  {:else}
+                    <div class="user-tag text-xs text-[var(--text-secondary)]">
+                      {activityData.discord_user?.username || ""}
+                    </div>
+                  {/if}
+                </div>
+              </div>
+            </div>
+            <div>
+              {#if showButtons}
+                <div
+                  class="action-buttons-container"
+                  in:slide={{ duration: 300, delay: 500 }}
+                >
+                  <div class="flex items-center gap-2">
+                    <button
+                      class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 transition-colors duration-200"
+                      on:click={openDiscordDM}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="#5865F2"
+                      >
+                        <path
+                          d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"
+                        />
+                        <path d="M7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z" />
+                      </svg>
+                      <span>Message</span>
+                    </button>
+
+                    <button
+                      class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 transition-colors duration-200"
+                      on:click={openDiscordAddFriend}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="#5865F2"
+                      >
+                        <path
+                          d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                        />
+                      </svg>
+                      <span>Add</span>
+                    </button>
+
+                    {#if inviteCode}
+                      <button
+                        class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 transition-colors duration-200"
+                        on:click={openDiscordServer}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 16 16"
+                          fill="#5865F2"
+                        >
+                          <path
+                            d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.249.594.05.05 0 0 0-.03.03.052.052 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z"
+                          />
+                        </svg>
+                        <span>Join Server</span>
+                      </button>
+                    {/if}
+                  </div>
+                </div>
+              {/if}
+            </div>
+          </div>
+          <!-- Action Buttons -->
+        </div>
+      {/if}
+    {/if}
+  </div>
+{/if}
 
 <style>
   .discord-activity {
