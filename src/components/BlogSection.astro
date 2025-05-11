@@ -5,6 +5,9 @@ import { getCollection } from "astro:content";
 import Badge from "./Badge.astro";
 
 const blogs = await getCollection("blog");
+const sortedBlogs = blogs.sort((a, b) => {
+  return new Date(b.data.pubDate) - new Date(a.data.pubDate);
+});
 ---
 
 <section
@@ -32,8 +35,8 @@ const blogs = await getCollection("blog");
       class="blog-grid grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:gap-6 lg:grid-cols-3"
     >
       {
-        blogs.slice(0, 3).map((blog) => (
-          <div class="blog-item transform-none">
+        sortedBlogs.slice(0, 3).map((blog) => (
+          <div class="blog-item h-full flex flex-col">
             <BlogCard
               title={blog.data.title}
               pubDate={blog.data.pubDate}
@@ -196,15 +199,26 @@ const blogs = await getCollection("blog");
 
   .blog-item {
     /* Explicitly prevent 3D transforms and hover animations */
+    height: 100%;
     transform: none !important;
     will-change: auto;
     transition: opacity 0.3s ease;
     transform-style: flat;
     perspective: none;
+    display: flex;
+    flex-direction: column;
   }
 
   .blog-grid {
     position: relative;
+    align-items: stretch;
+  }
+
+  /* Ensure BlogCard fills the height of its parent */
+  .blog-item > * {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Add subtle animation for the blog grid background */

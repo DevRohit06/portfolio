@@ -75,7 +75,6 @@ const { content: Content } = Astro.props;
     background-color: rgba(var(--text-secondary-rgb), 0.1);
     padding: 0.2em 0.4em;
     border-radius: 3px;
-    font-family: "RoobertMonoTRIAL-Regular", monospace;
     font-size: 0.9em;
   }
 
@@ -103,5 +102,34 @@ const { content: Content } = Astro.props;
 
   :global(.blog-content li) {
     margin-bottom: 0.5em;
+  }
+
+  /* Custom Table Styling for Blog Content */
+  :global(.blog-content table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2em 0;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  :global(.blog-content th),
+  :global(.blog-content td) {
+    padding: 0.85em 1.2em;
+    border-bottom: 1px solid rgba(var(--text-secondary-rgb), 0.12);
+    text-align: left;
+  }
+  :global(.blog-content th) {
+    background: var(--bg-primary);
+    color: var(--accent-primary);
+    font-weight: 600;
+    font-size: 1.05em;
+  }
+  :global(.blog-content tr:last-child td) {
+    border-bottom: none;
+  }
+  :global(.blog-content tr:nth-child(even)) td {
+    background: rgba(var(--accent-primary-rgb), 0.03);
   }
 </style>

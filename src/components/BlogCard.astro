@@ -47,10 +47,10 @@ const displayDate = updatedDate || pubDate;
 const primaryTag = tags.length > 0 ? tags[0] : "Blog";
 ---
 
-<div class="blog-card-wrapper group">
+<div class="blog-card-wrapper group h-full flex flex-col">
   <a
     href={url}
-    class="blog-card block h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative transition-all duration-300 bg-[var(--card-bg)]"
+    class="blog-card flex flex-col h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative transition-all duration-300 bg-[var(--card-bg)]"
   >
     <div
       class="blog-card-image-container relative overflow-hidden w-full aspect-video"
@@ -71,7 +71,7 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
         />
       </div>
     </div>
-    <div class="blog-card-content p-4 sm:p-5 relative">
+    <div class="blog-card-content p-4 sm:p-5 relative flex flex-col flex-1">
       <div
         class="blog-card-date text-xs text-[var(--text-secondary)] mb-2 font-medium"
       >
@@ -88,13 +88,15 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
       >
         {description}
       </p>
-      <div
-        class="blog-card-read-more mt-8 text-xs sm:text-sm font-medium text-[var(--text-secondary)] flex items-center group-hover:text-[var(--accent-primary)] transition-colors duration-300"
-      >
-        Read more <span
-          class="arrow ml-1 transition-transform duration-300 group-hover:translate-x-1"
-          >→</span
+      <div class="mt-auto">
+        <div
+          class="blog-card-read-more mt-8 text-xs sm:text-sm font-medium text-[var(--text-secondary)] flex items-center group-hover:text-[var(--accent-primary)] transition-colors duration-300"
         >
+          Read more <span
+            class="arrow ml-1 transition-transform duration-300 group-hover:translate-x-1"
+            >→</span
+          >
+        </div>
       </div>
     </div>
   </a>
@@ -105,6 +107,9 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
     transform: translateY(0);
     transition: transform 0.5s ease;
     will-change: transform;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -129,6 +134,9 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
   .blog-card {
     background-color: var(--card-bg);
     border-color: var(--border-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .blog-card:hover {
@@ -149,5 +157,11 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
 
   .border-secondary {
     border-color: var(--text-secondary);
+  }
+
+  .blog-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
   }
 </style>
