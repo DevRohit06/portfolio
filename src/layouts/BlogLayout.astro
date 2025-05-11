@@ -38,6 +38,23 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
+    
+    <!-- Early theme initialization to prevent flash of wrong theme -->
+    <script is:inline>
+      (function() {
+        // Run this immediately during page load
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        
+        // Set theme based on saved preference or system preference
+        if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.add("dark-theme");
+        } else {
+          document.documentElement.classList.remove("dark-theme");
+        }
+      })();
+    </script>
+    
     <!-- SEO Component with enhanced metadata for blog posts -->
     <Seo
       slot="seo"
