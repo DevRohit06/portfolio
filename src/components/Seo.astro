@@ -1,6 +1,6 @@
 ---
 import { type Props as SEOProps, SEO as AstroSEO } from "astro-seo";
-import { getBaseUrl } from "../lib/baseUrl";
+import { getBaseUrl, getCanonicalUrl } from "../lib/baseUrl";
 
 import { mainMetaData } from "../lib/metaData";
 
@@ -9,6 +9,9 @@ interface Props extends SEOProps {
   type?: "article" | "website" | "profile";
   slot: "seo";
   canonicalPath?: string;
+  isAlternate?: boolean;
+  primaryCanonicalPath?: string; // For alternate pages to point to the main canonical
+  noindex?: boolean; // For preventing soft 404s or duplicate content issues
 }
 
 const { props } = Astro;
@@ -20,12 +23,21 @@ const metaData = {
   image: props.imageUrl ?? `images/og.webp`,
 };
 
-// Build canonical URL
-const canonicalUrl = props.canonicalPath
-  ? new URL(props.canonicalPath, baseUrl).toString()
-  : Astro.url.pathname === "/"
-    ? baseUrl
-    : new URL(Astro.url.pathname, baseUrl).toString();
+// Build canonical URL with improved handling
+let canonicalUrl;
+if (props.isAlternate && props.primaryCanonicalPath) {
+  // If this is an alternate page, use the provided primary canonical URL
+  canonicalUrl = getCanonicalUrl(props.primaryCanonicalPath);
+} else if (props.canonicalPath) {
+  // If a specific canonical path is provided, use it
+  canonicalUrl = getCanonicalUrl(props.canonicalPath);
+} else {
+  // Default: Use current path, with special handling for the homepage
+  canonicalUrl =
+    Astro.url.pathname === "/"
+      ? getCanonicalUrl()
+      : getCanonicalUrl(Astro.url.pathname);
+}
 
 const defaultProps: SEOProps = {
   title: metaData.title,
@@ -37,7 +49,7 @@ const defaultProps: SEOProps = {
       image: metaData.image,
       title: metaData.title,
       type: props.type ?? "website",
-      url: baseUrl,
+      url: canonicalUrl, // Use canonical URL for OpenGraph as well for consistency
       ...props.openGraph?.basic,
     },
     optional: {
@@ -62,9 +74,20 @@ const defaultProps: SEOProps = {
         content:
           "Rohit Kushwaha, AI Vibe Engineer, Vibe Engineering, AI Developer, Full Stack Developer, Artificial Intelligence, Human-AI Collaboration, React, Svelte, Node.js",
       },
+      // Add noindex tag for pages that should be excluded from search engines
+      ...(props.noindex
+        ? [
+            { name: "robots", content: "noindex, nofollow" },
+            { name: "googlebot", content: "noindex, nofollow" },
+          ]
+        : []),
       ...(props.extend?.meta || []),
     ],
-    link: [...(props.extend?.link || [])],
+    link: [
+      // Add the canonical link as a rel="canonical" tag
+      { rel: "canonical", href: canonicalUrl },
+      ...(props.extend?.link || []),
+    ],
   },
 };
 
