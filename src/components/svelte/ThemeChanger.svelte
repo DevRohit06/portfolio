@@ -8,20 +8,20 @@
     // Prevent the flash by hiding content momentarily
     const originalVisibility = document.documentElement.style.visibility;
     document.documentElement.style.visibility = "hidden";
-    
+
     // Update the theme class immediately
     document.documentElement.classList.toggle("dark-theme", theme === "dark");
-    
+
     // Store the preference
     localStorage.setItem("theme", theme);
     currentTheme = theme;
-    
+
     // Update theme color meta tag for mobile browsers
     updateMetaThemeColor(theme === "dark");
-    
+
     // Notify other components about the theme change
     document.dispatchEvent(new Event("themeChanged"));
-    
+
     // Make content visible again after a very brief delay
     // This prevents the flash of incorrect theme
     setTimeout(() => {
@@ -33,10 +33,7 @@
   function updateMetaThemeColor(isDark) {
     const themeColor = document.querySelector('meta[name="theme-color"]');
     if (themeColor) {
-      themeColor.setAttribute(
-        "content",
-        isDark ? "#202020" : "#C9CDD1"
-      );
+      themeColor.setAttribute("content", isDark ? "#202020" : "#C9CDD1");
     }
   }
 
@@ -62,12 +59,14 @@
       "dark-theme",
       currentTheme === "dark"
     );
-    
+
     // Update meta theme color on initial load
     updateMetaThemeColor(currentTheme === "dark");
-    
+
     // Also listen to system preference changes
-    const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const darkModeMediaQuery = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    );
     darkModeMediaQuery.addEventListener("change", (e) => {
       // Only update if there's no saved preference
       if (!localStorage.getItem("theme")) {
