@@ -12,6 +12,8 @@ import Instagram from "../components/icons/Instagram.astro";
 import Twitter from "../components/icons/Twitter.astro";
 import LinkedIn from "../components/icons/LinkedIn.astro";
 import GitHub from "../components/icons/GitHub.astro";
+import { Favicon } from "../components/icons";
+import Favicon from "../components/icons/Favicon.astro";
 ---
 
 <Layout title="Socials | Rohit Kushwaha">
@@ -184,6 +186,40 @@ import GitHub from "../components/icons/GitHub.astro";
                   <Mail />
                 </span>
                 <span class="link-text">Email</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="links-category">
+            <Badge size="xs"
+              ><span class="whitespace-nowrap text-xs uppercase"
+                >Promotions</span
+              ></Badge
+            >
+
+            <div class="social-links-grid">
+              <a
+                href="https://dialogh.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+              >
+                <span class="social-icon">
+                  <Favicon url="https://dialogh.in/" class="social-icon" />
+                </span>
+                <span class="link-text">Join Dialogh</span>
+              </a>
+
+              <a
+                href="https://interacly.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+              >
+                <span class="social-icon">
+                  <Favicon url="https://interacly.com/" class="social-icon" />
+                </span>
+                <span class="link-text">Try Interacly</span>
               </a>
             </div>
           </div>

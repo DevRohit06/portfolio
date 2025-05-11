@@ -1,0 +1,73 @@
+---
+import Layout from "../layouts/Layout.astro";
+import WebsitesGrid from "../components/WebsitesGrid.astro";
+import WebsiteLink from "../components/WebsiteLink.astro";
+import { websites, getWebsitesByCategory } from "../lib/websites";
+import Badge from "../components/Badge.astro";
+
+// Get websites by category
+const devWebsites = getWebsitesByCategory("development");
+const publishingWebsites = getWebsitesByCategory("publishing");
+const learningWebsites = getWebsitesByCategory("learning");
+
+// Get all websites
+const allWebsites = Object.values(websites);
+---
+
+<Layout title="Website Links | Favicons Demo">
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Website Links with Favicons</h1>
+
+    <div class="mb-10">
+      <Badge size="sm"><span>Development Resources</span></Badge>
+      <div class="mt-4">
+        <WebsitesGrid
+          websites={devWebsites}
+          title=""
+          columns={2}
+          showNames={true}
+        />
+      </div>
+    </div>
+
+    <div class="mb-10">
+      <Badge size="sm"><span>Publishing Platforms</span></Badge>
+      <div class="mt-4">
+        <WebsitesGrid
+          websites={publishingWebsites}
+          title=""
+          columns={2}
+          showNames={true}
+        />
+      </div>
+    </div>
+
+    <div class="mb-10">
+      <Badge size="sm"><span>Icon Grid Example</span></Badge>
+      <div class="mt-4">
+        <WebsitesGrid
+          websites={allWebsites}
+          title=""
+          columns={4}
+          showNames={false}
+        />
+      </div>
+    </div>
+
+    <div class="mb-10">
+      <Badge size="sm"><span>Individual Website Link</span></Badge>
+      <div class="mt-4 max-w-md">
+        <WebsiteLink website={websites.github} />
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 900px;
+  }
+  h1 {
+    margin-bottom: 2rem;
+  }
+</style>
