@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import { socials } from "../lib/socials";
 import ThemeChanger from "./svelte/ThemeChanger.svelte";
 import SocialIcons from "./SocialIcons.astro";
+import Logo from "./icons/Logo.astro";
 ---
 
 <!-- Mobile Navigation Sidebar (Fullscreen) -->
@@ -64,16 +65,6 @@ import SocialIcons from "./SocialIcons.astro";
       </li>
     </ul>
 
-    <!-- Social Media Links and Theme Changer -->
-    <div>
-      <div class="mt-6 flex flex-wrap gap-4">
-        <SocialIcons variant="button" size="md" />
-      </div>
-
-      <!-- <div class="w-fit"> -->
-      <!-- <ThemeChanger client:load /> -->
-      <!-- </div> -->
-    </div>
     <div></div>
   </nav>
 </div>
@@ -89,10 +80,9 @@ import SocialIcons from "./SocialIcons.astro";
     <a
       href="/"
       id="logo-link"
-      class="font-medium text-xl text-[var(--text-primary)]"
-      >Rohit <span class="text-[var(--accent-primary)] font-bold text-3xl"
-        >.</span
-      ></a
+      class="font-medium text-xl text-[var(--text-primary)] flex items-center"
+      ><Logo />
+      <span class="text-[var(--accent-primary)] font-bold text-3xl">.</span></a
     >
 
     <!-- Desktop Navigation Links - Always visible on desktop regardless of menu state -->
