@@ -1,0 +1,70 @@
+---
+interface Props {
+  url: string;
+  size?: string;
+  class?: string;
+  fallback?: boolean;
+}
+
+const {
+  url,
+  size = "w-6 h-6",
+  class: className = "",
+  fallback = true,
+} = Astro.props;
+
+// Extract domain name from URL for better display and fallback
+const getDomain = (url: string): string => {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.hostname;
+  } catch (e) {
+    return url;
+  }
+};
+
+const domain = getDomain(url);
+const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+
+// Fallback icon in case the favicon doesn't load
+const fallbackIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" class:list={[size, className]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"></path>
+  <path d="M16.2 7.8l-2.8 2.8"></path>
+  <path d="M16.2 16.2l-2.8-2.8"></path>
+  <path d="M7.8 7.8l2.8 2.8"></path>
+  <path d="M7.8 16.2l2.8-2.8"></path>
+</svg>
+`;
+---
+
+{
+  fallback ? (
+    <img
+      src={faviconUrl}
+      alt={`${domain} favicon`}
+      class:list={[size, className, "site-favicon"]}
+      width="24"
+      height="24"
+      loading="lazy"
+      onerror={`this.outerHTML='${fallbackIcon}'`}
+    />
+  ) : (
+    <img
+      src={faviconUrl}
+      alt={`${domain} favicon`}
+      class:list={[size, className, "site-favicon"]}
+      width="24"
+      height="24"
+      loading="lazy"
+    />
+  )
+}
+
+<style>
+  .site-favicon {
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+  }
+</style>

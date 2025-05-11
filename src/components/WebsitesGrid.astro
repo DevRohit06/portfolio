@@ -1,0 +1,63 @@
+---
+import WebsiteLink from "./WebsiteLink.astro";
+import type { Website } from "../lib/websites";
+
+interface Props {
+  websites: Website[];
+  title?: string;
+  columns?: number;
+  showNames?: boolean;
+}
+
+const {
+  websites,
+  title = "Websites",
+  columns = 2,
+  showNames = true,
+} = Astro.props;
+---
+
+<div class="websites-grid-container">
+  {title && <h3 class="websites-grid-title">{title}</h3>}
+
+  <div
+    class="websites-grid"
+    style={`grid-template-columns: repeat(${columns}, 1fr);`}
+  >
+    {
+      websites.map((website) => (
+        <WebsiteLink
+          website={website}
+          showName={showNames}
+          className={
+            showNames ? "website-link" : "website-link website-icon-only"
+          }
+        />
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .websites-grid-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .websites-grid-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .websites-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    .websites-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

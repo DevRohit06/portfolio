@@ -1,0 +1,73 @@
+---
+import { Favicon } from "../icons";
+import type { Website } from "../../lib/websites";
+
+interface Props {
+  website: Website;
+  showName?: boolean;
+  className?: string;
+  iconSize?: string;
+}
+
+const {
+  website,
+  showName = true,
+  className = "website-link",
+  iconSize = "w-6 h-6",
+} = Astro.props;
+---
+
+<a
+  href={website.url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class={className}
+  title={website.description}
+>
+  <span class="website-icon">
+    <Favicon url={website.url} class="website-favicon-icon" size={iconSize} />
+  </span>
+  {showName && <span class="website-name">{website.name}</span>}
+</a>
+
+<style>
+  .website-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+  }
+
+  .website-link:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .website-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+  }
+
+  .website-link:hover .website-icon {
+    transform: scale(1.1);
+  }
+
+  .website-name {
+    font-weight: 500;
+  }
+
+  /* For collections where only icons are shown */
+  .website-icon-only {
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+</style>
