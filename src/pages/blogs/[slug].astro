@@ -7,7 +7,6 @@ import Footer from "../../components/Footer.astro";
 import Badge from "../../components/Badge.astro";
 import ContentWrapper from "../../components/ContentWrapper.astro";
 import { Image } from "astro:assets";
-import client from "../../lib/client";
 import calculateReadingTime from "reading-time";
 import Pfp from "../../assets/rohit.webp";
 import SocialIcons from "../../components/SocialIcons.astro";
@@ -199,11 +198,10 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
     <div class="reading-progress-bar fixed top-0 left-0 h-1 bg-accent z-50">
     </div>
 
-    <div class="w-[90%] md:w-[80%] lg:w-[50%] mx-auto mt-[80px] md:mt-[100px]">
+    <div
+      class="w-[90%] md:w-[80%] lg:w-[90%] xl:w-[70%] 2xl:w-[60%] mx-auto mt-[80px] md:mt-[100px]"
+    >
       <!-- Add Theme Toggle Button -->
-      <div class="theme-toggle-container flex justify-end mb-4">
-        <ThemeChanger client:load />
-      </div>
 
       <!-- Hero Section -->
       <div class="blog-hero mb-8 md:mb-12">
@@ -307,10 +305,15 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
       </div>
 
       <!-- Main Content Layout -->
-      <div class="blog-layout grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div
+        class="blog-layout grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-8"
+      >
         <!-- Table of Contents (Desktop) -->
-        <div class="hidden md:block md:col-span-1">
+        <div class="hidden md:block md:col-span-2">
           <div class="sticky top-24">
+            <div class="theme-toggle-container flex justify-end mb-4">
+              <ThemeChanger client:load />
+            </div>
             <div class="table-of-contents border border-secondary p-4 bg-card">
               <h2 class="text-lg font-medium mb-3">Table of Contents</h2>
               <ul class="toc-list text-sm">
@@ -381,7 +384,7 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
         </div>
 
         <!-- Blog Content -->
-        <div class="md:col-span-3">
+        <div class="md:col-span-4">
           <!-- Use ContentWrapper for rendering the blog content -->
           <ContentWrapper content={Content} />
 
@@ -402,7 +405,7 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
             </div>
             <div>
               <h4 class="text-lg font-medium">Rohit Kushwaha</h4>
-              <p class="text-sm text-[#4B4B4B] mt-1 mb-2">
+              <p class="text-sm text-[var(--text-secondary)] mt-1 mb-2">
                 Software Engineer & Tech Enthusiast
               </p>
               <p class="text-sm">
