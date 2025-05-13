@@ -28,4 +28,4 @@
   });
 </script>
 
-<span class="font-bold">{time} IST</span>
+<span class="font-bold tabular-nums">{time} IST</span>
