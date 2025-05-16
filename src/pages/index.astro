@@ -180,7 +180,7 @@ const jsonLd = {
         <div class="hero-card">
           <HeroCard />
         </div>
-        <div class="experience relative">
+        <div class="experience relative mt-24">
           <div class="absolute top-0 w-full z-0">
             <div
               class="connecting-border border-[var(--border-color)] border h-52 sm:w-2/5 w-4/5 mx-auto"
@@ -254,6 +254,103 @@ const jsonLd = {
 
     console.log("Initializing home page animations");
     animationsInitialized = true;
+
+    // Initial state for navbar - start from slightly above with opacity 0
+    const navbar = document.getElementById("main-navbar");
+    if (navbar) {
+      console.log("Setting up navbar animation");
+
+      // Force set initial state with inline styles for consistency
+      if (navbar instanceof HTMLElement) {
+        gsap.set(navbar, {
+          y: -20,
+          opacity: 0,
+          visibility: "hidden",
+        });
+      }
+
+      // First set visibility without animation
+      gsap.set(navbar, { visibility: "visible" });
+
+      // Then animate the other properties
+      gsap.to(navbar, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: 0.2,
+        ease: "power3.out",
+        onStart: function () {
+          console.log("Navbar animation started");
+          if (navbar instanceof HTMLElement) {
+            navbar.style.visibility = "visible";
+          }
+        },
+        onComplete: () => console.log("Navbar animation completed"),
+      });
+    } else {
+      console.warn("Navbar element not found");
+    }
+
+    // Initial state for hero top badges - start from sides with opacity 0
+    const badgesContainer = document.querySelector(".hero-top-badges");
+    const badges = document.querySelectorAll(".hero-top-badges .badge");
+    console.log("Animation setup - badges found:", badges?.length || 0);
+
+    // Make sure badges are visible in console for debugging
+    badges.forEach((badge, i) => {
+      console.log(`Badge ${i} classes:`, badge.className);
+    });
+
+    // Set initial state for first and last badges
+    if (badges.length > 0) {
+      // Ensure visibility before animations run
+      badges.forEach((badge) => {
+        if (badge instanceof HTMLElement) {
+          // Force set inline style
+          gsap.set(badge, { visibility: "hidden", opacity: 0 });
+        }
+      });
+
+      gsap.set(badges[0], {
+        x: -30,
+        opacity: 0,
+        visibility: "hidden",
+      });
+
+      if (badges.length > 1) {
+        gsap.set(badges[badges.length - 1], {
+          x: 30,
+          opacity: 0,
+          visibility: "hidden",
+        });
+      }
+
+      // Animate hero top badges entrance with stagger - setting visibility first
+      // First set visibility without animation
+      gsap.set(badges, { visibility: "visible" });
+
+      // Then animate the other properties
+      gsap.to(badges, {
+        x: 0,
+        opacity: 1,
+        duration: 0.7,
+        stagger: 0.1,
+        delay: 0.5,
+        ease: "back.out(1.2)",
+        onStart: function () {
+          console.log("Badge animation started");
+          // Additional safety check
+          badges.forEach((badge) => {
+            if (badge instanceof HTMLElement) {
+              badge.style.visibility = "visible";
+            }
+          });
+        },
+        onComplete: () => console.log("Badge animation completed"),
+      });
+    } else {
+      console.warn("No badges found to animate");
+    }
 
     // Set initial state for the borders
     gsap.set(".border-left, .border-right", {
@@ -379,7 +476,7 @@ const jsonLd = {
     // Make sure GSAP doesn't cause performance issues on mobile
     const mobileMediaQuery = window.matchMedia("(max-width: 768px)");
 
-    function handleMobileChange(e) {
+    function handleMobileChange(e: MediaQueryListEvent | MediaQueryList) {
       if (e.matches) {
         // Disable or simplify some animations on mobile for performance
         ScrollTrigger.getAll().forEach((trigger) => {
@@ -400,6 +497,11 @@ const jsonLd = {
 
   // Handle loader visibility on client side
   document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM loaded - preparing animations");
+
+    // Mark page as loading animations
+    document.documentElement.classList.add("js-loading");
+
     const hasVisitedBefore = sessionStorage.getItem("hasLoadedSite");
 
     if (hasVisitedBefore === "true") {
@@ -410,19 +512,51 @@ const jsonLd = {
       }
       document.body.classList.remove("loading");
       document.body.classList.remove("page-transition");
+
+      // Trigger animations immediately on subsequent page loads
+      setTimeout(() => {
+        document.body.classList.add("page-loaded");
+      }, 10);
     } else {
+      // First time visitor - show loader, then animate
       // Set the flag for future visits
       sessionStorage.setItem("hasLoadedSite", "true");
+
+      // Optimize page transitions
+      setTimeout(() => {
+        document.body.classList.remove("loading");
+        document.body.classList.add("page-loaded");
+      }, 300);
     }
 
-    // Optimize page transitions
+    // Initialize animations after a short delay to ensure the DOM is fully loaded and rendered
     setTimeout(() => {
-      document.body.classList.remove("loading");
-      document.body.classList.add("page-loaded");
-    }, 300);
+      console.log("Starting animations initialization");
 
-    // Initialize animations after the loader is hidden
-    initPageAnimations();
+      // Debug check for navbar element
+      const navbarEl = document.getElementById("main-navbar");
+      console.log("Navbar element found:", navbarEl ? true : false);
+
+      // Debug check for hero badges
+      const badgesContainer = document.querySelector(".hero-top-badges");
+      const badges = document.querySelectorAll(".hero-top-badges .badge");
+      console.log(
+        "Hero badges container found:",
+        badgesContainer ? true : false
+      );
+      console.log("Hero badges found:", badges?.length || 0);
+
+      // Now initialize animations
+      initPageAnimations();
+
+      // Remove the loading class after animations are initialized
+      setTimeout(() => {
+        document.documentElement.classList.remove("js-loading");
+        console.log(
+          "JS loading class removed - elements should now be visible"
+        );
+      }, 200);
+    }, 100);
   });
 
   // Clean up animations when leaving the page
@@ -435,12 +569,30 @@ const jsonLd = {
   // Re-initialize animations after page transition
   document.addEventListener("astro:page-load", () => {
     console.log("Re-initializing animations after page navigation");
+
+    // Make sure navbar and badges are in initial state first
+    const navbar = document.getElementById("main-navbar");
+    if (navbar && navbar instanceof HTMLElement) {
+      // Reset navbar to normal state to avoid flickering
+      navbar.style.opacity = "";
+      navbar.style.transform = "";
+    }
+
+    const badges = document.querySelectorAll(".hero-top-badges .badge");
+    badges.forEach((badge) => {
+      if (badge instanceof HTMLElement) {
+        // Reset badges to normal state
+        badge.style.opacity = "";
+        badge.style.transform = "";
+      }
+    });
+
     // Small delay to ensure DOM is fully loaded
     setTimeout(() => {
       cleanupGSAPAnimations(); // Clean up any existing animations first
       animationsInitialized = false; // Reset the initialized flag
       initPageAnimations(); // Re-initialize animations
-    }, 100);
+    }, 150);
   });
 </script>
 
@@ -526,5 +678,17 @@ const jsonLd = {
   :global(.fade-in.visible) {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* Initial state for animated elements to prevent flash of unstyled content */
+  .hero-top-badges {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Hide navbar initially to prevent flash before animations */
+  :global(#main-navbar) {
+    opacity: 0;
+    transform: translateY(-20px);
   }
 </style>

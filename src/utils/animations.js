@@ -13,14 +13,14 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
  */
 export function cleanupGSAPAnimations() {
   // Kill all GSAP animations
-  // gsap.killTweensOf("*");
+  gsap.killTweensOf("*");
 
-  // // Kill and clear all ScrollTrigger instances
-  // ScrollTrigger.getAll().forEach((st) => st.kill());
-  // ScrollTrigger.clearScrollMemory();
-  // ScrollTrigger.killAll();
-  // // Clear any queued callbacks
-  // gsap.globalTimeline.clear();
+  // Kill and clear all ScrollTrigger instances
+  ScrollTrigger.getAll().forEach((st) => st.kill());
+  ScrollTrigger.clearScrollMemory();
+  ScrollTrigger.killAll();
+  // Clear any queued callbacks
+  gsap.globalTimeline.clear();
 
   console.log("GSAP animations cleaned up");
 }

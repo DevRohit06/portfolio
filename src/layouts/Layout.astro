@@ -179,6 +179,8 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
 </style>
 
 <script>
+  // Add js-loading class to html element on initial page load
+  document.documentElement.classList.add("js-loading");
   // Import GSAP and the cleanup function
   import { gsap } from "gsap";
   import { cleanupGSAPAnimations } from "../utils/animations.js";

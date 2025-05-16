@@ -108,3 +108,47 @@ body {
 .dg {
   display: none;
 }
+
+/* Apply hidden state only when JS is loading, remove after animations start */
+.js-loading #main-navbar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(-20px) !important;
+}
+
+.js-loading .hero-top-badges {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Fallback for no JS - hide initially but make visible after a short delay */
+#main-navbar,
+.hero-top-badges {
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    visibility 0s 0.3s;
+}
+
+/* Show elements after 1 second if animations don't run */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.js-loading) #main-navbar,
+  html:not(.js-loading) .hero-top-badges {
+    animation: reveal-delayed 1s forwards;
+  }
+}
+
+@keyframes reveal-delayed {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  99% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
