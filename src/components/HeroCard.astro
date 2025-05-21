@@ -133,11 +133,11 @@ import SocialIcons from "./SocialIcons.astro";
         },
       });
 
-      // Hide everything initially
-      gsap.set(".hero-container", {
-        visibility: "hidden",
-        opacity: 0,
-      });
+      // Hide everything initially - This is now handled by CSS.
+      // gsap.set(".hero-container", {
+      //   visibility: "hidden",
+      //   opacity: 0,
+      // });
 
       gsap.set(
         [".hero-title-section", ".hero-info-section", ".hero-skills-section"],
@@ -399,12 +399,14 @@ import SocialIcons from "./SocialIcons.astro";
       will-change: transform;
     }
 
-    /* Transition classes for animations */
+    /* Transition classes for animations - .loaded class is being removed */
+    /*
     .hero-container.loaded {
       visibility: visible;
       opacity: 1;
       transition: opacity 0.3s ease-out;
     }
+    */
 
     /* Responsive adjustments */
     @media (max-width: 640px) {
@@ -439,12 +441,3 @@ import SocialIcons from "./SocialIcons.astro";
     }
   </style>
 </div>
-
-<script>
-  // Quick script to handle visibility
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      document.querySelector(".hero-container")?.classList.add("loaded");
-    }, 100);
-  });
-</script>
