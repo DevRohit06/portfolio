@@ -1,5 +1,5 @@
 ---
-import { gsap } from "gsap";
+// import { gsap } from "gsap"; // GSAP will be imported in a client-side script
 import { Image } from "astro:assets";
 import { socials } from "../lib/socials";
 import ThemeChanger from "./svelte/ThemeChanger.svelte";
@@ -138,6 +138,33 @@ import Logo from "./icons/Logo.astro";
     </div>
   </div>
 </nav>
+
+<style>
+  /*
+    Initial styles for #main-navbar (opacity: 0, transform: translateY(-20px))
+    are now handled by global.css under the .js-loading class.
+    The GSAP animation below will override these once js-loading is removed and
+    the animation starts.
+  */
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const navbar = document.getElementById('main-navbar');
+    if (navbar) {
+      // Ensure GSAP targets the transform property correctly
+      gsap.to(navbar, {
+        opacity: 1,
+        y: 0, // GSAP's shorthand for transform: translateY(0)
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: 0.5, 
+      });
+    }
+  });
+</script>
 
 <script is:inline>
   // Immediately invoked function to avoid global scope pollution
