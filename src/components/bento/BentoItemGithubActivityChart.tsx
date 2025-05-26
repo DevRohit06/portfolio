@@ -90,9 +90,14 @@ const renderRect =
     );
   };
 
-interface Props extends GithubContributionData {}
+interface Props {
+  lastPushedAt: number;
+  totalContributions: number;
+  contributions: { count: number; date: string }[];
+  className?: string;
+}
 
-const BentoGithubActivity = (props: Props) => {
+const BentoGithubActivity = ({ className = '', ...props }: Props) => {
   const defaultValue = `${formatNumber(
     props.totalContributions
   )} contributions in the last year`;
@@ -198,7 +203,7 @@ const BentoGithubActivity = (props: Props) => {
       ref={chartRef}
       key={`chart-container-${forceRender}`}
     >
-      <div className="w-full overflow-x-auto">
+      <div className={`w-full h-full ${className}`}>
         {(isVisible || renderedOnce) && (
           <HeatMap
             key={`heat-map-${forceRender}`}

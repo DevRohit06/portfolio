@@ -8,21 +8,21 @@ import SocialIcons from "./SocialIcons.astro";
 
 <footer id="footer" class="footer-section mt-20 mb-2">
   <div
-    class="footer-container w-[90%] md:w-[80%] lg:w-[70%] mx-auto border border-[var(--border-color)] opacity-0 invisible footer-scroll-reveal"
+    class="footer-container w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] mx-auto border border-[var(--border-color)] opacity-0 invisible footer-scroll-reveal"
   >
     <!-- Grid containing all sections with their headings and links together -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 footer-grid">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 footer-grid">
       <!-- Column 1: Rohit Kushwaha -->
       <div
-        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[var(--border-color)] footer-scroll-reveal"
+        class="footer-col p-4 sm:p-6 lg:p-8 border-b border-[var(--border-color)] sm:border-r lg:border-b-0 footer-scroll-reveal"
         data-delay="0.1"
       >
         <h2
-          class="footer-heading text-lg sm:text-xl font-medium mb-4 split-text"
+          class="footer-heading text-base sm:text-lg lg:text-xl font-medium mb-3 sm:mb-4 split-text"
         >
           Rohit Kushwaha
         </h2>
-        <div class="flex flex-col gap-3 sm:gap-4 footer-links">
+        <div class="flex flex-col gap-2 sm:gap-3 lg:gap-4 footer-links">
           <a
             href="/coming-soon"
             class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300 footer-magnetic-item"
@@ -43,13 +43,17 @@ import SocialIcons from "./SocialIcons.astro";
 
       <!-- Column 2: Contact & Socials -->
       <div
-        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[var(--border-color)] footer-scroll-reveal"
+        class="footer-col p-4 sm:p-6 lg:p-8 border-b border-[var(--border-color)] lg:border-r lg:border-b-0 footer-scroll-reveal"
         data-delay="0.2"
       >
-        <h2 class="footer-heading text-lg sm:text-xl mb-4 split-text">
+        <h2
+          class="footer-heading text-base sm:text-lg lg:text-xl mb-3 sm:mb-4 split-text"
+        >
           Contact & Socials
         </h2>
-        <div class="grid grid-cols-2 gap-x-2 gap-y-3 sm:gap-y-4 footer-links">
+        <div
+          class="grid grid-cols-1 xs:grid-cols-2 gap-x-2 gap-y-2 sm:gap-y-3 lg:gap-y-4 footer-links"
+        >
           <a
             href={socials.linkedIn}
             target="_blank"
@@ -97,12 +101,12 @@ import SocialIcons from "./SocialIcons.astro";
 
       <!-- Column 3: Open Source Projects -->
       <div
-        class="footer-col border-b sm:border-b-0 sm:border-r border-[var(--border-color)] footer-scroll-reveal"
+        class="footer-col border-b border-[var(--border-color)] sm:border-r lg:border-b-0 footer-scroll-reveal"
         data-delay="0.3"
       >
-        <div class="p-4 sm:p-6 md:p-8">
+        <div class="p-4 sm:p-6 lg:p-8">
           <p class="footer-desc text-sm sm:text-base">Open Source on Github</p>
-          <div class="mt-4 sm:mt-4 flex flex-col gap-3">
+          <div class="mt-3 sm:mt-4 flex flex-col gap-2 sm:gap-3">
             <a
               href="https://github.com/devrohit06/portfolio"
               class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[var(--accent-primary)] font-medium group flex items-center"
@@ -115,13 +119,17 @@ import SocialIcons from "./SocialIcons.astro";
             </a>
           </div>
         </div>
-        <div class="border-t border-[var(--border-color)] p-4 sm:p-6 md:p-8">
-          <div class="flex flex-col gap-3">
-            <h3 class="text-base sm:text-lg font-medium">Contribute</h3>
+        <div class="border-t border-[var(--border-color)] p-4 sm:p-6 lg:p-8">
+          <div class="flex flex-col gap-2 sm:gap-3">
+            <h3 class="text-sm sm:text-base lg:text-lg font-medium">
+              Contribute
+            </h3>
             <p class="text-xs sm:text-sm text-[var(--text-secondary)] mb-2">
               Want to contribute to this project?
             </p>
-            <div class="flex justify-between items-center">
+            <div
+              class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2"
+            >
               <a
                 href="https://github.com/devrohit06/portfolio/fork"
                 class="footer-link-subtle text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300"
@@ -144,16 +152,16 @@ import SocialIcons from "./SocialIcons.astro";
 
       <!-- Column 4: Core Team -->
       <div
-        class="footer-col p-4 sm:p-6 md:p-8 border-b sm:border-b-0 sm:border-r border-[var(--border-color)] footer-scroll-reveal"
+        class="footer-col p-4 sm:p-6 lg:p-8 footer-scroll-reveal"
         data-delay="0.3"
       >
         <div
-          class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4 footer-dialogh-header"
+          class="flex flex-col xs:flex-row xs:items-center gap-2 sm:gap-3 lg:gap-4 mb-3 sm:mb-4 footer-dialogh-header"
         >
           <div class="footer-logo">
             <Image
               src={dialogh}
-              class="h-6 sm:h-8 w-fit dark:invert"
+              class="h-5 sm:h-6 lg:h-8 w-fit dark:invert"
               alt="dialogh"
             />
           </div>
@@ -161,12 +169,12 @@ import SocialIcons from "./SocialIcons.astro";
             <Badge text="TECH COMMUNITY" size="sm" />
           </div>
         </div>
-        <p class="footer-desc text-sm sm:text-base">
+        <p class="footer-desc text-sm sm:text-base mb-3 sm:mb-4 lg:mb-6">
           Tech is ever-evolving, and so are we. So why not create a space where
           we can all grow alongside the tech we use and care about?
         </p>
         <div
-          class="mt-4 sm:mt-6 flex justify-between items-center footer-dialogh-links"
+          class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 footer-dialogh-links"
         >
           <a
             href="https://dialogh.in"
@@ -184,15 +192,16 @@ import SocialIcons from "./SocialIcons.astro";
 
     <!-- Copyright row -->
     <div
-      class="footer-copyright border-t border-[var(--border-color)] p-3 sm:p-4 flex justify-between items-center footer-scroll-reveal"
+      class="footer-copyright border-t border-[var(--border-color)] p-3 sm:p-4 lg:p-5 flex justify-between gap-2 footer-scroll-reveal"
       data-delay="0.4"
     >
-      <span class="footer-copyright-text text-xs sm:text-sm"
+      <span
+        class="footer-copyright-text text-xs sm:text-sm text-center xs:text-left"
         >© Rohit Kushwaha</span
       >
       <a
         href="https://rohitk06.dev"
-        class="footer-website-link text-xs sm:text-sm flex items-center group footer-magnetic-item"
+        class="footer-website-link text-xs sm:text-sm flex items-center justify-center xs:justify-start group footer-magnetic-item"
       >
         <span class="mr-1">rohitk06.dev</span>
       </a>
@@ -420,6 +429,103 @@ import SocialIcons from "./SocialIcons.astro";
 
   .footer-col:hover::after {
     opacity: 1;
+  }
+
+  /* Enhanced responsive styles */
+
+  /* Extra small screens (< 475px) */
+  @media (max-width: 474px) {
+    .footer-container {
+      width: 95%;
+    }
+
+    .footer-col {
+      padding: 12px !important;
+    }
+
+    .footer-heading {
+      font-size: 14px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .footer-link,
+    .footer-desc {
+      font-size: 12px !important;
+    }
+
+    .footer-dialogh-header {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 8px !important;
+    }
+
+    .footer-dialogh-links {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 8px !important;
+    }
+
+    .footer-copyright {
+      padding: 12px !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+    }
+  }
+
+  /* Small mobile screens (475px - 639px) */
+  @media (min-width: 475px) and (max-width: 639px) {
+    .footer-grid .footer-col:nth-child(3) .flex.flex-col.sm\\:flex-row {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 8px !important;
+    }
+  }
+
+  /* Tablet adjustments (640px - 1023px) */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-col:nth-child(1) {
+      border-right: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .footer-col:nth-child(2) {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .footer-col:nth-child(3) {
+      border-right: 1px solid var(--border-color);
+    }
+
+    .footer-col:nth-child(4) {
+      /* No additional borders needed */
+    }
+  }
+
+  /* Large screens and up */
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .footer-col:not(:last-child) {
+      border-right: 1px solid var(--border-color);
+    }
+  }
+
+  /* Fix for grid spacing on very small screens */
+  @media (max-width: 374px) {
+    .footer-links.grid-cols-1 {
+      gap: 6px;
+    }
+
+    .footer-links.grid-cols-2 {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

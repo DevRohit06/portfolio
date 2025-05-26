@@ -8,9 +8,9 @@ import BentoGithubActivityChart from "./BentoItemGithubActivityChart";
 const response = await client.api.github.contributions.$get();
 const data = response.status === 200 ? await response.json() : null;
 // Remove console log to improve performance
-// console.log("Github Activity Chart Data: ", data);
+console.log("Github Activity Chart Data: ", data);
 
-function formatDate(date) {
+function formatDate(date: Date) {
   // Get day of week
   const weekdays = [
     "Sunday",
@@ -66,11 +66,11 @@ Astro.response.headers.set("Cache-Control", "public, max-age=86400");
 {
   data ? (
     <div
-      class="border border-[var(--border-color)] p-4 bento-github-card bento-scroll-reveal"
+      class="border border-[var(--border-color)] p-4 bento-github-card bento-scroll-reveal h-full flex flex-col"
       data-delay="0"
       data-performance-critical="true"
     >
-      <div class="flex items-center justify-between mb-2">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
         <Badge size="xs" text="GITHUB ACTIVITY">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -92,10 +92,12 @@ Astro.response.headers.set("Cache-Control", "public, max-age=86400");
           </p>
         </div>
       </div>
-      <BentoGithubActivityChart {...data} client:visible />
+      <div class="flex-1 min-h-0">
+        <BentoGithubActivityChart {...data} client:visible className="h-full" />
+      </div>
     </div>
   ) : (
-    <div class="border border-[#7B7B7B] p-4 bento-github-card bento-scroll-reveal flex items-center justify-center h-[200px]">
+    <div class="border border-[var(--border-color)] p-4 bento-github-card bento-scroll-reveal flex items-center justify-center h-[200px]">
       <p class="text-[#696969]">Loading GitHub activity...</p>
     </div>
   )

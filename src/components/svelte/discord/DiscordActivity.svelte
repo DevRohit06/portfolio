@@ -16,6 +16,7 @@
   export let showButtons = true; // Whether to show action buttons
   export let showActivity = true; // Whether to show activity or not
   export let showAllActivities = false; // Whether to show all activities or just the first one
+  export let className = ""; // Additional CSS classes
 
   // State variables
   let isConnected = false;
@@ -365,7 +366,8 @@
 </script>
 
 <div
-  class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height"
+  class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height {className}"
+  class:fixed-height={!className.includes('h-')}
 >
   {#if showAllActivities}
     {#if loading}

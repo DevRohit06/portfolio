@@ -8,15 +8,15 @@ interface Props {
 
 const { className = "" } = Astro.props;
 
-// Personal description sections with enhanced AI and vibe engineering focus
+// Personal description sections - concise and engaging
 const introSection =
-  "Hey there! I'm Rohit, and I love turning AI-human conversations into digital experiences that actually feel good to use. Think of me as the person who makes tech feel less robotic and more like talking to a friend.";
+  "Hey there! I'm Rohit, and I love building digital experiences that feel natural and intuitive. I turn complex ideas into user-friendly applications.";
 const skillsSection =
-  "I'm a bit of a tech mixologist—combining AI with Svelte, React, and Node.js to build apps that understand what you're trying to do, not just what you're typing. The kind of stuff that makes you go 'finally, something that gets me!'";
+  "I'm a tech mixologist—blending AI with Svelte, React, and Node.js to create apps that truly understand users. Building solutions that just work.";
 const interestsSection =
-  "What really gets me excited? It's what I call 'vibe engineering'—making technology that doesn't just work, but feels right. I spend my days exploring how humans and AI can create amazing things together that neither could build alone.";
+  "What excites me? 'Vibe engineering'—making technology that feels right. I explore how humans and AI can create amazing things together.";
 const valuesSection =
-  "I believe technology should understand you, not the other way around. My goal is to build digital experiences that feel as natural as talking to a friend—systems that respond to your emotions and intentions, not just your commands.";
+  "I believe technology should adapt to you, not the other way around. My goal is building experiences as natural as conversation.";
 
 // SEO-friendly content summary from the sections above
 const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${valuesSection}`;
@@ -96,9 +96,6 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
       <Badge size="sm">
         <span class="text-xs font-bold uppercase">Education</span>
       </Badge>
-      <span class="text-sm text-[var(--text-secondary)]"
-        >— Building the foundation</span
-      >
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
@@ -118,11 +115,9 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
         <p
           class="text-sm sm:text-base mt-4 education-desc text-[var(--text-secondary)]"
         >
-          College is where I'm diving deeper into the "why" behind the code I
-          write. While I'm busy building real projects in my spare time, my
-          classes help me understand the foundations that make everything tick.
-          I'm especially into algorithms and data structures—they're like the
-          secret recipes that make good software great!
+          Diving deeper into the "why" behind code while building real projects.
+          I'm especially into algorithms and data structures—the secret recipes
+          that make good software great!
         </p>
       </div>
       <div
@@ -150,7 +145,7 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
     />
 
     <TextReveal
-      text="Got a wild idea or a tricky problem? Drop me a line! I'm always up for brainstorming over virtual coffee or diving into exciting new projects."
+      text="Got a wild idea or tricky problem? Drop me a line! Always up for brainstorming over virtual coffee."
       className="text-sm sm:text-base text-[var(--text-secondary)]"
       splitBy="words"
       stagger={0.02}
@@ -180,7 +175,7 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
     itemprop="knowsAbout"
     content="Web Development, Svelte, SvelteKit, React, Next.js, TypeScript, Node.js, Tailwind CSS"
   />
-  <meta itemprop="url" content="https://www.yourportfolio.com" />
+  <meta itemprop="url" content="https://www.rohitk06.dev" />
   <meta itemprop="birthPlace" content="India" />
   <meta itemprop="nationality" content="Indian" />
   <link itemprop="sameAs" href="https://github.com/rohitkushwaha0" />

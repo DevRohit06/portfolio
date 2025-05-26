@@ -104,11 +104,14 @@
     <div
       class="md:col-span-5 divide-y divide-[var(--border-color)] md:border-r md:border-[var(--border-color)]"
     >
-      {#each experiences as experience}
+      {#each experiences as experience, i}
         <button
           class="w-full text-left p-3 sm:p-5 md:p-8 md:py-9 {experience.isActive
             ? 'bg-[var(--accent-primary)] text-white'
-            : ' bg-[var(--card-bg)]'} transition-colors duration-300"
+            : ' bg-[var(--card-bg)]'} transition-colors duration-300 {i ===
+          experiences.length - 1
+            ? 'md:border-b-0 border-b border-[var(--border-color)]'
+            : ''}"
           on:click={() => setActiveExperience(experience.id)}
         >
           <div
