@@ -1,8 +1,6 @@
 ---
 import Badge from "./Badge.astro";
-import Testimonials from "./Testimonials.astro";
 import DiscordActivity from "./DiscordActivity.astro";
-import BentoItemGithubActivity from "./bento";
 import Marquee from "./Marquee.astro";
 ---
 
@@ -12,54 +10,39 @@ import Marquee from "./Marquee.astro";
   <div
     class="p-4 sm:p-6 lg:p-12 border border-[var(--border-color)] bento-wrapper opacity-0 invisible bento-container"
   >
-    <div class="grid grid-cols-1 lg:grid-cols-8 gap-4 md:gap-6 lg:gap-8">
-      <div class="col-span-1 lg:col-span-5 bento-left">
-        <div class="flex flex-col gap-8 w-full">
-          <BentoItemGithubActivity server:defer />
-
-          <div class="gap-4 sm:gap-6 md:gap-8 bento-bottom-cards">
-            <div
-              class="h-full w-full relative flex flex-col gap-2 sm:gap-0 overflow-hidden hero-skills-section bento-scroll-reveal border border-[var(--border-color)]"
+    <div class="bento-grid">
+      <!-- Skills/Marquee Card -->
+      <div class="bento-item bento-skills bento-scroll-reveal" data-delay="0">
+        <div
+          class="h-full w-full relative flex flex-col gap-2 sm:gap-0 overflow-hidden hero-skills-section border border-[var(--border-color)]"
+        >
+          <div class="p-4 pb-1.5">
+            <Badge size="xs"
+              ><span class="whitespace-nowrap uppercase">
+                Okay so I am familiar with:
+              </span></Badge
             >
-              <div class="p-4 pb-1.5" data-delay="0.2">
-                <Badge size="xs"
-                  ><span class="whitespace-nowrap uppercase">
-                    Okay so I am familiar with:
-                  </span></Badge
-                >
-              </div>
-              <div class="relative mb-2">
-                <Marquee />
-                <div
-                  class="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[var(--bg-secondary)]"
-                >
-                </div>
-                <div
-                  class="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[var(--bg-secondary)]"
-                >
-                </div>
-              </div>
+          </div>
+          <div class="relative mb-2">
+            <Marquee />
+            <div
+              class="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[var(--bg-secondary)]"
+            >
+            </div>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[var(--bg-secondary)]"
+            >
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Discord Activity Card -->
       <div
-        class="col-span-1 lg:col-span-3 row-span-1 lg:row-span-2 gap-4 md:gap-6 lg:gap-8 mt-4 lg:mt-0 bento-right"
+        class="bento-item bento-discord bento-scroll-reveal"
+        data-delay="0.1"
       >
-        <div class="flex flex-col grid-row-3 gap-4 md:gap-6 lg:gap-8 w-full">
-          <div
-            class="bento-discord-card bento-scroll-reveal row-span-1"
-            data-delay="0.1"
-          >
-            <DiscordActivity userId="743173584935190620" showButtons={true} />
-          </div>
-          <div
-            class="bento-testimonials h-full bento-scroll-reveal row-span-2"
-            data-delay="0.3"
-          >
-            <Testimonials />
-          </div>
-        </div>
+        <DiscordActivity userId="743173584935190620" showButtons={true} />
       </div>
     </div>
   </div>
@@ -87,8 +70,8 @@ import Marquee from "./Marquee.astro";
     // Performance optimization - detect if device is low-end
     const isLowEndDevice = () => {
       // Check if device has limited memory or CPU
-      const isMemoryLimited =
-        navigator.deviceMemory && navigator.deviceMemory < 4;
+      const nav = navigator as any;
+      const isMemoryLimited = nav.deviceMemory && nav.deviceMemory < 4;
       const isCPULimited =
         navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
 
@@ -150,9 +133,8 @@ import Marquee from "./Marquee.astro";
       // Enhanced staggered reveal for child elements with subtle 3D effect
       const elements = document.querySelectorAll(".bento-scroll-reveal");
       elements.forEach((element) => {
-        const delay = element.getAttribute("data-delay")
-          ? parseFloat(element.getAttribute("data-delay"))
-          : 0;
+        const delayAttr = element.getAttribute("data-delay");
+        const delay = delayAttr ? parseFloat(delayAttr) : 0;
 
         // Skip intensive animations for performance-critical elements
         const isPerformanceCritical = element.hasAttribute(
@@ -218,7 +200,6 @@ import Marquee from "./Marquee.astro";
       // Enhanced magnetic effect to interactive elements with better sensitivity - skip in low performance mode
       if (!lowPerformanceMode) {
         createMagneticEffect(".badge-icon", 0.4);
-        // createMagneticEffect(".bento-github-card a", 0.4);
       }
 
       // Create improved scene for advanced animations
@@ -226,7 +207,7 @@ import Marquee from "./Marquee.astro";
       //   ".bento-wrapper",
       //   [
       //     {
-      //       element: ".bento-github-card",
+      //       element: ".bento-skills",
       //       props: {
       //         x: 0,
       //         rotation: 0,
@@ -234,7 +215,7 @@ import Marquee from "./Marquee.astro";
       //       },
       //     },
       //     {
-      //       element: ".bento-testimonials",
+      //       element: ".bento-discord",
       //       props: {
       //         x: 0,
       //         rotation: 0,
@@ -365,7 +346,7 @@ import Marquee from "./Marquee.astro";
 
       // Add subtle floating effect to selected elements with varied movement
       // if (!lowPerformanceMode) {
-      //   const floatingElements = [".bento-testimonials button"];
+      //   const floatingElements = [".bento-discord button"];
 
       //   floatingElements.forEach((selector, index) => {
       //     const elements = document.querySelectorAll(selector);
@@ -411,13 +392,13 @@ import Marquee from "./Marquee.astro";
 
     //     // Skip additional parallax for nested elements in low performance mode
     //     if (!lowPerformanceMode) {
-    //       gsap.to(".bento-left", {
+    //       gsap.to(".bento-github", {
     //         y: yPos * 0.7, // Different speed for layered effect
     //         ease: "none",
     //         overwrite: "auto",
     //       });
 
-    //       gsap.to(".bento-right", {
+    //       gsap.to(".bento-discord, .bento-testimonials", {
     //         y: yPos * 1.2, // Different speed for layered effect
     //         ease: "none",
     //         overwrite: "auto",
@@ -427,7 +408,7 @@ import Marquee from "./Marquee.astro";
     // });
 
     // Add event listener to pause animations when scrolling for better performance
-    let scrollTimeout;
+    let scrollTimeout: ReturnType<typeof setTimeout>;
     window.addEventListener(
       "scroll",
       () => {
@@ -452,6 +433,77 @@ import Marquee from "./Marquee.astro";
     will-change: transform, clip-path, opacity, visibility;
     transform-style: preserve-3d; /* Better 3D effects */
     perspective: 1000px; /* Add perspective for 3D effects */
+  }
+
+  /* Responsive Bento Grid Layout */
+  .bento-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "skills"
+      "discord";
+  }
+
+  /* Mobile landscape and small tablets */
+  @media (min-width: 640px) {
+    .bento-grid {
+      gap: 1.5rem;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "skills discord";
+    }
+  }
+
+  /* Medium tablets and up */
+  @media (min-width: 768px) {
+    .bento-grid {
+      gap: 2rem;
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas: "skills discord";
+    }
+  }
+
+  /* Large tablets and desktops */
+  @media (min-width: 1024px) {
+    .bento-grid {
+      gap: 2rem;
+      grid-template-columns: 3fr 2fr;
+      grid-template-areas: "skills discord";
+    }
+  }
+
+  /* Bento item positioning */
+  .bento-item {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bento-skills {
+    grid-area: skills;
+    min-height: 180px;
+  }
+
+  .bento-discord {
+    grid-area: discord;
+    min-height: 200px;
+  }
+
+  /* Ensure content fills the grid items properly */
+  .bento-item > * {
+    flex: 1;
+    height: 100%;
+  }
+
+  /* Mobile specific adjustments */
+  @media (max-width: 639px) {
+    .bento-skills {
+      min-height: 150px;
+    }
+
+    .bento-discord {
+      min-height: 180px;
+    }
   }
 
   .bento-scroll-reveal {
