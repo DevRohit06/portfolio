@@ -17,10 +17,6 @@ const getDynamicBaseUrl = () => {
     return `https://${PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`;
   }
 
-  if (PUBLIC_VERCEL_URL) {
-    return `https://${PUBLIC_VERCEL_URL}`;
-  }
-
   return "http://localhost:4321";
 };
 

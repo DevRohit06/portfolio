@@ -23,7 +23,21 @@ export const GetGithubContributions = gql`
             }
           }
         }
+        totalCommitContributions
+        restrictedContributionsCount
       }
+    }
+    viewer {
+      login
+    }
+  }
+`;
+
+export const GetTokenInfo = gql`
+  query {
+    viewer {
+      login
+      name
     }
   }
 `;
