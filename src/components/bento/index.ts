@@ -1,1 +1,1 @@
-export { default } from './BentoItemGithubActivity.astro'
+export { default } from "./BentoItemGithubActivity.astro";
