@@ -3,25 +3,9 @@
   import { cubicOut } from "svelte/easing";
 
   // Define the type for experience data
-  interface Links {
-    id: number;
-    title: string;
-    url: string;
-  }
-
-  interface Experience {
-    id: number;
-    title: string;
-    role: string;
-    company: string;
-    duration: string;
-    description: string;
-    isActive?: boolean;
-    links?: Links[];
-  }
 
   // Sample data - this can be replaced with props or imported data
-  let experiences: Experience[] = [
+  let experiences = [
     {
       id: 1,
       title: "Fullstack Dev",
@@ -62,18 +46,8 @@
     },
   ];
 
-  function getFaviconUrl(url: string | URL) {
-    try {
-      if (!url) return "";
-      const urlObj = new URL(url);
-      return `https://www.google.com/s2/favicons?sz=32&domain_url=${encodeURIComponent(urlObj.hostname)}`;
-    } catch (e) {
-      return "";
-    }
-  }
-
   // Function to set active experience
-  function setActiveExperience(id: number) {
+  function setActiveExperience(id) {
     experiences = experiences.map((exp) => ({
       ...exp,
       isActive: exp.id === id,
