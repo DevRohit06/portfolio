@@ -7,232 +7,321 @@ interface Props {
 }
 
 const { className = "" } = Astro.props;
+
+// Dummy project data
+const projects = [
+  {
+    title: "Aura IDE",
+    description:
+      "Online IDE powered by top AI models with TypeScript support and GenAI agent integration. Features intelligent code completion, AI-powered debugging, and seamless development workflow.",
+    image:
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop&crop=entropy&auto=format",
+    tags: ["TypeScript", "GenAI", "IDE"],
+    status: "In Development",
+    github: "#",
+    demo: "#",
+  },
+  {
+    title: "Klaro",
+    description:
+      "A single billing system that adapts to many industries with pluggable business types. Features flexible catalogs, adaptive UI, multi-tenant architecture, and handles orders, invoices, payments across retail, services, healthcare, and education.",
+    image:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop&crop=entropy&auto=format",
+    tags: ["Multi-tenant", "PWA", "Billing"],
+    status: "In Development",
+    github: "#",
+    demo: "#",
+  },
+];
 ---
 
-<div class={`projects-container relative ${className}`}>
-  <div
-    class="border border-[var(--border-color)] p-4 sm:p-6 md:p-12 relative projects-title-section"
-  >
-    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
-    <Badge size="sm" className="mb-4">
-      <span class="text-xs font-bold uppercase">Projects</span>
-    </Badge>
-
-    <TextReveal
-      element="h2"
-      text="My Work"
-      className="text-3xl sm:text-4xl md:text-5xl font-semibold projects-title split-text"
-      splitBy="chars"
-      stagger={0.03}
-      from="bottom"
-    />
-  </div>
-
-  <!-- Blurred Projects Area with Coming Soon Message -->
-  <div
-    class="border border-[var(--border-color)] border-t-0 p-4 sm:p-6 md:p-8 projects-content relative overflow-hidden"
-  >
-    <!-- Placeholder Grid -->
+<section
+  class="projects-section my-16 sm:my-24 md:my-32 opacity-0 relative scroll-reveal"
+  id="projects"
+>
+  <div class="projects-section-container mx-auto">
     <div
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 blur-xs opacity-40 pointer-events-none"
+      class="projects-heading-container flex flex-col gap-2 sm:gap-4 mb-6 sm:mb-8 md:mb-8"
     >
-      {
-        Array(6)
-          .fill(0)
-          .map((_, i) => (
-            <div class="project-card border border-[var(--border-color)] p-4 h-[200px]">
-              <div class="flex justify-between items-start mb-3">
-                <div class="h-7 w-32 bg-[var(--bg-secondary)] rounded" />
-                <div class="h-6 w-20 bg-[var(--bg-secondary)] rounded" />
-              </div>
-              <div class="h-4 w-full bg-[var(--bg-secondary)] rounded mb-2" />
-              <div class="h-4 w-3/4 bg-[var(--bg-secondary)] rounded mb-2" />
-              <div class="h-4 w-5/6 bg-[var(--bg-secondary)] rounded mb-4" />
-              <div class="flex flex-wrap gap-2 mb-4">
-                <div class="h-6 w-16 bg-[var(--bg-secondary)] rounded" />
-                <div class="h-6 w-20 bg-[var(--bg-secondary)] rounded" />
-                <div class="h-6 w-14 bg-[var(--bg-secondary)] rounded" />
-              </div>
-            </div>
-          ))
-      }
-    </div>
-
-    <!-- Overlay Message -->
-    <div
-      class="absolute inset-0 flex flex-col items-center justify-center z-10"
-    >
-      <div
-        class="text-center p-8 rounded-lg backdrop-blur-sm bg-[var(--bg-primary)]/50 max-w-md border border-[var(--border-color)]"
-      >
-        <Badge size="sm" className="mx-auto mb-4">
-          <span class="text-xs font-bold uppercase">Coming Soon</span>
-        </Badge>
-        <h3 class="text-2xl font-bold mb-4">Cooking Up Some Cool Stuff!</h3>
-        <p class="text-[var(--text-secondary)]">
-          I've got my hands dirty with some exciting projects right now. Can't
-          wait to show them off here! Check back soon to see what I've been
-          building in my digital workshop.
-        </p>
+      <Badge size="sm">Projects</Badge>
+      <div class="flex items-center justify-between my-6">
+        <div class="projects-subheading text-base sm:text-xl md:text-3xl">
+          Building & Creating...
+        </div>
+        <a
+          href="https://github.com/devrohit06"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="all-projects-link border p-2 px-4 border-[#7B7B7B] text-xs sm:text-base text-[#7B7B7B] font-medium hover:text-[#0000CC] hover:border-[#0000CC] transition-colors duration-300 magnetic-item"
+        >
+          View GitHub
+        </a>
       </div>
     </div>
-  </div>
 
-  <div
-    class="border border-[var(--border-color)] border-t-0 px-4 sm:px-6 md:px-10 p-4 sm:py-6 flex flex-col items-start gap-4 projects-cta-section"
-  >
-    <TextReveal
-      element="h3"
-      text="Got an Idea? Let's Make It Real!"
-      className="text-xl font-medium"
-      splitBy="chars"
-      stagger={0.03}
-      from="top"
-      delay={0.5}
-    />
-
-    <TextReveal
-      text="Whether it's a wild dream app or a tricky tech puzzle, I'm all ears! Let's team up and build something that makes us both proud."
-      className="text-sm sm:text-base text-[var(--text-secondary)]"
-      splitBy="words"
-      stagger={0.02}
-      from="left"
-      delay={0.6}
-    />
-
-    <a
-      href="mailto:rohitk290106@gmail.com"
-      class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-[var(--border-color)] hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 cta-button"
+    <div
+      class="projects-grid grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:gap-6 lg:grid-cols-3"
     >
-      Let's Build Together 🚀
-    </a>
+      {
+        projects.map((project, index) => (
+          <div class="project-item h-full flex flex-col" data-index={index}>
+            <div class="project-card-wrapper group h-full flex flex-col">
+              <div class="project-card flex flex-col h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative transition-all duration-300 bg-[var(--card-bg)]">
+                <div class="project-card-image-container relative overflow-hidden w-full aspect-video">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    class="project-card-image grayscale group-hover:grayscale-0 w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-105"
+                  />
+                  <div class="project-card-status absolute top-3 left-3 z-10">
+                    <Badge
+                      className="bg-opacity-50"
+                      text={project.status.toUpperCase()}
+                      size="sm"
+                    />
+                  </div>
+                </div>
+                <div class="project-card-content p-4 sm:p-5 relative flex flex-col flex-1">
+                  <div class="project-card-tags flex flex-wrap gap-2 mb-3">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <span class="text-xs px-2 py-1 bg-[var(--bg-secondary)] text-[var(--text-secondary)] rounded">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 class="project-card-title text-base sm:text-lg mb-2 sm:mb-3 font-medium transition-colors duration-300 group-hover:text-[var(--accent-primary)] line-clamp-2 leading-tight">
+                    {project.title}
+                  </h3>
+                  <p class="project-card-description text-xs sm:text-sm text-[var(--text-secondary)] mb-4 sm:mb-6 leading-relaxed line-clamp-4">
+                    {project.description}
+                  </p>
+                  <div class="mt-auto">
+                    <div class="project-card-links flex gap-3 mt-4">
+                      <a
+                        href={project.github}
+                        class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
+                      >
+                        <iconify-icon
+                          icon="simple-icons:github"
+                          class="w-4 h-4 mr-1"
+                        />
+                        Code
+                      </a>
+                      <a
+                        href={project.demo}
+                        class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
+                      >
+                        <iconify-icon
+                          icon="material-symbols:open-in-new"
+                          class="w-4 h-4 mr-1"
+                        />
+                        Demo
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
   </div>
-  <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10">
-  </div>
-</div>
+</section>
 
-<style>
-  /* Essential styling matching your design system */
-  .projects-container {
-    perspective: 1000px;
-  }
-
-  /* Section styling with initial states */
-  .projects-title-section,
-  .projects-content,
-  .projects-cta-section {
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.5s ease,
-      transform 0.5s ease;
-  }
-
-  /* Text styling */
-  .projects-title {
-    overflow: hidden;
-  }
-
-  /* Project card styling */
-  .project-card {
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-  }
-
-  /* Animated blur effect */
-  .projects-content::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    background: var(--bg-primary);
-    opacity: 0.1;
-  }
-
-  /* CTA button hover effect */
-  .cta-button:hover {
-    background-color: var(--accent-primary);
-    color: white;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 640px) {
-    .projects-content {
-      padding: 1rem;
-    }
-  }
-</style>
+<!-- Load Iconify -->
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"
+></script>
 
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  // Initialize animations when DOM is ready
   document.addEventListener("DOMContentLoaded", () => {
-    // Animate sections on scroll
-    const projectSections = [
-      ".projects-title-section",
-      ".projects-content",
-      ".projects-cta-section",
-    ];
+    gsap.registerPlugin(ScrollTrigger);
 
-    projectSections.forEach((section, index) => {
-      gsap.set(section, {
-        opacity: 0,
-      });
-
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top 80%",
-        once: true,
-        onEnter: () => {
-          gsap.to(section, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            delay: index * 0.1,
-            ease: "power3.out",
-          });
+    // Create scroll animations for projects section
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      // Reveal the section with a fade-in and slight upward movement
+      gsap.fromTo(
+        projectsSection,
+        {
+          opacity: 0,
+          y: 50,
         },
-      });
-    });
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          scrollTrigger: {
+            trigger: projectsSection,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+            once: true,
+          },
+        }
+      );
 
-    // Add a hover animation for the overlay message
-    const messageContainer = document.querySelector(
-      ".projects-content .absolute"
-    );
-    if (messageContainer) {
-      gsap.set(messageContainer, { scale: 1 });
+      // Staggered reveal for project cards
+      gsap.fromTo(
+        ".project-item",
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.15,
+          duration: 0.8,
+          ease: "back.out(1.5)",
+          scrollTrigger: {
+            trigger: ".projects-grid",
+            start: "top 85%",
+            end: "bottom 70%",
+            scrub: 1,
+            once: true,
+          },
+        }
+      );
 
-      messageContainer.addEventListener("mouseenter", () => {
-        gsap.to(messageContainer.querySelector("div"), {
-          scale: 1.03,
-          duration: 0.3,
-          ease: "power2.out",
+      // Add magnetic effect to "View GitHub" link
+      const createMagneticEffect = (selector, strength = 0.3) => {
+        const magneticItems = document.querySelectorAll(selector);
+
+        magneticItems.forEach((item) => {
+          item.addEventListener("mousemove", (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            gsap.to(item, {
+              x: x * strength,
+              y: y * strength,
+              duration: 0.3,
+              ease: "power2.out",
+            });
+          });
+
+          item.addEventListener("mouseleave", () => {
+            gsap.to(item, {
+              x: 0,
+              y: 0,
+              duration: 0.7,
+              ease: "elastic.out(1, 0.5)",
+            });
+          });
         });
-      });
+      };
 
-      messageContainer.addEventListener("mouseleave", () => {
-        gsap.to(messageContainer.querySelector("div"), {
-          scale: 1,
-          duration: 0.3,
-          ease: "power2.in",
-        });
-      });
+      createMagneticEffect(".magnetic-item", 0.3);
     }
-  });
 
-  // Re-initialize animations after page transitions
-  document.addEventListener("astro:page-load", () => {
-    // Handle any page transition animations if needed
-  });
-
-  // Listen for theme changes to update animations if needed
-  document.addEventListener("themeChanged", () => {
-    // Refresh scroll triggers to ensure any color-dependent animations work properly
-    ScrollTrigger.refresh();
+    // Add parallax scroll effect
+    ScrollTrigger.create({
+      trigger: projectsSection,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true,
+      onUpdate: (self) => {
+        const yPos = (1 - self.progress) * 30;
+        gsap.to(".projects-section-container", {
+          y: yPos,
+          ease: "none",
+          overwrite: "auto",
+        });
+      },
+    });
   });
 </script>
+
+<style>
+  .projects-section {
+    will-change: transform;
+  }
+
+  .projects-heading-container {
+    will-change: transform;
+  }
+
+  .all-projects-link {
+    will-change: transform;
+    position: relative;
+  }
+
+  .project-item {
+    height: 100%;
+    transform: none !important;
+    will-change: auto;
+    transition: opacity 0.3s ease;
+    transform-style: flat;
+    perspective: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .projects-grid {
+    position: relative;
+    align-items: stretch;
+  }
+
+  .project-item > * {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card-wrapper {
+    transform: translateY(0);
+    transition: transform 0.5s ease;
+    will-change: transform;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent-primary);
+  }
+
+  .project-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card-wrapper {
+      transition: none;
+    }
+
+    .project-card-image {
+      transition: none;
+    }
+
+    .project-card-title,
+    .project-card-links a {
+      transition: none;
+    }
+
+    .projects-section {
+      opacity: 1 !important;
+    }
+  }
+</style>
