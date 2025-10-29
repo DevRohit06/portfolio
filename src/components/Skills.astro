@@ -1,0 +1,365 @@
+---
+import TextReveal from "./TextReveal.astro";
+import Badge from "./Badge.astro";
+
+interface Props {
+  className?: string;
+}
+
+const { className = "" } = Astro.props;
+
+// Organize skills by categories with pill-style badges
+const skillCategories = [
+  {
+    title: "Featured",
+    skills: [
+      { name: "Astro", icon: "simple-icons:astro" },
+      { name: "SvelteKit", icon: "simple-icons:svelte" },
+      { name: "Next.js", icon: "simple-icons:nextdotjs" },
+      { name: "TypeScript", icon: "simple-icons:typescript" },
+      { name: "Tailwind CSS", icon: "simple-icons:tailwindcss" },
+    ],
+  },
+  {
+    title: "Frontend",
+    skills: [
+      { name: "React", icon: "simple-icons:react" },
+      { name: "Vue", icon: "simple-icons:vuedotjs" },
+      { name: "Svelte", icon: "simple-icons:svelte" },
+      { name: "HTML", icon: "simple-icons:html5" },
+      { name: "CSS", icon: "simple-icons:css3" },
+      { name: "JavaScript", icon: "simple-icons:javascript" },
+    ],
+  },
+  {
+    title: "Backend & APIs",
+    skills: [
+      { name: "Node.js", icon: "simple-icons:nodedotjs" },
+      { name: "Python", icon: "simple-icons:python" },
+      { name: "FastAPI", icon: "simple-icons:fastapi" },
+      { name: "NestJS", icon: "simple-icons:nestjs" },
+      { name: "GraphQL", icon: "simple-icons:graphql" },
+      { name: "MongoDB", icon: "simple-icons:mongodb" },
+    ],
+  },
+  {
+    title: "AI & Tools",
+    skills: [
+      { name: "LangChain", icon: "simple-icons:langchain" },
+      { name: "OpenAI", icon: "simple-icons:openai" },
+      { name: "Docker", icon: "simple-icons:docker" },
+      { name: "Git", icon: "simple-icons:git" },
+      { name: "Vercel", icon: "simple-icons:vercel" },
+      { name: "Flutter", icon: "simple-icons:flutter" },
+    ],
+  },
+];
+---
+
+<div class={`skills-container relative ${className}`}>
+  <div
+    class="border border-[var(--border-color)] p-4 sm:p-6 md:p-12 relative skills-title-section"
+  >
+    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
+    <Badge size="sm" className="mb-4">
+      <span class="text-xs font-bold uppercase">Technical Skills</span>
+    </Badge>
+
+    <TextReveal
+      element="h2"
+      text="My Toolkit"
+      className="text-3xl sm:text-4xl md:text-5xl font-semibold skills-title split-text"
+      splitBy="chars"
+      stagger={0.03}
+      from="bottom"
+    />
+  </div>
+
+  <div
+    class="border border-[var(--border-color)] border-t-0 p-4 sm:p-6 md:p-12 skills-content-section"
+  >
+    <div class="space-y-8">
+      {
+        skillCategories.map((category, categoryIndex) => (
+          <div class="skill-category" data-category={categoryIndex}>
+            <h3 class="text-lg font-semibold mb-4 category-title text-[var(--text-primary)]">
+              {category.title}
+            </h3>
+
+            <div class="flex flex-wrap gap-3 items-center">
+              {category.skills.map((skill, skillIndex) => (
+                <div
+                  class="skill-pill inline-flex items-center gap-2 px-4 py-2 border border-[var(--border-color)] text-sm font-medium transition-all duration-300 hover:bg-[var(--accent-primary)]/80"
+                  data-skill={skillIndex}
+                >
+                  <iconify-icon icon={skill.icon} class="skill-icon" />
+                  <span class="skill-name">{skill.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div
+    class="border border-[var(--border-color)] border-t-0 px-4 sm:px-6 md:px-10 p-4 sm:py-6 flex flex-col items-start gap-4 skills-cta-section"
+  >
+    <TextReveal
+      element="h3"
+      text="Always Learning, Always Growing"
+      className="text-xl font-medium"
+      splitBy="chars"
+      stagger={0.03}
+      from="top"
+      delay={0.5}
+    />
+
+    <TextReveal
+      text="Technology evolves fast, and so do I! Currently exploring new AI frameworks and diving deeper into system design. What's next on your tech wishlist?"
+      className="text-sm sm:text-base text-[var(--text-secondary)]"
+      splitBy="words"
+      stagger={0.02}
+      from="left"
+      delay={0.6}
+    />
+
+    <a
+      href="mailto:rohitk290106@gmail.com"
+      class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-[var(--border-color)] hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 cta-button"
+    >
+      Let's Talk Tech 💻
+    </a>
+  </div>
+  <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10">
+  </div>
+</div>
+
+<!-- Load Iconify -->
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"
+></script>
+
+<style>
+  /* Essential styling matching your design system */
+  .skills-container {
+    perspective: 1000px;
+  }
+
+  /* Section styling with initial states */
+  .skills-title-section,
+  .skills-content-section,
+  .skills-cta-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  /* Text styling */
+  .skills-title {
+    overflow: hidden;
+  }
+
+  /* Skill category styling */
+  .skill-category {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+
+  /* Category title styling */
+  .category-title {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  /* Skill pill styling */
+  /* .skill-pill {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .skill-pill:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  } */
+
+  /* Theme-aware pill styling */
+  /* html:not(.dark-theme) .skill-pill {
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+  }
+
+  html.dark-theme .skill-pill {
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+  } */
+
+  /* Icon styling within pills */
+  .skill-icon {
+    transition: all 0.2s ease;
+    filter: none; /* Icons keep their original colors in pills */
+  }
+
+  /* CTA button hover effect */
+  .cta-button:hover {
+    background-color: var(--accent-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .skills-content-section {
+      padding: 1.5rem;
+    }
+
+    .skill-category {
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-pill {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .skills-content-section {
+      padding: 1rem;
+    }
+
+    .skill-pill {
+      gap: 0.375rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Initialize animations when DOM is ready
+  document.addEventListener("DOMContentLoaded", () => {
+    // Animate main sections on scroll
+    const skillsSections = [
+      ".skills-title-section",
+      ".skills-content-section",
+      ".skills-cta-section",
+    ];
+
+    skillsSections.forEach((section, index) => {
+      gsap.set(section, {
+        opacity: 0,
+        y: 30,
+      });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          gsap.to(section, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: index * 0.1,
+            ease: "power3.out",
+          });
+        },
+      });
+    });
+
+    // Animate skill categories
+    const categories = document.querySelectorAll(".skill-category");
+    categories.forEach((category, categoryIndex) => {
+      gsap.set(category, {
+        opacity: 0,
+        y: 30,
+      });
+
+      ScrollTrigger.create({
+        trigger: category,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          // Animate category container
+          gsap.to(category, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            delay: categoryIndex * 0.1,
+            ease: "power2.out",
+          });
+
+          // Animate category title
+          const title = category.querySelector(".category-title");
+          gsap.to(title, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            delay: categoryIndex * 0.1 + 0.2,
+            ease: "power2.out",
+          });
+
+          // Animate skill pills within this category
+          const skillPills = category.querySelectorAll(".skill-pill");
+
+          skillPills.forEach((pill, skillIndex) => {
+            gsap.to(pill, {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.4,
+              delay: categoryIndex * 0.1 + 0.3 + skillIndex * 0.05,
+              ease: "back.out(1.2)",
+            });
+          });
+        },
+      });
+    });
+
+    // Add enhanced hover animations for skill pills
+    const skillPills = document.querySelectorAll(".skill-pill");
+    skillPills.forEach((pill) => {
+      const icon = pill.querySelector(".skill-icon");
+
+      pill.addEventListener("mouseenter", () => {
+        gsap.to(icon, {
+          scale: 1.15,
+          rotation: 5,
+          duration: 0.2,
+          ease: "back.out(1.5)",
+        });
+      });
+
+      pill.addEventListener("mouseleave", () => {
+        gsap.to(icon, {
+          scale: 1,
+          rotation: 0,
+          duration: 0.2,
+          ease: "power2.out",
+        });
+      });
+    });
+  });
+
+  // Listen for theme changes to update animations if needed
+  document.addEventListener("themeChanged", () => {
+    // Refresh scroll triggers to ensure any color-dependent animations work properly
+    ScrollTrigger.refresh();
+  });
+
+  // Re-initialize animations after page transitions
+  document.addEventListener("astro:page-load", () => {
+    // Clean up and reinitialize if needed
+    ScrollTrigger.refresh();
+  });
+</script>
