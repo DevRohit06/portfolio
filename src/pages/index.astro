@@ -3,18 +3,19 @@ import HeroCard from "../components/HeroCard.astro";
 import Navbar from "../components/Navbar.astro";
 import Layout from "../layouts/Layout.astro";
 import Experience from "../components/Experience.astro";
-import Bento from "../components/Bento.astro";
+
 import Footer from "../components/Footer.astro";
 import BlogSection from "../components/BlogSection.astro";
 import ThemeChanger from "../components/svelte/ThemeChanger.svelte";
-import Loader from "../components/Loader.astro";
+
 import Element from "../assets/svgs/element-1.svg";
 import Badge from "../components/Badge.astro";
 import LiveClock from "../components/svelte/LiveClock.svelte";
-import TextReveal from "../components/TextReveal.astro";
+
 import AboutMe from "../components/AboutMe.astro";
 import Projects from "../components/Projects.astro";
-import ThreeBackground from "../components/ThreeBackground.astro";
+import Skills from "../components/Skills.astro";
+
 // Set showLoader to true only for the first visit in a session
 // We'll handle this client-side to avoid hydration issues
 const showLoader = true;
@@ -207,6 +208,14 @@ const jsonLd = {
     </div>
     <!-- End About Me Section -->
 
+    <!-- Skills Section -->
+    <div
+      class="w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] mx-auto mb-40 md:mb-56 lg:mb-64"
+    >
+      <Skills />
+    </div>
+    <!-- End Skills Section -->
+
     <!-- Projects Section -->
     <div
       class="w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] mx-auto mb-40 md:mb-56 lg:mb-64"
@@ -214,11 +223,6 @@ const jsonLd = {
       <Projects />
     </div>
     <!-- End Projects Section -->
-
-    <!-- Bento Grid Section with more breathing room -->
-    <div class="bento pb-40 md:pb-48 lg:pb-56">
-      <Bento />
-    </div>
 
     <!-- Blog Section with increased spacing -->
     <div class="mb-40 md:mb-48 lg:mb-56">
@@ -416,7 +420,7 @@ const jsonLd = {
 
     // Set up section transitions and animations
     const sections = document.querySelectorAll(
-      ".bento, .blog-section, .footer"
+      ".skills-container, .blog-section, .footer"
     );
 
     sections.forEach((section, index) => {
@@ -646,19 +650,6 @@ const jsonLd = {
     width: 1px;
     height: 100%;
     transform-origin: bottom !important; /* Ensure it grows from bottom */
-  }
-
-  /* Add responsive spacing adjustments */
-  @media (max-width: 768px) {
-    .bento {
-      padding-top: 8rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .bento {
-      padding-top: 6rem;
-    }
   }
 
   /* Improved loading and page transition styles */
