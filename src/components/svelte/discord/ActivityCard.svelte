@@ -72,6 +72,152 @@
   const handleImageError = () => {
     imageLoadError = true;
   };
+
+  // Detect music service based on activity data
+  const detectMusicService = (activity: any) => {
+    if (activity.type !== ACTIVITY_TYPES.LISTENING) {
+      return null;
+    }
+
+    // Check application_id first (most reliable)
+    if (activity.application_id) {
+      switch (activity.application_id) {
+        case "463151177836658699":
+          return {
+            name: "YouTube Music",
+            icon: "https://music.youtube.com/favicon.ico",
+            color: "#FF0000",
+          };
+        case "367827983903490050":
+          return {
+            name: "Apple Music",
+            icon: "https://music.apple.com/favicon.ico",
+            color: "#FA243C",
+          };
+        case "174403736877957120":
+          return {
+            name: "SoundCloud",
+            icon: "https://soundcloud.com/favicon.ico",
+            color: "#FF5500",
+          };
+        case "432980957394370572":
+          return {
+            name: "Deezer",
+            icon: "https://www.deezer.com/favicon.ico",
+            color: "#FEAA2D",
+          };
+        case "408785106942164992":
+          return {
+            name: "Tidal",
+            icon: "https://tidal.com/favicon.ico",
+            color: "#000000",
+          };
+        case "1020414178047041596":
+          return {
+            name: "Amazon Music",
+            icon: "https://music.amazon.com/favicon.ico",
+            color: "#FF9900",
+          };
+        case "1043708582735806464":
+          return {
+            name: "Pandora",
+            icon: "https://www.pandora.com/favicon.ico",
+            color: "#005483",
+          };
+      }
+    }
+
+    // Fallback: Check activity name for service detection
+    const activityName = activity.name?.toLowerCase() || "";
+
+    if (
+      activityName.includes("youtube music") ||
+      activityName.includes("youtube")
+    ) {
+      return {
+        name: "YouTube Music",
+        icon: "https://music.youtube.com/favicon.ico",
+        color: "#FF0000",
+      };
+    }
+
+    if (
+      activityName.includes("apple music") ||
+      (activityName.includes("music") && activityName.includes("apple"))
+    ) {
+      return {
+        name: "Apple Music",
+        icon: "https://music.apple.com/favicon.ico",
+        color: "#FA243C",
+      };
+    }
+
+    if (activityName.includes("soundcloud")) {
+      return {
+        name: "SoundCloud",
+        icon: "https://soundcloud.com/favicon.ico",
+        color: "#FF5500",
+      };
+    }
+
+    if (activityName.includes("deezer")) {
+      return {
+        name: "Deezer",
+        icon: "https://www.deezer.com/favicon.ico",
+        color: "#FEAA2D",
+      };
+    }
+
+    if (activityName.includes("tidal")) {
+      return {
+        name: "Tidal",
+        icon: "https://tidal.com/favicon.ico",
+        color: "#000000",
+      };
+    }
+
+    if (
+      activityName.includes("amazon music") ||
+      activityName.includes("amazon")
+    ) {
+      return {
+        name: "Amazon Music",
+        icon: "https://music.amazon.com/favicon.ico",
+        color: "#FF9900",
+      };
+    }
+
+    if (activityName.includes("pandora")) {
+      return {
+        name: "Pandora",
+        icon: "https://www.pandora.com/favicon.ico",
+        color: "#005483",
+      };
+    }
+
+    // Log unknown services for debugging (only in development)
+    if (
+      typeof window !== "undefined" &&
+      window.location.hostname === "localhost"
+    ) {
+      console.log("Unknown music service detected:", {
+        application_id: activity.application_id,
+        name: activity.name,
+        details: activity.details,
+        state: activity.state,
+      });
+    }
+
+    // Default to Spotify if no other service detected (most common case)
+    return {
+      name: "Spotify",
+      icon: "https://open.spotify.com/favicon.ico",
+      color: "#1DB954",
+    };
+  };
+
+  // Get the detected music service
+  $: musicService = detectMusicService(activity);
 </script>
 
 <div class="activity-card p-4" in:fade={{ duration: 400, delay: 100 }}>
@@ -130,26 +276,22 @@
         in:slide={{ duration: 300, delay: 200 }}
       >
         {getActivityTypeLabel(activity.type)}
-        {#if activity.type === ACTIVITY_TYPES.LISTENING || activity.application_id === "463151177836658699"}
+        {#if musicService}
           <div
             class="service-badge whitespace-nowrap"
             in:fade={{ duration: 400, delay: 500 }}
           >
-            {#if activity.type === ACTIVITY_TYPES.LISTENING}
-              <img
-                src="https://open.spotify.com/favicon.ico"
-                alt="Spotify"
-                class="service-icon"
-              />
-              <span class="service-name">Spotify</span>
-            {:else if activity.application_id === "463151177836658699"}
-              <img
-                src="https://music.youtube.com/favicon.ico"
-                alt="YouTube Music"
-                class="service-icon"
-              />
-              <span class="service-name">YouTube Music</span>
-            {/if}
+            <img
+              src={musicService.icon}
+              alt={musicService.name}
+              class="service-icon"
+              on:error={() => {
+                // Fallback to a generic music icon if service icon fails to load
+                musicService.icon =
+                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z'/%3E%3C/svg%3E";
+              }}
+            />
+            <span class="service-name">{musicService.name}</span>
           </div>
         {/if}
       </div>
@@ -286,16 +428,22 @@
   .service-badge {
     display: flex;
     align-items: center;
+    padding: 2px 6px;
+    background-color: var(--bg-tertiary, rgba(0, 0, 0, 0.1));
+    border-radius: 8px;
+    border: 1px solid var(--border-color-alpha);
   }
 
   .service-icon {
     width: 14px;
     height: 14px;
     margin-right: 6px;
+    border-radius: 2px;
   }
 
   .service-name {
     font-size: 11px;
     color: var(--text-secondary);
+    font-weight: 500;
   }
 </style>
