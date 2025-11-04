@@ -1,6 +1,7 @@
 ---
 import TextReveal from "./TextReveal.astro";
 import Badge from "./Badge.astro";
+import { projects } from "../lib/projects";
 
 interface Props {
   className?: string;
@@ -8,31 +9,20 @@ interface Props {
 
 const { className = "" } = Astro.props;
 
-// Dummy project data
-const projects = [
-  {
-    title: "Aura IDE",
-    description:
-      "Online IDE powered by top AI models with TypeScript support and GenAI agent integration. Features intelligent code completion, AI-powered debugging, and seamless development workflow.",
-    image:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop&crop=entropy&auto=format",
-    tags: ["TypeScript", "GenAI", "IDE"],
-    status: "In Development",
-    github: "#",
-    demo: "#",
-  },
-  {
-    title: "Klaro",
-    description:
-      "A single billing system that adapts to many industries with pluggable business types. Features flexible catalogs, adaptive UI, multi-tenant architecture, and handles orders, invoices, payments across retail, services, healthcare, and education.",
-    image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop&crop=entropy&auto=format",
-    tags: ["Multi-tenant", "PWA", "Billing"],
-    status: "In Development",
-    github: "#",
-    demo: "#",
-  },
-];
+// Format projects for display
+const displayProjects = projects.map((project) => ({
+  title: project.title,
+  description: project.description,
+  image: project.image,
+  tags: project.tags,
+  status: project.status,
+  projectPage: `/projects/${project.slug}`,
+  github: project.githubOwner && project.githubRepo 
+    ? `https://github.com/${project.githubOwner}/${project.githubRepo}`
+    : "#",
+  npm: project.npm,
+  demo: project.demo || "#",
+}));
 ---
 
 <section
@@ -63,7 +53,7 @@ const projects = [
       class="projects-grid grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:gap-6 lg:grid-cols-3"
     >
       {
-        projects.map((project, index) => (
+        displayProjects.map((project, index) => (
           <div class="project-item h-full flex flex-col" data-index={index}>
             <div class="project-card-wrapper group h-full flex flex-col">
               <div class="project-card flex flex-col h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative transition-all duration-300 bg-[var(--card-bg)]">
@@ -90,13 +80,31 @@ const projects = [
                     ))}
                   </div>
                   <h3 class="project-card-title text-base sm:text-lg mb-2 sm:mb-3 font-medium transition-colors duration-300 group-hover:text-[var(--accent-primary)] line-clamp-2 leading-tight">
-                    {project.title}
+                    {project.projectPage ? (
+                      <a href={project.projectPage} class="hover:underline">
+                        {project.title}
+                      </a>
+                    ) : (
+                      project.title
+                    )}
                   </h3>
                   <p class="project-card-description text-xs sm:text-sm text-[var(--text-secondary)] mb-4 sm:mb-6 leading-relaxed line-clamp-4">
                     {project.description}
                   </p>
                   <div class="mt-auto">
-                    <div class="project-card-links flex gap-3 mt-4">
+                    <div class="project-card-links flex gap-3 mt-4 flex-wrap">
+                      {project.projectPage && (
+                        <a
+                          href={project.projectPage}
+                          class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
+                        >
+                          <iconify-icon
+                            icon="material-symbols:article"
+                            class="w-4 h-4 mr-1"
+                          />
+                          Details
+                        </a>
+                      )}
                       <a
                         href={project.github}
                         class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
@@ -107,6 +115,18 @@ const projects = [
                         />
                         Code
                       </a>
+                      {project.npm && (
+                        <a
+                          href={project.npm}
+                          class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
+                        >
+                          <iconify-icon
+                            icon="simple-icons:npm"
+                            class="w-4 h-4 mr-1"
+                          />
+                          NPM
+                        </a>
+                      )}
                       <a
                         href={project.demo}
                         class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
@@ -115,7 +135,7 @@ const projects = [
                           icon="material-symbols:open-in-new"
                           class="w-4 h-4 mr-1"
                         />
-                        Demo
+                        {project.npm ? "Demo" : "Demo"}
                       </a>
                     </div>
                   </div>

@@ -1,0 +1,215 @@
+---
+// ReadmeContent component for rendering GitHub README markdown with syntax highlighting
+// Uses Astro's Markdown component which includes Shiki syntax highlighting
+
+interface Props {
+  content: string; // Raw markdown string from GitHub README
+}
+
+const { content } = Astro.props;
+---
+
+<div class="blog-content prose prose-lg max-w-none">
+  <Fragment set:html={content} />
+</div>
+
+<style is:global>
+  .blog-content {
+    color: var(--text-primary);
+  }
+
+  /* Heading styles */
+  .blog-content h1,
+  .blog-content h2,
+  .blog-content h3,
+  .blog-content h4,
+  .blog-content h5,
+  .blog-content h6 {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    position: relative;
+    color: var(--text-primary);
+  }
+
+  .blog-content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5em;
+  }
+
+  .blog-content h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(var(--text-secondary-rgb), 0.3);
+    padding-bottom: 0.3em;
+  }
+
+  .blog-content h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+
+  .blog-content h4 {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  /* Paragraph styles */
+  .blog-content p {
+    margin-bottom: 1.5em;
+    line-height: 1.7;
+    color: var(--text-primary);
+  }
+
+  /* Link styles */
+  .blog-content a {
+    color: var(--accent-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+
+  .blog-content a:hover {
+    color: var(--accent-secondary);
+  }
+
+  /* Image styles */
+  .blog-content img {
+    border: 1px solid var(--border-color);
+    margin: 1.5em 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Code block styles - Shiki generates pre with class="shiki" */
+  .blog-content pre {
+    padding: 1em;
+    overflow-x: auto;
+    border-radius: 0;
+  }
+
+  /* Shiki handles theme switching via CSS - we support light and dark */
+  .blog-content pre.shiki,
+  .blog-content pre.shiki span {
+    color: var(--shiki-light);
+    background-color: var(--shiki-light-bg);
+  }
+
+  .dark-theme .blog-content pre.shiki,
+  .dark-theme .blog-content pre.shiki span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+  }
+
+  /* Inline code styles */
+  .blog-content code {
+    background-color: rgba(var(--text-secondary-rgb), 0.1);
+    padding: 0.2em 0.4em;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+    color: var(--text-primary);
+    border-radius: 0;
+  }
+
+  /* Remove background from code inside pre (styled by Shiki) */
+  .blog-content pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  /* Preserve syntax highlighting colors from Shiki */
+  .blog-content pre code span {
+    color: inherit;
+  }
+
+  /* Blockquote styles */
+  .blog-content blockquote {
+    border-left: 4px solid var(--accent-primary);
+    padding-left: 1em;
+    margin-left: 0;
+    font-style: italic;
+    background-color: rgba(var(--accent-primary-rgb), 0.05);
+    padding: 1em 1.2em;
+    color: var(--text-secondary);
+  }
+
+  /* List styles */
+  .blog-content ul,
+  .blog-content ol {
+    margin-bottom: 1.5em;
+    padding-left: 1.5em;
+    color: var(--text-primary);
+  }
+
+  .blog-content li {
+    margin-bottom: 0.5em;
+  }
+
+  .blog-content ul {
+    list-style-type: disc;
+  }
+
+  .blog-content ol {
+    list-style-type: decimal;
+  }
+
+  /* Strong and emphasis */
+  .blog-content strong {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .blog-content em {
+    font-style: italic;
+  }
+
+  /* Horizontal rule */
+  .blog-content hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2em 0;
+  }
+
+  /* Table styles */
+  .blog-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2em 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.85em 1.2em;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+    color: var(--text-primary);
+  }
+
+  .blog-content th {
+    background: var(--bg-primary);
+    color: var(--accent-primary);
+    font-weight: 600;
+    font-size: 1.05em;
+    border-bottom: 2px solid var(--border-color);
+  }
+
+  .blog-content tr:last-child td {
+    border-bottom: none;
+  }
+
+  .blog-content tr:nth-child(even) td {
+    background: rgba(var(--accent-primary-rgb), 0.03);
+  }
+
+  /* Inline code in headings */
+  .blog-content h1 code,
+  .blog-content h2 code,
+  .blog-content h3 code,
+  .blog-content h4 code {
+    font-size: 0.9em;
+  }
+</style>
