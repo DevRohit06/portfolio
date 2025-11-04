@@ -6,7 +6,7 @@
 </div>
 
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/small.svg)](https://astro.build)
-[![Website Status](https://img.shields.io/website?url=https://rohitk06.dev&style=flat-square&label=website)](https://rohitk06.dev)
+[![Website Status](https://img.shields.io/website?url=https://rohitk06.in&style=flat-square&label=website)](https://rohitk06.in)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/devrohit06/portfolio?style=flat-square)](https://github.com/devrohit06/portfolio)
 [![License](https://img.shields.io/github/license/devrohit06/portfolio?style=flat-square)](./LICENSE)
 
