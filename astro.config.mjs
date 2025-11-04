@@ -22,7 +22,7 @@ import partytown from "@astrojs/partytown";
 // https://astro.build/config
 export default defineConfig({
   output: "static",
-  site: "https://rohitk06.dev",
+  site: "https://rohitk06.in",
   vite: {
     plugins: [tailwindcss()],
   },
