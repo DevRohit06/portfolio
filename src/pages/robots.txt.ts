@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
 
 export async function GET({ site }: APIContext) {
-  const siteUrl = site ? site.toString() : "https://rohitk06.dev";
+  const siteUrl = site ? site.toString() : "https://rohitk06.in";
 
   // Create robots.txt content with specific instructions for search engines
   const robotsTxt = `# robots.txt for Rohit Kushwaha's Portfolio

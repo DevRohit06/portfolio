@@ -1,0 +1,780 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import { getProjectBySlug, getAllProjectSlugs } from "../../lib/projects";
+import { renderMarkdown } from "../../lib/markdownRenderer";
+import Badge from "../../components/Badge.astro";
+import ThemeChanger from "../../components/svelte/ThemeChanger.svelte";
+import ReadmeContent from "../../components/ReadmeContent.astro";
+
+export async function getStaticPaths() {
+  const slugs = getAllProjectSlugs();
+  return slugs.map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const project = getProjectBySlug(slug);
+
+if (!project) {
+  return Astro.redirect("/404");
+}
+
+// Fetch GitHub data from our API
+let repoInfo = null;
+let readmeContent = null;
+let languages = null;
+
+if (project.githubOwner && project.githubRepo) {
+  try {
+    const apiUrl = new URL(
+      `/api/project-repo/${project.githubOwner}/${project.githubRepo}`,
+      Astro.url.origin
+    );
+    const response = await fetch(apiUrl.toString());
+
+    if (response.ok) {
+      const data = await response.json();
+      repoInfo = data.repoInfo;
+      languages = data.languages;
+
+      // Parse README markdown with syntax highlighting
+      if (data.readmeContent) {
+        readmeContent = await renderMarkdown(data.readmeContent);
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching project data from API:", error);
+  }
+}
+
+// Calculate language percentages
+const languagePercentages = languages
+  ? Object.entries(languages)
+      .map(([name, bytes]: [string, any]) => {
+        const total = Object.values(languages).reduce(
+          (sum: number, val: any) => sum + val,
+          0
+        );
+        return {
+          name,
+          percentage: ((bytes / total) * 100).toFixed(1),
+          bytes,
+        };
+      })
+      .sort((a, b) => b.bytes - a.bytes)
+  : [];
+
+// Language colors (GitHub's color scheme)
+const languageColors: Record<string, string> = {
+  TypeScript: "#3178c6",
+  JavaScript: "#f1e05a",
+  Python: "#3572A5",
+  Java: "#b07219",
+  Go: "#00ADD8",
+  Rust: "#dea584",
+  C: "#555555",
+  "C++": "#f34b7d",
+  "C#": "#178600",
+  Ruby: "#701516",
+  PHP: "#4F5D95",
+  Swift: "#F05138",
+  Kotlin: "#A97BFF",
+  Dart: "#00B4AB",
+  Shell: "#89e051",
+  HTML: "#e34c26",
+  CSS: "#563d7c",
+  Vue: "#41b883",
+  Svelte: "#ff3e00",
+  Astro: "#ff5a03",
+};
+
+const githubUrl =
+  project.githubOwner && project.githubRepo
+    ? `https://github.com/${project.githubOwner}/${project.githubRepo}`
+    : undefined;
+
+const canonicalURL = Astro.url.href;
+---
+
+<Layout
+  title={`${project.title} - Rohit Kushwaha`}
+  description={project.description}
+  ogImage={repoInfo?.owner?.avatar_url || project.image}
+  canonicalURL={canonicalURL}
+>
+  <div class="page-content">
+    <Navbar />
+
+    <div
+      class="w-[90%] md:w-[80%] lg:w-[90%] xl:w-[70%] 2xl:w-[60%] mx-auto mt-[80px] md:mt-[100px] pb-16"
+    >
+      <!-- Project Header (similar to blog header) -->
+      <div class="project-hero mb-8 md:mb-12">
+        <div class="project-meta mb-4">
+          <!-- Tags -->
+          {
+            project.tags && project.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2 mb-3">
+                {project.tags.map((tag) => (
+                  <Badge text={tag} size="sm" />
+                ))}
+              </div>
+            )
+          }
+
+          <!-- Title -->
+          <h1
+            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 font-sans text-primary"
+          >
+            {project.title}
+          </h1>
+
+          <!-- Meta info -->
+          <div class="flex flex-wrap items-center text-sm text-secondary gap-4">
+            {
+              repoInfo && (
+                <span class="flex items-center gap-1">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  Created: {new Date(repoInfo.created_at).toLocaleDateString()}
+                </span>
+              )
+            }
+            {
+              repoInfo && (
+                <span class="flex items-center gap-1">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                  </svg>
+                  Updated: {new Date(repoInfo.updated_at).toLocaleDateString()}
+                </span>
+              )
+            }
+            <span
+              class={`px-2 py-1 text-xs font-medium ${
+                project.status === "Completed"
+                  ? "bg-green-500/10 text-green-500 border border-green-500/20"
+                  : "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"
+              }`}
+            >
+              {project.status}
+            </span>
+          </div>
+        </div>
+
+        <!-- Project Image -->
+        <div
+          class="relative w-full aspect-video overflow-hidden border border-secondary mt-6"
+        >
+          <img
+            src={project.image}
+            alt={project.title}
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      <!-- Main Content Layout -->
+      <div
+        class="project-layout grid grid-cols-1 lg:grid-cols-6 gap-8"
+      >
+        <!-- Sidebar -->
+        <div class="sidebar-container lg:col-span-2">
+          <!-- Mobile/Tablet Tab Selector -->
+          <div class="tab-selector lg:hidden mb-4">
+            <select 
+              id="sidebarSelect" 
+              class="w-full p-3 bg-card border border-secondary text-primary cursor-pointer hover:border-accent transition-all"
+            >
+              <option value="stats">Repository Stats</option>
+              <option value="languages">Languages</option>
+              <option value="links">Links</option>
+              <option value="tech">Technologies</option>
+              <option value="info">Additional Info</option>
+            </select>
+          </div>
+
+          <div class="sidebar-content">
+          <div class="lg:sticky lg:top-24">
+            <!-- Theme Toggle -->
+            <div class="theme-toggle-container flex justify-end mb-4">
+              <ThemeChanger client:load />
+            </div>
+
+            <!-- GitHub Data Status -->
+            {!repoInfo && project.githubOwner && project.githubRepo && (
+              <div class="border border-yellow-500/20 bg-yellow-500/5 p-4 mb-4 text-sm">
+                <p class="text-yellow-500/90">
+                  <svg class="inline mr-2" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/>
+                  </svg>
+                  GitHub data temporarily unavailable. Showing project info only.
+                </p>
+              </div>
+            )}
+
+            <!-- Repository Stats -->
+            {
+              repoInfo ? (
+                <div class="sidebar-card border border-secondary p-4 bg-card mb-4" data-section="stats">
+                  <h2 class="text-lg font-medium mb-4 text-primary">
+                    Repository Stats
+                  </h2>
+                  <div class="stats-grid grid grid-cols-2 gap-3">
+                    <div class="stat-item flex items-center gap-2 p-3 bg-primary border border-secondary">
+                      <svg class="text-accent text-xl flex-shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/>
+                      </svg>
+                      <div class="flex flex-col">
+                        <span class="stat-value text-lg font-semibold text-primary">
+                          {repoInfo.stargazers_count.toLocaleString()}
+                        </span>
+                        <span class="stat-label text-xs text-secondary uppercase tracking-wide">
+                          Stars
+                        </span>
+                      </div>
+                    </div>
+                    <div class="stat-item flex items-center gap-2 p-3 bg-primary border border-secondary">
+                      <svg class="text-accent text-xl flex-shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 11.701c0 2.857-1.627 4.299-4 4.299v-11c2.373 0 4 1.442 4 4.701zm5 0c0-2.857-1.627-4.701-4-4.701v11c2.373 0 4-1.442 4-4.299z"/>
+                      </svg>
+                      <div class="flex flex-col">
+                        <span class="stat-value text-lg font-semibold text-primary">
+                          {repoInfo.forks_count.toLocaleString()}
+                        </span>
+                        <span class="stat-label text-xs text-secondary uppercase tracking-wide">
+                          Forks
+                        </span>
+                      </div>
+                    </div>
+                    <div class="stat-item flex items-center gap-2 p-3 bg-primary border border-secondary">
+                      <svg class="text-accent text-xl flex-shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 9a3 3 0 0 0-3 3c0 1.642 1.358 3 3 3 1.641 0 3-1.358 3-3 0-1.642-1.359-3-3-3zm0 5c-1.105 0-2-.895-2-2s.895-2 2-2 2 .895 2 2-.895 2-2 2zm0-14C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22c-5.515 0-10-4.485-10-10S6.485 2 12 2s10 4.485 10 10-4.485 10-10 10z"/>
+                      </svg>
+                      <div class="flex flex-col">
+                        <span class="stat-value text-lg font-semibold text-primary">
+                          {repoInfo.watchers_count.toLocaleString()}
+                        </span>
+                        <span class="stat-label text-xs text-secondary uppercase tracking-wide">
+                          Watch
+                        </span>
+                      </div>
+                    </div>
+                    <div class="stat-item flex items-center gap-2 p-3 bg-primary border border-secondary">
+                      <svg class="text-accent text-xl flex-shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/>
+                      </svg>
+                      <div class="flex flex-col">
+                        <span class="stat-value text-lg font-semibold text-primary">
+                          {repoInfo.open_issues_count.toLocaleString()}
+                        </span>
+                        <span class="stat-label text-xs text-secondary uppercase tracking-wide">
+                          Issues
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null
+            }
+
+            <!-- Languages -->
+            {
+              languagePercentages.length > 0 && (
+                <div class="sidebar-card border border-secondary p-4 bg-card mb-4" data-section="languages">
+                  <h2 class="text-lg font-medium mb-4 text-primary">
+                    Languages
+                  </h2>
+                  <div class="languages">
+                    {/* Language bar */}
+                    <div class="language-bar flex h-2 border border-secondary mb-4 overflow-hidden">
+                      {languagePercentages.map((lang) => (
+                        <div
+                          class="language-segment"
+                          style={`width: ${lang.percentage}%; background-color: ${languageColors[lang.name] || "#858585"};`}
+                          title={`${lang.name}: ${lang.percentage}%`}
+                        />
+                      ))}
+                    </div>
+                    {/* Language list */}
+                    <ul class="language-list space-y-2">
+                      {languagePercentages.map((lang) => (
+                        <li class="language-item flex items-center justify-between text-sm">
+                          <div class="flex items-center gap-2">
+                            <span
+                              class="language-color w-3 h-3 border border-secondary flex-shrink-0"
+                              style={`background-color: ${languageColors[lang.name] || "#858585"};`}
+                            />
+                            <span class="language-name text-primary">
+                              {lang.name}
+                            </span>
+                          </div>
+                          <span class="language-percentage text-secondary font-medium">
+                            {lang.percentage}%
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )
+            }
+
+            <!-- Links -->
+            <div class="sidebar-card border border-secondary p-4 bg-card mb-4" data-section="links">
+              <h2 class="text-lg font-medium mb-4 text-primary">Links</h2>
+              <div class="links flex flex-col gap-3">
+                {
+                  githubUrl && (
+                    <a
+                      href={githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="link-button flex items-center gap-3 p-3 bg-primary border border-secondary text-primary hover:border-accent transition-all duration-200"
+                    >
+                      <svg class="text-xl flex-shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.070 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.840 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.430.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                      </svg>
+                      <span class="font-medium">View on GitHub</span>
+                    </a>
+                  )
+                }
+                {
+                  project.npm && (
+                    <a
+                      href={project.npm}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="link-button flex items-center gap-3 p-3 bg-primary border border-secondary text-primary hover:border-accent transition-all duration-200"
+                    >
+                      <svg class="text-xl flex-shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M0 0v24h24v-24h-24zm6.168 20.504h-2.626v-7.504h-2.63v-5h7.882v12.504h-2.626zm7.378 0h-2.626v-7.504h-2.63v-5h7.882v12.504h-2.626zm7.378 0h-2.626v-7.504h-2.63v-5h7.882v12.504h-2.626z"/>
+                      </svg>
+                      <span class="font-medium">View on NPM</span>
+                    </a>
+                  )
+                }
+                {
+                  project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="link-button flex items-center gap-3 p-3 bg-primary border border-secondary text-primary hover:border-accent transition-all duration-200"
+                    >
+                      <svg class="text-xl flex-shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                      </svg>
+                      <span class="font-medium">Live Demo</span>
+                    </a>
+                  )
+                }
+              </div>
+            </div>
+
+            <!-- Technologies -->
+            {
+              project.technologies && project.technologies.length > 0 && (
+                <div class="sidebar-card border border-secondary p-4 bg-card mb-4" data-section="tech">
+                  <h2 class="text-lg font-medium mb-4 text-primary">
+                    Technologies
+                  </h2>
+                  <div class="flex flex-wrap gap-2">
+                    {project.technologies.map((tech) => (
+                      <span class="px-3 py-1 text-xs font-medium bg-primary border border-secondary text-primary">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+
+            <!-- Additional Info -->
+            {
+              repoInfo && (
+                <div class="sidebar-card border border-secondary p-4 bg-card" data-section="info">
+                  <h2 class="text-lg font-medium mb-4 text-primary">
+                    Additional Info
+                  </h2>
+                  <div class="space-y-2 text-sm text-secondary">
+                    {repoInfo.license && (
+                      <div class="flex items-center gap-2">
+                        <svg class="text-accent" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2zm14 7h-4V8.5a1.5 1.5 0 0 0-3 0V12H6v-2h4V8.5a3.5 3.5 0 1 1 7 0V12z"/>
+                        </svg>
+                        <span>License: {repoInfo.license.name}</span>
+                      </div>
+                    )}
+                    <div class="flex items-center gap-2">
+                      <svg class="text-accent" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="6" y1="3" x2="6" y2="15"/>
+                        <circle cx="18" cy="6" r="3"/>
+                        <circle cx="6" cy="18" r="3"/>
+                        <path d="M18 9a9 9 0 0 1-9 9"/>
+                      </svg>
+                      <span>Default Branch: {repoInfo.default_branch}</span>
+                    </div>
+                    {repoInfo.language && (
+                      <div class="flex items-center gap-2">
+                        <svg class="text-accent" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="16 18 22 12 16 6"/>
+                          <polyline points="8 6 2 12 8 18"/>
+                        </svg>
+                        <span>Primary Language: {repoInfo.language}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            }
+          </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="lg:col-span-4">
+          <!-- Description -->
+          <div class="project-description mb-8 p-6 bg-card border border-secondary">
+            <h2 class="text-xl font-bold mb-3 text-primary">About</h2>
+            <p class="text-secondary leading-relaxed">{project.description}</p>
+          </div>
+
+          <!-- README Content -->
+          {
+            readmeContent ? (
+              <div class="readme-section">
+                <h2 class="text-2xl font-bold mb-6 text-primary flex items-center gap-2">
+                  <svg class="text-accent" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                  Documentation
+                </h2>
+                <div class="readme-content border border-secondary p-6 bg-card">
+                  <ReadmeContent content={readmeContent} />
+                </div>
+              </div>
+            ) : (
+              <div class="no-readme border border-secondary p-12 bg-card text-center">
+                <svg class="text-6xl text-secondary/50 mx-auto mb-4" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <p class="text-lg text-secondary">
+                  README not available for this project
+                </p>
+                <p class="text-sm text-secondary/70 mt-2">
+                  Check the repository for more information
+                </p>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-content {
+    min-height: 100vh;
+  }
+
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-accent {
+    color: var(--accent-primary);
+  }
+
+  .bg-primary {
+    background: var(--bg-primary);
+  }
+
+  .bg-card {
+    background: var(--bg-secondary);
+  }
+
+  .border-secondary {
+    border-color: var(--border-color);
+  }
+
+  .sidebar-card h2 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+
+  .link-button:hover {
+    background: var(--bg-secondary);
+  }
+
+  /* Tab selector styling */
+  .tab-selector select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.25rem;
+    padding-right: 2.5rem;
+  }
+
+  .tab-selector select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+  }
+
+  /* Sidebar sections - hidden by default on mobile, show only when active */
+  .sidebar-card {
+    display: none !important;
+  }
+
+  .sidebar-card.active {
+    display: block !important;
+  }
+
+  .theme-toggle-container {
+    display: none !important;
+  }
+
+  /* Desktop - show all sections and hide select */
+  @media (min-width: 1024px) {
+    .tab-selector {
+      display: none !important;
+    }
+
+    .sidebar-card {
+      display: block !important;
+    }
+
+    .theme-toggle-container {
+      display: flex !important;
+    }
+  }
+
+  /* Make sure all borders are NOT rounded */
+  * {
+    border-radius: 0 !important;
+  }
+
+  /* Language segment hover effect */
+  .language-segment {
+    transition: opacity 0.2s;
+  }
+
+  .language-segment:hover {
+    opacity: 0.8;
+  }
+
+  /* Tablet and mobile responsiveness */
+  @media (max-width: 1024px) {
+    .project-layout {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-container {
+      order: -1; /* Keep sidebar at top on mobile/tablet */
+    }
+
+    .sidebar-card {
+      margin-bottom: 1rem;
+    }
+
+    /* Adjust stats grid for smaller screens */
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sticky {
+      position: static !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    /* Stack stats on very small screens */
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stat-item {
+      padding: 0.75rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { cleanupGSAPAnimations } from "../../utils/animations.js";
+  import Lenis from "lenis";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Initialize Lenis smooth scroll
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  } as any);
+
+  function raf(time: number) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
+
+  // GSAP animations on page load
+  const runGSAPAnimations = () => {
+
+    // Animate project hero
+    gsap.from(".project-hero", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "power2.out",
+    });
+
+    // Animate sidebar cards
+    gsap.from(".sidebar-card", {
+      opacity: 0,
+      x: -30,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: "power2.out",
+      delay: 0.3,
+    });
+
+    // Animate main content
+    gsap.from(".project-description, .readme-section, .no-readme", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out",
+      delay: 0.4,
+    });
+
+    // Animate stats on scroll
+    const statItems = document.querySelectorAll(".stat-item");
+    if (statItems.length > 0) {
+      gsap.from(statItems, {
+        scale: 0.9,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: ".stats-grid",
+          start: "top 80%",
+        },
+      });
+    }
+  };
+
+  // Run GSAP on page load
+  document.addEventListener("astro:page-load", runGSAPAnimations);
+  
+  // Also run immediately
+  if (document.readyState !== "loading") {
+    runGSAPAnimations();
+  }
+
+  // Cleanup on navigation
+  document.addEventListener("astro:before-preparation", () => {
+    cleanupGSAPAnimations();
+  });
+</script>
+
+<!-- Inline script to run immediately -->
+<script is:inline>
+  console.log("🚀 Inline script running immediately");
+  
+  function initializeSidebar() {
+    console.log("📍 initializeSidebar called");
+    
+    const sidebarSelect = document.getElementById("sidebarSelect");
+    const sidebarCards = document.querySelectorAll(".sidebar-card");
+
+    console.log("Select found:", !!sidebarSelect);
+    console.log("Cards found:", sidebarCards.length);
+
+    if (!sidebarSelect || sidebarCards.length === 0) {
+      console.log("❌ Elements not ready, retrying in 50ms");
+      setTimeout(initializeSidebar, 50);
+      return;
+    }
+
+    console.log("✅ Elements ready, initializing");
+
+    // Show first section on mobile
+    const showFirstSection = () => {
+      if (window.innerWidth < 1024) {
+        sidebarCards.forEach((card) => card.classList.remove("active"));
+        sidebarCards[0].classList.add("active");
+        console.log("✅ First section active on mobile");
+      }
+    };
+
+    showFirstSection();
+
+    // Handle select change
+    sidebarSelect.addEventListener("change", function() {
+      const selectedValue = this.value;
+      console.log("📍 Changed to:", selectedValue);
+
+      sidebarCards.forEach((card) => {
+        card.classList.remove("active");
+      });
+
+      const selectedCard = document.querySelector(`.sidebar-card[data-section="${selectedValue}"]`);
+      if (selectedCard) {
+        selectedCard.classList.add("active");
+        console.log("✅ Activated:", selectedValue);
+        setTimeout(() => {
+          selectedCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }, 100);
+      }
+    });
+
+    // Handle resize
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1024) {
+        sidebarCards.forEach((card) => card.classList.remove("active"));
+      } else {
+        showFirstSection();
+      }
+    });
+  }
+
+  // Run immediately
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeSidebar);
+  } else {
+    initializeSidebar();
+  }
+
+  // Also run on Astro transitions
+  document.addEventListener("astro:page-load", initializeSidebar);
+  document.addEventListener("astro:after-swap", initializeSidebar);
+</script>

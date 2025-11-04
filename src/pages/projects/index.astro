@@ -1,0 +1,235 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Badge from "../../components/Badge.astro";
+import { projects } from "../../lib/projects";
+
+const canonicalURL = Astro.url.href;
+---
+
+<Layout
+  title="Projects - Rohit Kushwaha"
+  description="Explore my portfolio of projects showcasing full-stack development, open-source contributions, and innovative solutions."
+  canonicalURL={canonicalURL}
+>
+  <div class="page-content">
+    <Navbar />
+
+    <div
+      class="w-[90%] md:w-[80%] lg:w-[90%] xl:w-[70%] 2xl:w-[60%] mx-auto mt-[80px] md:mt-[100px] pb-16"
+    >
+      <!-- Page Header -->
+      <div class="projects-hero mb-12 md:mb-16">
+        <Badge size="sm">Portfolio</Badge>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-6 text-primary">
+          My Projects
+        </h1>
+        <p class="text-lg text-secondary max-w-2xl leading-relaxed">
+          A collection of projects I've built and contributed to. Each project represents my passion for creating innovative solutions and pushing the boundaries of web development.
+        </p>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="projects-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        {
+          projects.map((project, index) => (
+            <div class="project-card-container border border-secondary p-6 bg-card hover:border-accent transition-all duration-300" data-index={index}>
+              <div class="flex flex-col h-full">
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {project.tags.map((tag) => (
+                    <Badge text={tag} size="xs" />
+                  ))}
+                </div>
+
+                <!-- Title -->
+                <h2 class="text-2xl font-bold mb-3 text-primary">
+                  <a href={`/projects/${project.slug}`} class="hover:text-accent transition-colors">
+                    {project.title}
+                  </a>
+                </h2>
+
+                <!-- Status -->
+                <span
+                  class={`inline-block mb-3 px-3 py-1 text-xs font-medium w-fit ${
+                    project.status === "Completed"
+                      ? "bg-green-500/10 text-green-500 border border-green-500/20"
+                      : "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"
+                  }`}
+                >
+                  {project.status}
+                </span>
+
+                <!-- Description -->
+                <p class="text-secondary mb-6 flex-1 leading-relaxed">
+                  {project.description}
+                </p>
+
+                <!-- Technologies -->
+                {project.technologies && project.technologies.length > 0 && (
+                  <div class="mb-6">
+                    <p class="text-xs uppercase text-secondary/70 mb-2 font-semibold">Technologies</p>
+                    <div class="flex flex-wrap gap-2">
+                      {project.technologies.map((tech) => (
+                        <span class="text-xs px-2 py-1 bg-primary border border-secondary text-primary">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <!-- Links -->
+                <div class="flex flex-wrap gap-3 pt-4 border-t border-secondary">
+                  <a
+                    href={`/projects/${project.slug}`}
+                    class="text-sm font-medium text-accent hover:underline"
+                  >
+                    View Details →
+                  </a>
+                  {project.githubOwner && project.githubRepo && (
+                    <a
+                      href={`https://github.com/${project.githubOwner}/${project.githubRepo}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-sm font-medium text-secondary hover:text-accent transition-colors"
+                    >
+                      GitHub
+                    </a>
+                  )}
+                  {project.npm && (
+                    <a
+                      href={project.npm}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-sm font-medium text-secondary hover:text-accent transition-colors"
+                    >
+                      NPM
+                    </a>
+                  )}
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-sm font-medium text-secondary hover:text-accent transition-colors"
+                    >
+                      Demo
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-content {
+    min-height: 100vh;
+  }
+
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-accent {
+    color: var(--accent-primary);
+  }
+
+  .bg-card {
+    background: var(--bg-secondary);
+  }
+
+  .border-secondary {
+    border-color: var(--border-color);
+  }
+
+  .hover\:border-accent:hover {
+    border-color: var(--accent-primary);
+  }
+
+  .hover\:text-accent:hover {
+    color: var(--accent-primary);
+  }
+
+  .project-card-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Animations */
+  .projects-hero {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .project-card-container {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+  }
+
+  .project-card-container:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .project-card-container:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .project-card-container:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .project-card-container:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Make sure all borders are NOT rounded */
+  * {
+    border-radius: 0 !important;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("astro:page-load", () => {
+    // Animate project cards on scroll
+    const projectCards = document.querySelectorAll(".project-card-container");
+
+    if (projectCards.length > 0) {
+      gsap.from(projectCards, {
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".projects-grid",
+          start: "top 80%",
+        },
+      });
+    }
+  });
+</script>

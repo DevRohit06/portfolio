@@ -24,7 +24,7 @@ const allTags = [
 // Construct the canonical URL for SEO
 const canonicalURL = new URL(
   "/blogs",
-  Astro.site || "https://rohitk06.dev"
+  Astro.site || "https://rohitk06.in"
 ).toString();
 
 // SEO metadata
@@ -52,7 +52,7 @@ const blogListingJsonLd = {
     itemListElement: sortedPosts.map((post, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `https://rohitk06.dev/blogs/${post.slug || post.id}`,
+      url: `https://rohitk06.in/blogs/${post.slug || post.id}`,
       name: post.data.title,
       image: post.data.heroImage,
       description: post.data.description,

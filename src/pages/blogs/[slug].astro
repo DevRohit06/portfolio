@@ -58,7 +58,7 @@ const relatedPosts = allPosts
 // 7. Construct canonical URL for SEO
 const canonicalURL = new URL(
   `/blogs/${entry.data.slug || entry.id}`,
-  Astro.site || "https://rohitk06.dev"
+  Astro.site || "https://rohitk06.in"
 ).toString();
 
 // 8. Extract description for SEO, limiting to around 155-160 characters
@@ -341,7 +341,7 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
               <h3 class="text-base font-medium mb-2">Share</h3>
               <div class="flex gap-2">
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(`https://rohitk06.dev/blogs/${entry.data.slug || entry.id}`)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(`https://rohitk06.in/blogs/${entry.data.slug || entry.id}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="share-button w-8 h-8 flex items-center justify-center border border-secondary hover:bg-accent hover:text-white hover:border-accent transition-colors"
@@ -360,7 +360,7 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
                   </svg>
                 </a>
                 <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://rohitk06.dev/blogs/${entry.data.slug || entry.id}`)}`}
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://rohitk06.in/blogs/${entry.data.slug || entry.id}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="share-button w-8 h-8 flex items-center justify-center border border-secondary hover:bg-accent hover:text-white hover:border-accent transition-colors"
@@ -438,7 +438,7 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
             <h3 class="text-base font-medium mb-2">Share this article:</h3>
             <div class="flex gap-2">
               <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(`https://rohitk06.dev/blogs/${entry.data.slug || entry.id}`)}`}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(`https://rohitk06.in/blogs/${entry.data.slug || entry.id}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="share-button px-3 py-2 flex items-center gap-2 text-sm border border-secondary hover:bg-accent hover:text-white hover:border-accent transition-colors"
@@ -447,7 +447,7 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
                 Twitter
               </a>
               <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://rohitk06.dev/blogs/${entry.data.slug || entry.id}`)}`}
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://rohitk06.in/blogs/${entry.data.slug || entry.id}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="share-button px-3 py-2 flex items-center gap-2 text-sm border border-secondary hover:bg-accent hover:text-white hover:border-accent transition-colors"
@@ -541,7 +541,7 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
     publishDate={entry.data.pubDate}
     updatedDate={lastUpdatedTime}
     authorName="Rohit Kushwaha"
-    authorUrl="https://rohitk06.dev"
+    authorUrl="https://rohitk06.in"
     heroImage={ogImage}
     tags={entry.data.tags || []}
     canonicalUrl={canonicalURL}
