@@ -26,6 +26,8 @@ const skillCategories = [
       { name: "React", icon: "simple-icons:react" },
       { name: "Vue", icon: "simple-icons:vuedotjs" },
       { name: "Svelte", icon: "simple-icons:svelte" },
+      { name: "React", icon: "simple-icons:react" },
+      { name: "Next.js", icon: "simple-icons:nextdotjs" },
       { name: "HTML", icon: "simple-icons:html5" },
       { name: "CSS", icon: "simple-icons:css3" },
       { name: "JavaScript", icon: "simple-icons:javascript" },
@@ -43,14 +45,15 @@ const skillCategories = [
     ],
   },
   {
-    title: "AI & Tools",
+    title: "AI & Dev Tools",
     skills: [
-      { name: "LangChain", icon: "simple-icons:langchain" },
+      { name: "Claude", icon: "simple-icons:anthropic" },
+      { name: "Gemini", icon: "simple-icons:googlegemini" },
+      { name: "Perplexity", icon: "simple-icons:perplexity" },
       { name: "OpenAI", icon: "simple-icons:openai" },
-      { name: "Docker", icon: "simple-icons:docker" },
+      { name: "VS Code", icon: "simple-icons:visualstudiocode" },
       { name: "Git", icon: "simple-icons:git" },
       { name: "Vercel", icon: "simple-icons:vercel" },
-      { name: "Flutter", icon: "simple-icons:flutter" },
     ],
   },
 ];
@@ -58,9 +61,9 @@ const skillCategories = [
 
 <div class={`skills-container relative ${className}`}>
   <div
-    class="border border-[var(--border-color)] p-4 sm:p-6 md:p-12 relative skills-title-section"
+    class="border border-border p-4 sm:p-6 md:p-12 relative skills-title-section"
   >
-    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
+    <div class="size-4 bg-border absolute -top-2 -left-2"></div>
     <Badge size="sm" className="mb-4">
       <span class="text-xs font-bold uppercase">Technical Skills</span>
     </Badge>
@@ -76,20 +79,20 @@ const skillCategories = [
   </div>
 
   <div
-    class="border border-[var(--border-color)] border-t-0 p-4 sm:p-6 md:p-12 skills-content-section"
+    class="border border-border border-t-0 p-4 sm:p-6 md:p-12 skills-content-section"
   >
     <div class="space-y-8">
       {
         skillCategories.map((category, categoryIndex) => (
           <div class="skill-category" data-category={categoryIndex}>
-            <h3 class="text-lg font-semibold mb-4 category-title text-[var(--text-primary)]">
+            <h3 class="text-lg font-semibold mb-4 category-title text-text-primary">
               {category.title}
             </h3>
 
             <div class="flex flex-wrap gap-3 items-center">
               {category.skills.map((skill, skillIndex) => (
                 <div
-                  class="skill-pill inline-flex items-center gap-2 px-4 py-2 border border-[var(--border-color)] text-sm font-medium transition-all duration-300 hover:bg-[var(--accent-primary)]/80"
+                  class="skill-pill inline-flex items-center gap-2 px-4 py-2 border border-border text-sm font-medium transition-all duration-300 hover:bg-accent/80"
                   data-skill={skillIndex}
                 >
                   <iconify-icon icon={skill.icon} class="skill-icon" />
@@ -104,7 +107,7 @@ const skillCategories = [
   </div>
 
   <div
-    class="border border-[var(--border-color)] border-t-0 px-4 sm:px-6 md:px-10 p-4 sm:py-6 flex flex-col items-start gap-4 skills-cta-section"
+    class="border border-border border-t-0 px-4 sm:px-6 md:px-10 p-4 sm:py-6 flex flex-col items-start gap-4 skills-cta-section"
   >
     <TextReveal
       element="h3"
@@ -118,7 +121,7 @@ const skillCategories = [
 
     <TextReveal
       text="Technology evolves fast, and so do I! Currently exploring new AI frameworks and diving deeper into system design. What's next on your tech wishlist?"
-      className="text-sm sm:text-base text-[var(--text-secondary)]"
+      className="text-sm sm:text-base text-text-secondary"
       splitBy="words"
       stagger={0.02}
       from="left"
@@ -127,12 +130,12 @@ const skillCategories = [
 
     <a
       href="mailto:rohitk290106@gmail.com"
-      class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-[var(--border-color)] hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 cta-button"
+      class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-border hover:bg-accent hover:text-white transition-all duration-300 cta-button"
     >
       Let's Talk Tech 💻
     </a>
   </div>
-  <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10">
+  <div class="size-4 bg-border absolute -bottom-2 -right-2 z-10">
   </div>
 </div>
 
