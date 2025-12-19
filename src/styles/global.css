@@ -3,6 +3,7 @@
   src: url("/fonts/RoobertTRIAL-Regular.woff2") format("woff2");
   font-weight: normal;
 }
+
 @font-face {
   font-family: "Roobert Mono";
   src: url("/fonts/RoobertTRIAL-Bold.woff2") format("woff2");
@@ -17,7 +18,30 @@
 
 @import "tailwindcss";
 
-/* Theme Variables */
+/* Tailwind v4 Theme Configuration */
+@theme {
+  /* Background colors */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-card: var(--card-bg);
+
+  /* Text colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+
+  /* Accent colors */
+  --color-accent: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+
+  /* Border colors */
+  --color-border: var(--border-color);
+
+  /* Special colors */
+  --color-code-bg: var(--code-bg);
+  --color-blockquote-bg: var(--blockquote-bg);
+}
+
+/* Theme Variables - Light Mode (default) */
 :root {
   --bg-primary: #ffffff;
   --bg-secondary: #c9cdd1;
@@ -42,6 +66,7 @@
   --github-activity-level12: #0707ac;
 }
 
+/* Theme Variables - Dark Mode */
 :root.dark-theme {
   --bg-primary: #121212;
   --bg-secondary: #202020;
@@ -98,6 +123,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   html,
   body,
   * {
@@ -132,6 +158,7 @@ body {
 
 /* Show elements after 1 second if animations don't run */
 @media (prefers-reduced-motion: no-preference) {
+
   html:not(.js-loading) #main-navbar,
   html:not(.js-loading) .hero-top-badges {
     animation: reveal-delayed 1s forwards;
@@ -143,10 +170,12 @@ body {
     opacity: 0;
     visibility: hidden;
   }
+
   99% {
     opacity: 0;
     visibility: hidden;
   }
+
   100% {
     opacity: 1;
     visibility: visible;

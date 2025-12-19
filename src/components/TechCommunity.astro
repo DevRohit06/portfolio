@@ -11,20 +11,20 @@ const { title = "TECH COMMUNITY", learnMoreUrl = "#" } = Astro.props;
 ---
 
 <div
-  class="relative border border-[#7B7B7B] h-full w-full overflow-hidden group"
+  class="relative border border-border h-full w-full overflow-hidden group"
 >
   <div class="absolute top-2 left-2">
     <Badge>{title}</Badge>
   </div>
   <Image src={dialogh} class="aspect-video object-center object-cover" alt="" />
-  <div class="p-2 border-t border-[#7B7B7B]">
+  <div class="p-2 border-t border-border">
     <p>Become the member of Dialogh</p>
     <a
       href={learnMoreUrl}
-      class="text-[#0000CC] relative group inline-flex items-center"
+      class="text-accent relative group inline-flex items-center"
       >Learn more
       <span
-        class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#0000CC] group-hover:w-full transition-all duration-300"
+        class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"
       ></span>
       <svg
         xmlns="http://www.w3.org/2000/svg"

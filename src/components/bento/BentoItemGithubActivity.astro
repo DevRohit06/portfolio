@@ -86,7 +86,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=86400");
           </svg>
         </Badge>
         <div>
-          <p class="text-xs  text-[#696969] font-semibold sm:block hidden">
+          <p class="text-xs text-text-secondary font-semibold sm:block hidden">
             Last pushed on{" "}
             <span class="">{formatDate(new Date(data.lastPushedAt))}</span>
           </p>
@@ -98,7 +98,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=86400");
     </div>
   ) : (
     <div class="border border-[var(--border-color)] p-4 bento-github-card bento-scroll-reveal flex items-center justify-center h-[200px]">
-      <p class="text-[#696969]">Loading GitHub activity...</p>
+      <p class="text-text-secondary">Loading GitHub activity...</p>
     </div>
   )
 }
