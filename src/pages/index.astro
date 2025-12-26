@@ -24,6 +24,7 @@ const showLoader = true;
 const pageTitle = "Rohit Kushwaha - Software Engineer Portfolio";
 const description =
   "Portfolio of Rohit Kushwaha, a software engineer specializing in web development, React, Next.js, Svelte, and modern JavaScript frameworks.";
+const canonicalURL = new URL("/", Astro.site || Astro.url.origin).href;
 const keywords = [
   "software engineer",
   "web developer",
@@ -146,6 +147,7 @@ const jsonLd = {
   title={pageTitle}
   description={description}
   keywords={keywords}
+  canonicalURL={canonicalURL}
   showLoader={showLoader}
 >
   <div class="page-content relative z-0">

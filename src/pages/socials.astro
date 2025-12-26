@@ -13,9 +13,12 @@ import Twitter from "../components/icons/Twitter.astro";
 import LinkedIn from "../components/icons/LinkedIn.astro";
 import GitHub from "../components/icons/GitHub.astro";
 import Favicon from "../components/icons/Favicon.astro";
+
+// Set canonical URL without trailing slash
+const canonicalURL = new URL("/socials", Astro.site || Astro.url.origin).href;
 ---
 
-<Layout title="Socials | Rohit Kushwaha">
+<Layout title="Socials | Rohit Kushwaha" canonicalURL={canonicalURL}>
   <main class="socials-container">
     <div class="theme-toggle-container">
       <ThemeChanger client:load />

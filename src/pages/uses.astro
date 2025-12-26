@@ -9,6 +9,7 @@ import ThemeChanger from "../components/svelte/ThemeChanger.svelte";
 // SEO metadata
 const pageTitle = "Uses - Rohit Kushwaha";
 const description = "A list of hardware, software, and tools I use for development, design, and productivity.";
+const canonicalURL = new URL("/uses", Astro.site || Astro.url.origin).href;
 
 // Uses data organized by category
 const usesCategories = [
@@ -159,7 +160,7 @@ const jsonLd = {
 };
 ---
 
-<Layout title={pageTitle} description={description}>
+<Layout title={pageTitle} description={description} canonicalURL={canonicalURL}>
   <div class="page-content relative z-0">
     <Navbar />
 

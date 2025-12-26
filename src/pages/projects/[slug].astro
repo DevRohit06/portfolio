@@ -95,7 +95,8 @@ const githubUrl =
     ? `https://github.com/${project.githubOwner}/${project.githubRepo}`
     : undefined;
 
-const canonicalURL = Astro.url.href;
+// Normalize canonical URL without trailing slash
+const canonicalURL = new URL(`/projects/${slug}`, Astro.site || Astro.url.origin).href;
 ---
 
 <Layout

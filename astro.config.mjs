@@ -23,6 +23,7 @@ import partytown from "@astrojs/partytown";
 export default defineConfig({
   output: "static",
   site: "https://rohitk06.in",
+  trailingSlash: "never", // Enforce no trailing slashes for consistent canonical URLs
   vite: {
     plugins: [tailwindcss()],
   },
