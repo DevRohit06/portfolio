@@ -4,7 +4,8 @@ import Navbar from "../../components/Navbar.astro";
 import Badge from "../../components/Badge.astro";
 import { projects } from "../../lib/projects";
 
-const canonicalURL = Astro.url.href;
+// Normalize canonical URL without trailing slash
+const canonicalURL = new URL("/projects", Astro.site || Astro.url.origin).href;
 ---
 
 <Layout

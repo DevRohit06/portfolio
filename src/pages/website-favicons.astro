@@ -12,9 +12,12 @@ const learningWebsites = getWebsitesByCategory("learning");
 
 // Get all websites
 const allWebsites = Object.values(websites);
+
+// Set canonical URL
+const canonicalURL = new URL("/website-favicons", Astro.site || Astro.url.origin).href;
 ---
 
-<Layout title="Website Links | Favicons Demo">
+<Layout title="Website Links | Favicons Demo" canonicalURL={canonicalURL}>
   <main class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6">Website Links with Favicons</h1>
 
