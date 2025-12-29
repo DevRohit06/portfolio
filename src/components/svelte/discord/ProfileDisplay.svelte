@@ -1,8 +1,13 @@
 <script lang="ts">
   import { fade, slide } from "svelte/transition";
+  import {
+    getAvatarUrl,
+    getDisplayName,
+    type LanyardData,
+  } from "discord-lanyard-activity";
   import StatusIndicator from "./StatusIndicator.svelte";
 
-  export let userData: any = null;
+  export let userData: LanyardData | null = null;
   export let showButtons: boolean = true;
   export let inviteCode: string = "";
   export let username: string = "";
@@ -12,7 +17,7 @@
     if (userData?.discord_user?.id) {
       window.open(
         `https://discord.com/users/${userData.discord_user.id}`,
-        "_blank"
+        "_blank",
       );
     }
   };
@@ -22,7 +27,7 @@
     if (userData?.discord_user?.id) {
       window.open(
         `https://discord.com/users/${userData.discord_user.id}`,
-        "_blank"
+        "_blank",
       );
     }
   };
@@ -34,25 +39,22 @@
     }
   };
 
-  // Get Discord user avatar URL
-  const getAvatarUrl = () => {
-    if (userData?.discord_user?.avatar) {
-      return `https://cdn.discordapp.com/avatars/${userData.discord_user.id}/${userData.discord_user.avatar}.png?size=128`;
-    }
+  // Get Discord user avatar URL using package utility
+  $: avatarUrl = userData?.discord_user
+    ? getAvatarUrl(
+        userData.discord_user.id,
+        userData.discord_user.avatar,
+        userData.discord_user.discriminator,
+      )
+    : "";
 
-    // Default Discord avatar based on user discriminator
-    const discriminator = userData?.discord_user?.discriminator || "0";
-    return `https://cdn.discordapp.com/embed/avatars/${parseInt(discriminator) % 5}.png`;
-  };
-
-  // Get display name from Discord data
-  const getDisplayName = () => {
-    return (
-      userData?.discord_user?.global_name ||
-      userData?.discord_user?.username ||
-      "Discord User"
-    );
-  };
+  // Get display name using package utility
+  $: displayName = userData?.discord_user
+    ? getDisplayName(
+        userData.discord_user.global_name,
+        userData.discord_user.username,
+      )
+    : "Discord User";
 </script>
 
 <div
@@ -62,11 +64,13 @@
   <div class="flex items-center w-full">
     <div class="avatar-container flex-shrink-0 relative">
       <img
-        src={getAvatarUrl()}
+        src={avatarUrl}
         alt="Discord Avatar"
         class="avatar-image size-12 rounded-full object-cover border-2 border-[var(--border-color)]/30 hover:border-[var(--border-color)]/60 transition-all duration-300"
       />
-      <StatusIndicator status={userData.discord_status} />
+      {#if userData}
+        <StatusIndicator status={userData.discord_status} />
+      {/if}
     </div>
     <div class="flex items-start justify-between w-full ml-4">
       <div class="user-info flex-1">
@@ -75,7 +79,7 @@
             class="user-name font-semibold text-[var(--text-primary)] text-lg"
             in:slide={{ duration: 300, delay: 150 }}
           >
-            {getDisplayName()}
+            {displayName}
           </div>
           {#if userData?.discord_user?.discriminator && userData?.discord_user?.discriminator !== "0"}
             <div
@@ -90,7 +94,7 @@
               class="user-tag text-xs text-[var(--text-secondary)]"
               in:slide={{ duration: 300, delay: 200 }}
             >
-              {userData.discord_user?.username || ""}
+              {userData?.discord_user?.username || ""}
             </div>
           {/if}
         </div>
@@ -217,9 +221,8 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-      Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
 
   .discord-button:hover {

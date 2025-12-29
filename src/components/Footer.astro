@@ -4,6 +4,7 @@ import dialogh from "../assets/dialogh-typo.png";
 import Badge from "./Badge.astro";
 import { socials } from "../lib/socials";
 import SocialIcons from "./SocialIcons.astro";
+import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
 ---
 
 <footer id="footer" class="footer-section mt-20 mb-2">
@@ -190,21 +191,30 @@ import SocialIcons from "./SocialIcons.astro";
       </div>
     </div>
 
-    <!-- Copyright row -->
+    <!-- Copyright row with Discord Status -->
     <div
-      class="footer-copyright border-t border-[var(--border-color)] p-3 sm:p-4 lg:p-5 flex justify-between gap-2 footer-scroll-reveal"
+      class="footer-copyright border-t border-[var(--border-color)] flex flex-col sm:grid sm:grid-cols-12 footer-scroll-reveal"
       data-delay="0.4"
     >
-      <span
-        class="footer-copyright-text text-xs sm:text-sm text-center xs:text-left"
-        >© Rohit Kushwaha</span
+      <div
+        class="sm:col-span-4 md:col-span-3 lg:col-span-3 sm:pt-1 pt-2 border-b sm:border-b-0 border-[var(--border-color)] pb-2 sm:pb-0"
       >
-      <a
-        href="https://rohitk06.in"
-        class="footer-website-link text-xs sm:text-sm flex items-center justify-center xs:justify-start group footer-magnetic-item"
+        <DiscordStatusCompact client:load userId="743173584935190620" />
+      </div>
+      <div
+        class="sm:col-span-8 md:col-span-9 lg:col-span-9 sm:border-l p-2 sm:p-3 lg:p-4 border-[var(--border-color)] flex items-center justify-between w-full"
       >
-        <span class="mr-1">rohitk06.in</span>
-      </a>
+        <span class="footer-copyright-text text-xs sm:text-sm whitespace-nowrap"
+          >© Rohit Kushwaha</span
+        >
+
+        <a
+          href="https://rohitk06.in"
+          class="footer-website-link text-xs sm:text-sm flex items-center group footer-magnetic-item whitespace-nowrap"
+        >
+          <span class="mr-1">rohitk06.in</span>
+        </a>
+      </div>
     </div>
   </div>
 </footer>
@@ -283,7 +293,7 @@ import SocialIcons from "./SocialIcons.astro";
           duration: 0.6,
           ease: "back.out(1.5)",
         },
-        "-=0.6"
+        "-=0.6",
       );
 
       // Create scroll-triggered animations for each card with staggered reveal
@@ -312,7 +322,7 @@ import SocialIcons from "./SocialIcons.astro";
             duration: 1.5,
             delay: delay + 0.2,
             clearProps: "boxShadow",
-          }
+          },
         );
       });
 
@@ -346,7 +356,7 @@ import SocialIcons from "./SocialIcons.astro";
           end: "bottom 40%",
           scrub: true,
           markers: false,
-        }
+        },
       );
 
       // Add hover effects like those in Bento.astro
@@ -466,7 +476,6 @@ import SocialIcons from "./SocialIcons.astro";
     }
 
     .footer-copyright {
-      padding: 12px !important;
       flex-direction: column !important;
       gap: 8px !important;
     }

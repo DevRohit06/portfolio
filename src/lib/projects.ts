@@ -16,6 +16,28 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "superdocs",
+    title: "SuperDocs",
+    description:
+      "The open-source Mintlify alternative. CLI-first docs engine that transforms Markdown into beautiful, searchable documentation sites. Features hot reload, MDX support, SEO optimization, and full landing page control.",
+    image:
+      "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=600&h=400&fit=crop&crop=entropy&auto=format",
+    tags: ["TypeScript", "Astro", "CLI"],
+    status: "In Development",
+    githubOwner: "DevRohit06",
+    githubRepo: "superdocs",
+    npm: "https://www.npmjs.com/package/super-docs",
+    demo: "https://devrohit06.github.io/superdocs-demo/",
+    technologies: [
+      "TypeScript",
+      "Astro",
+      "MDX",
+      "Tailwind CSS",
+      "CLI",
+      "Static Site Generation",
+    ],
+  },
+  {
     slug: "discord-lanyard-activity",
     title: "Discord Lanyard Activity",
     description:
@@ -31,7 +53,7 @@ export const projects: Project[] = [
     technologies: [
       "TypeScript",
       "WebSocket",
-      "React",  
+      "React",
       "Vue 3",
       "Svelte",
       "Vite",
