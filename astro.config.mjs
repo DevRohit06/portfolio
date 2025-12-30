@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, envField } from "astro/config";
+import mermaid from "astro-mermaid";
 
 import tailwindcss from "@tailwindcss/vite";
 
@@ -66,6 +67,10 @@ export default defineConfig({
   integrations: [
     svelte(),
     react(),
+    mermaid({
+      theme: 'forest',
+      autoTheme: true
+    }),
     mdx(),
     playformCompress(),
     sitemap(),

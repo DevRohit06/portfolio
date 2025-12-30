@@ -13,14 +13,27 @@ const SHIKI_THEMES = {
   dark: 'github-dark',
 };
 
+// Store for mermaid code blocks (keyed by a unique marker)
+const mermaidBlocks = new Map<string, string>();
+
 /**
- * Create a marked instance with Shiki syntax highlighting
+ * Create a marked instance with Shiki syntax highlighting and mermaid support
  */
 export async function createMarkedWithShiki() {
+  // Clear mermaid blocks from previous renders
+  mermaidBlocks.clear();
+
   const marked = new Marked(
     markedHighlight({
       async: true,
       async highlight(code: string, lang: string) {
+        // Handle mermaid code blocks specially - store them and return a placeholder
+        if (lang === 'mermaid') {
+          const id = `__MERMAID_${Date.now()}_${Math.random().toString(36).slice(2)}__`;
+          mermaidBlocks.set(id, code);
+          return id;
+        }
+
         try {
           // Use Shiki to highlight code blocks
           const html = await codeToHtml(code, {
@@ -31,7 +44,7 @@ export async function createMarkedWithShiki() {
             },
             defaultColor: false, // Use CSS variables instead
           });
-          
+
           return html;
         } catch (error) {
           // If highlighting fails, return plain code
@@ -52,5 +65,25 @@ export async function createMarkedWithShiki() {
  */
 export async function renderMarkdown(markdown: string): Promise<string> {
   const marked = await createMarkedWithShiki();
-  return await marked.parse(markdown);
+  let html = await marked.parse(markdown);
+
+  // Replace mermaid placeholders with actual mermaid divs
+  for (const [id, code] of mermaidBlocks.entries()) {
+    // The placeholder might be wrapped in <pre><code>...</code></pre> by marked
+    // Try multiple patterns to catch it
+    const patterns = [
+      new RegExp(`<pre><code[^>]*>${id}</code></pre>`, 'g'),
+      new RegExp(`<pre><code>${id}</code></pre>`, 'g'),
+      new RegExp(id, 'g'),
+    ];
+
+    for (const pattern of patterns) {
+      if (pattern.test(html)) {
+        html = html.replace(pattern, `<div class="mermaid">${code}</div>`);
+        break;
+      }
+    }
+  }
+
+  return html;
 }

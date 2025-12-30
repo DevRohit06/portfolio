@@ -211,4 +211,67 @@ const { content } = Astro.props;
   .blog-content h4 code {
     font-size: 0.9em;
   }
+
+  /* Mermaid diagram styles */
+  .blog-content .mermaid {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 1.5em;
+    margin: 1.5em 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .blog-content .mermaid svg {
+    max-width: 100%;
+    height: auto;
+  }
 </style>
+
+<script>
+  // Initialize mermaid for README content
+  async function initMermaid() {
+    const mermaidElements = document.querySelectorAll(".blog-content .mermaid");
+    if (mermaidElements.length === 0) return;
+
+    // Dynamically import mermaid
+    const mermaid = (await import("mermaid")).default;
+
+    // Detect current theme
+    const isDark = document.documentElement.classList.contains("dark-theme");
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: isDark ? "dark" : "default",
+      securityLevel: "loose",
+      fontFamily: "inherit",
+    });
+
+    // Render each mermaid diagram
+    mermaidElements.forEach(async (element, index) => {
+      const code = element.textContent || "";
+      if (code.trim()) {
+        try {
+          const { svg } = await mermaid.render(
+            `mermaid-diagram-${index}`,
+            code,
+          );
+          element.innerHTML = svg;
+        } catch (error) {
+          console.error("Mermaid rendering error:", error);
+          element.innerHTML = `<pre style="color: red;">Error rendering diagram: ${error}</pre>`;
+        }
+      }
+    });
+  }
+
+  // Run on page load
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMermaid);
+  } else {
+    initMermaid();
+  }
+
+  // Also run on Astro transitions
+  document.addEventListener("astro:page-load", initMermaid);
+</script>

@@ -38,6 +38,26 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "aura-ide",
+    title: "Aura IDE",
+    description:
+      "A modern, AI-powered cloud IDE built with SvelteKit 5 featuring agentic coding assistance and isolated sandbox environments. Includes intelligent code suggestions, smart debugging, multi-model AI support (GPT-4o, Claude), real-time collaboration, and integrated terminal with live preview.",
+    image:
+      "https://raw.githubusercontent.com/DevRohit06/aura-ide/refs/heads/main/images/hero.png",
+    tags: ["SvelteKit", "GenAI", "Cloud IDE"],
+    status: "In Development",
+    githubOwner: "DevRohit06",
+    githubRepo: "aura-ide",
+    technologies: [
+      "SvelteKit 5",
+      "TypeScript",
+      "CodeMirror 6",
+      "AI SDK",
+      "Daytona",
+      "MongoDB",
+    ],
+  },
+  {
     slug: "discord-lanyard-activity",
     title: "Discord Lanyard Activity",
     description:
@@ -60,17 +80,6 @@ export const projects: Project[] = [
       "tsup",
       "Lanyard API",
     ],
-  },
-  {
-    slug: "aura-ide",
-    title: "Aura IDE",
-    description:
-      "Online IDE powered by top AI models with TypeScript support and GenAI agent integration. Features intelligent code completion, AI-powered debugging, and seamless development workflow.",
-    image:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop&crop=entropy&auto=format",
-    tags: ["TypeScript", "GenAI", "IDE"],
-    status: "In Development",
-    technologies: ["TypeScript", "GenAI", "React", "Monaco Editor"],
   },
   {
     slug: "klaro",
