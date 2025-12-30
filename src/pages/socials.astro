@@ -36,10 +36,6 @@ const pageUrl = Astro.site ? new URL("/socials", Astro.site).href : "/socials";
         </div>
 
         <img src={socials.banner} alt="Banner" class="w-full object-center" />
-        <!-- Theme Toggle -->
-        <div class="absolute top-3 right-3 z-10">
-          <ThemeChanger client:load />
-        </div>
       </div>
 
       <!-- Profile Section -->
@@ -62,7 +58,7 @@ const pageUrl = Astro.site ? new URL("/socials", Astro.site).href : "/socials";
         </div>
 
         <!-- Profile Info -->
-        <div class="pt-12 sm:pt-16">
+        <div class="pt-8 sm:pt-10">
           <h1
             class="text-2xl sm:text-3xl font-semibold text-[var(--text-primary)]"
           >
@@ -323,6 +319,13 @@ const pageUrl = Astro.site ? new URL("/socials", Astro.site).href : "/socials";
         <p class="text-[var(--text-secondary)] text-sm">
           &copy; {new Date().getFullYear()} Rohit Kushwaha
         </p>
+      </div>
+    </div>
+
+    <!-- Theme changer -->
+    <div class="sticky bottom-8 right-8 z-50">
+      <div class="flex justify-end sm:pr-8 pr-5">
+        <ThemeChanger client:only="svelte" />
       </div>
     </div>
   </div>
