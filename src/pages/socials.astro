@@ -13,433 +13,390 @@ import Twitter from "../components/icons/Twitter.astro";
 import LinkedIn from "../components/icons/LinkedIn.astro";
 import GitHub from "../components/icons/GitHub.astro";
 import Favicon from "../components/icons/Favicon.astro";
+import SocialIcons from "../components/SocialIcons.astro";
 
 // Set canonical URL without trailing slash
 const canonicalURL = new URL("/socials", Astro.site || Astro.url.origin).href;
+const pageUrl = Astro.site ? new URL("/socials", Astro.site).href : "/socials";
 ---
 
 <Layout title="Socials | Rohit Kushwaha" canonicalURL={canonicalURL}>
-  <main class="socials-container">
-    <div class="theme-toggle-container">
-      <ThemeChanger client:load />
-    </div>
-
-    <div class="socials-content mt-24">
-      <div class="profile-card">
-        <div class="profile-section">
-          <Image src={Pfp} alt="Rohit Kushwaha" class="profile-image" />
-          <h1>Rohit Kushwaha</h1>
-          <p class="bio">Vibe Engineer</p>
+  <div class="page-content relative z-0">
+    <!-- Main Container -->
+    <div
+      class="w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[60%] xl:w-[50%] 2xl:w-[45%] relative z-20 mx-auto mt-8 mb-16"
+    >
+      <!-- Banner Section -->
+      <div
+        class="banner-section border border-[var(--border-color)] relative overflow-hidden"
+      >
+        <div
+          class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2 z-10"
+        >
         </div>
 
-        <div class="discord-section">
-          <Badge size="xs"
-            ><span class="whitespace-nowrap text-xs uppercase"
-              >Discord Status</span
-            ></Badge
-          >
-          <div class="mt-3">
-            <DiscordActivity showButtons={true} showAllActivities={true} />
-          </div>
-        </div>
-
-        <div class="links-section">
-          <!-- Portfolio Section Links -->
-          <div class="links-category">
-            <Badge size="xs"
-              ><span class="whitespace-nowrap text-xs uppercase">Portfolio</span
-              ></Badge
-            >
-
-            <div class="links-grid">
-              <a href="/" target="_blank" class="portfolio-link">
-                <span class="link-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    ><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-                    ></path><polyline points="9 22 9 12 15 12 15 22"
-                    ></polyline></svg
-                  >
-                </span>
-                <span class="link-text">Home</span>
-              </a>
-
-              <a href="/blogs" target="_blank" class="portfolio-link">
-                <span class="link-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    ><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
-                    ></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
-                    ></path></svg
-                  >
-                </span>
-                <span class="link-text">Blog</span>
-              </a>
-
-              <a href="/coming-soon" target="_blank" class="portfolio-link">
-                <span class="link-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    ><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg
-                  >
-                </span>
-                <span class="link-text">Projects</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Social Links -->
-          <div class="links-category">
-            <Badge size="xs"
-              ><span class="whitespace-nowrap text-xs uppercase">Connect</span
-              ></Badge
-            >
-
-            <div class="social-links-grid">
-              <a
-                href={socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link"
-              >
-                <span class="social-icon">
-                  <GitHub class="social-icon" />
-                </span>
-                <span class="link-text">GitHub</span>
-              </a>
-
-              <a
-                href={socials.linkedIn}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link"
-              >
-                <span class="social-icon">
-                  <LinkedIn class="social-icon" />
-                </span>
-                <span class="link-text">LinkedIn</span>
-              </a>
-
-              <a
-                href={socials.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link"
-              >
-                <span class="social-icon">
-                  <Twitter class="social-icon" />
-                </span>
-                <span class="link-text">Twitter</span>
-              </a>
-
-              <a
-                href={socials.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link"
-              >
-                <span class="social-icon">
-                  <Instagram class="social-icon" />
-                </span>
-                <span class="link-text">Instagram</span>
-              </a>
-
-              <a
-                href={socials.discord}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link"
-              >
-                <Discord class="social-icon" />
-                <span class="link-text">Discord</span>
-              </a>
-
-              <a
-                href={socials.mail}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link"
-              >
-                <span class="social-icon">
-                  <Mail />
-                </span>
-                <span class="link-text">Email</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="links-category">
-            <Badge size="xs"
-              ><span class="whitespace-nowrap text-xs uppercase"
-                >Promotions</span
-              ></Badge
-            >
-
-            <div class="social-links-grid">
-              <a
-                href="https://dialogh.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link"
-              >
-                <span class="social-icon">
-                  <Favicon url="https://dialogh.in/" class="social-icon" />
-                </span>
-                <span class="link-text">Join Dialogh</span>
-              </a>
-
-              <a
-                href="https://interacly.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link"
-              >
-                <span class="social-icon">
-                  <Favicon url="https://interacly.com/" class="social-icon" />
-                </span>
-                <span class="link-text">Try Interacly</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-text">
-          <p>&copy; {new Date().getFullYear()} Rohit Kushwaha</p>
+        <img src={socials.banner} alt="Banner" class="w-full object-center" />
+        <!-- Theme Toggle -->
+        <div class="absolute top-3 right-3 z-10">
+          <ThemeChanger client:load />
         </div>
       </div>
+
+      <!-- Profile Section -->
+      <div
+        class="profile-section border border-[var(--border-color)] border-t-0 p-6 sm:p-8 relative"
+      >
+        <!-- Profile Image (overlapping banner) -->
+        <div class="profile-avatar-wrapper absolute -top-16">
+          <div
+            class="profile-avatar w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] overflow-hidden"
+          >
+            <Image
+              src={Astro.url.origin + "/android-chrome-512x512.png"}
+              width={512}
+              height={512}
+              alt="Rohit Kushwaha"
+              class="w-full h-full object-cover grayscale hover:grayscale-0"
+            />
+          </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="pt-12 sm:pt-16">
+          <h1
+            class="text-2xl sm:text-3xl font-semibold text-[var(--text-primary)]"
+          >
+            Rohit Kushwaha
+          </h1>
+          <p class="text-[var(--text-secondary)] text-sm sm:text-base mt-1">
+            Vibe Engineer
+          </p>
+
+          <!-- Quick Social Icons -->
+          <div class="flex justify-start mt-4">
+            <SocialIcons size="md" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Discord Status Section -->
+      <div
+        class="discord-section border border-[var(--border-color)] border-t-0 p-4 sm:p-6"
+      >
+        <Badge size="xs" className="mb-3">
+          <span class="whitespace-nowrap text-xs uppercase">Discord Status</span
+          >
+        </Badge>
+        <DiscordActivity showButtons={true} showAllActivities={true} />
+      </div>
+
+      <!-- Portfolio Links Section -->
+      <div
+        class="links-section border border-[var(--border-color)] border-t-0 p-4 sm:p-6"
+      >
+        <div class="flex items-center gap-3 mb-4">
+          <Badge size="xs">
+            <span class="whitespace-nowrap text-xs uppercase">Portfolio</span>
+          </Badge>
+          <div class="flex-1 h-px bg-[var(--border-color)]"></div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <a href="/" target="_blank" class="link-button group">
+            <span class="link-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </span>
+            <span class="link-text">Portfolio Website</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a href="/blogs" target="_blank" class="link-button group">
+            <span class="link-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+            </span>
+            <span class="link-text">Read My Blog</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a href="/projects" target="_blank" class="link-button group">
+            <span class="link-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+                ></path>
+              </svg>
+            </span>
+            <span class="link-text">View Projects</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a
+            href={socials.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-button group"
+          >
+            <span class="link-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                ></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </span>
+            <span class="link-text">Download Resume</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Connect Links Section -->
+      <div
+        class="links-section border border-[var(--border-color)] border-t-0 p-4 sm:p-6"
+      >
+        <div class="flex items-center gap-3 mb-4">
+          <Badge size="xs">
+            <span class="whitespace-nowrap text-xs uppercase">Connect</span>
+          </Badge>
+          <div class="flex-1 h-px bg-[var(--border-color)]"></div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <a
+            href={socials.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-button group"
+          >
+            <span class="link-icon"><GitHub /></span>
+            <span class="link-text">GitHub</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a
+            href={socials.linkedIn}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-button group"
+          >
+            <span class="link-icon"><LinkedIn /></span>
+            <span class="link-text">LinkedIn</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a
+            href={socials.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-button group"
+          >
+            <span class="link-icon"><Twitter /></span>
+            <span class="link-text">Twitter / X</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a
+            href={socials.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-button group"
+          >
+            <span class="link-icon"><Instagram /></span>
+            <span class="link-text">Instagram</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a
+            href={socials.discord}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-button group"
+          >
+            <span class="link-icon"><Discord /></span>
+            <span class="link-text">Discord</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a href={socials.mail} class="link-button group">
+            <span class="link-icon"><Mail /></span>
+            <span class="link-text">Email Me</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Promotions Section -->
+      <div
+        class="links-section border border-[var(--border-color)] border-t-0 p-4 sm:p-6"
+      >
+        <div class="flex items-center gap-3 mb-4">
+          <Badge size="xs">
+            <span class="whitespace-nowrap text-xs uppercase"
+              >Projects & Promotions</span
+            >
+          </Badge>
+          <div class="flex-1 h-px bg-[var(--border-color)]"></div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <a
+            href="https://dialogh.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-button group promo"
+          >
+            <span class="link-icon">
+              <Favicon url="https://dialogh.in/" />
+            </span>
+            <span class="link-text">Join Dialogh</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+
+          <a
+            href="https://interacly.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-button group promo"
+          >
+            <span class="link-icon">
+              <Favicon url="https://interacly.com/" />
+            </span>
+            <span class="link-text">Try Interacly</span>
+            <span class="link-arrow group-hover:translate-x-1">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="footer-section border border-[var(--border-color)] border-t-0 p-4 text-center"
+      >
+        <p class="text-[var(--text-secondary)] text-sm">
+          &copy; {new Date().getFullYear()} Rohit Kushwaha
+        </p>
+      </div>
     </div>
-  </main>
+  </div>
 
   <style>
-    .socials-container {
-      display: flex;
-      justify-content: center;
+    .page-content {
       min-height: 100vh;
-      padding: 1rem 1rem;
     }
 
-    .socials-content {
-      max-width: 550px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      padding-bottom: 2rem;
+    /* Profile Avatar */
+    .profile-avatar {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .theme-toggle-container {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-    }
-
-    .profile-card {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      transition: transform 0.3s ease;
-      /* Make sure content is visible from the beginning */
-      opacity: 1;
-    }
-
-    .profile-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .profile-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      /* Make sure content is visible from the beginning */
-      opacity: 1;
-    }
-
-    .profile-image {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      margin-bottom: 1rem;
-      transition: transform 0.5s ease;
-    }
-
-    .profile-image:hover {
-      transform: scale(1.05);
-    }
-
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin: 0.5rem 0 0.25rem;
-      color: var(--text-primary);
-    }
-
-    .bio {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-      margin: 0;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-
-    .discord-section {
-      margin-top: 1rem;
-      /* Make sure content is visible from the beginning */
-      opacity: 1;
-    }
-
-    .links-section {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      width: 100%;
-      /* Make sure content is visible from the beginning */
-      opacity: 1;
-    }
-
-    .links-category {
-      margin-bottom: 0.5rem;
-    }
-
-    .links-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
-      margin-top: 0.75rem;
-    }
-
-    .social-links-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-      margin-top: 0.75rem;
-    }
-
-    .portfolio-link {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 1rem;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      text-decoration: none;
-      color: var(--text-primary);
-      transition: all 0.3s ease;
-      /* Make sure content is visible from the beginning */
-      opacity: 1;
-    }
-
-    .portfolio-link:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent-primary);
-      color: var(--accent-primary);
-    }
-
-    .social-link {
+    /* Link Button Styles */
+    .link-button {
       display: flex;
       align-items: center;
       gap: 1rem;
-      padding: 1rem;
-      margin-top: 0.75rem;
+      padding: 0.875rem 1rem;
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       text-decoration: none;
       color: var(--text-primary);
-      transition: all 0.3s ease;
-      /* Make sure content is visible from the beginning */
-      opacity: 1;
     }
 
-    .social-link:hover {
-      transform: translateY(-4px);
+    .link-button:hover {
       border-color: var(--accent-primary);
+    }
+
+    .link-button:hover .link-icon,
+    .link-button:hover .link-text {
       color: var(--accent-primary);
     }
 
-    .social-icon,
     .link-icon {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.3s ease;
-    }
-
-    .social-link:hover .social-icon,
-    .portfolio-link:hover .link-icon {
-      transform: scale(1.15);
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      color: var(--text-secondary);
     }
 
     .link-text {
+      flex: 1;
       font-weight: 500;
+      font-size: 0.95rem;
     }
 
-    .footer-text {
-      text-align: center;
+    .link-arrow {
       color: var(--text-secondary);
-      font-size: 0.875rem;
-      margin-top: 1rem;
-      border-top: 1px solid var(--border-color);
-      padding-top: 1.5rem;
+      font-size: 1.1rem;
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-      .links-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .social-links-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .profile-image {
-        width: 100px;
-        height: 100px;
-      }
-
-      h1 {
-        font-size: 1.75rem;
-      }
+    .link-button:hover .link-arrow {
+      color: var(--accent-primary);
     }
 
+    /* Promo Links */
+    .link-button.promo {
+      border-color: var(--accent-primary);
+      border-style: dashed;
+    }
+
+    /* Responsive */
     @media (max-width: 480px) {
-      .links-grid {
-        grid-template-columns: 1fr;
+      .link-button {
+        padding: 0.75rem 0.875rem;
       }
-    }
 
-    @media (prefers-reduced-motion: reduce) {
-      .portfolio-link,
-      .social-link,
-      .profile-card,
-      .profile-image {
-        transition: none;
+      .link-text {
+        font-size: 0.875rem;
       }
     }
   </style>
@@ -448,34 +405,105 @@ const canonicalURL = new URL("/socials", Astro.site || Astro.url.origin).href;
     import { gsap } from "gsap";
 
     document.addEventListener("DOMContentLoaded", () => {
-      // Make sure all elements are visible before animations start
-      document
-        .querySelectorAll(
-          ".profile-card, .profile-section, .discord-section, .links-section, .portfolio-link, .social-link"
-        )
-        .forEach((el) => {
-          if (el instanceof HTMLElement) {
-            el.style.opacity = "1";
-          }
-        });
-
-      // Simplified animations that won't hide content
-      gsap.from(".profile-card", {
+      // Animate sections
+      gsap.from(".banner-section", {
+        opacity: 0,
         y: 20,
         duration: 0.6,
-        autoAlpha: 0.7, // Using autoAlpha instead of opacity to prevent visibility issues
-        ease: "power1.out",
+        ease: "power3.out",
       });
 
-      // Staggered animation for links - without hiding them
-      gsap.from(".portfolio-link, .social-link", {
-        y: 10,
-        stagger: 0.05,
-        duration: 0.4,
+      gsap.from(".profile-section", {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        delay: 0.1,
+        ease: "power3.out",
+      });
+
+      gsap.from(".discord-section", {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        delay: 0.2,
+        ease: "power3.out",
+      });
+
+      gsap.from(".links-section", {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        stagger: 0.1,
         delay: 0.3,
-        autoAlpha: 0.7, // Using autoAlpha instead of opacity to prevent visibility issues
-        ease: "power1.out",
+        ease: "power3.out",
+      });
+
+      gsap.from(".share-section", {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        delay: 0.5,
+        ease: "power3.out",
+      });
+
+      gsap.from(".link-button", {
+        opacity: 0,
+        x: -10,
+        duration: 0.4,
+        stagger: 0.05,
+        delay: 0.4,
+        ease: "power2.out",
       });
     });
+
+    // Copy link functionality
+    document
+      .getElementById("copyLinkBtn")
+      ?.addEventListener("click", async function () {
+        const url = this.getAttribute("data-url") || window.location.href;
+        try {
+          await navigator.clipboard.writeText(url);
+          this.classList.add("copied");
+          const span = this.querySelector("span");
+          if (span) span.textContent = "Copied!";
+          setTimeout(() => {
+            this.classList.remove("copied");
+            if (span) span.textContent = "Copy Link";
+          }, 2000);
+        } catch (err) {
+          console.error("Failed to copy:", err);
+        }
+      });
+
+    // Native share functionality
+    document
+      .getElementById("shareBtn")
+      ?.addEventListener("click", async function () {
+        const url = this.getAttribute("data-url") || window.location.href;
+        const title =
+          this.getAttribute("data-title") || "Rohit Kushwaha - Socials";
+
+        if (navigator.share) {
+          try {
+            await navigator.share({ title, url });
+          } catch (err) {
+            if ((err as Error).name !== "AbortError") {
+              console.error("Share failed:", err);
+            }
+          }
+        } else {
+          // Fallback: copy to clipboard
+          try {
+            await navigator.clipboard.writeText(url);
+            const span = this.querySelector("span");
+            if (span) span.textContent = "Link Copied!";
+            setTimeout(() => {
+              if (span) span.textContent = "Share";
+            }, 2000);
+          } catch (err) {
+            console.error("Fallback copy failed:", err);
+          }
+        }
+      });
   </script>
 </Layout>
