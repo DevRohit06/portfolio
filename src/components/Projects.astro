@@ -17,9 +17,10 @@ const displayProjects = projects.map((project) => ({
   tags: project.tags,
   status: project.status,
   projectPage: `/projects/${project.slug}`,
-  github: project.githubOwner && project.githubRepo 
-    ? `https://github.com/${project.githubOwner}/${project.githubRepo}`
-    : "#",
+  github:
+    project.githubOwner && project.githubRepo
+      ? `https://github.com/${project.githubOwner}/${project.githubRepo}`
+      : "#",
   npm: project.npm,
   demo: project.demo || "#",
 }));
@@ -42,7 +43,7 @@ const displayProjects = projects.map((project) => ({
           href="https://github.com/devrohit06"
           target="_blank"
           rel="noopener noreferrer"
-          class="all-projects-link border p-2 px-4 border-border text-xs sm:text-base text-text-secondary font-medium hover:text-accent hover:border-accent transition-colors duration-300 magnetic-item"
+          class="all-projects-link border p-2 px-4 border-border text-xs sm:text-base text-text-secondary font-medium hover:text-accent hover:border-accent magnetic-item"
         >
           View GitHub
         </a>
@@ -56,7 +57,7 @@ const displayProjects = projects.map((project) => ({
         displayProjects.map((project, index) => (
           <div class="project-item h-full flex flex-col" data-index={index}>
             <div class="project-card-wrapper group h-full flex flex-col">
-              <div class="project-card flex flex-col h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative transition-all duration-300 bg-[var(--card-bg)]">
+              <div class="project-card flex flex-col h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative bg-[var(--card-bg)]">
                 <div class="project-card-image-container relative overflow-hidden w-full aspect-video">
                   <img
                     src={project.image}
@@ -79,7 +80,7 @@ const displayProjects = projects.map((project) => ({
                       </span>
                     ))}
                   </div>
-                  <h3 class="project-card-title text-base sm:text-lg mb-2 sm:mb-3 font-medium transition-colors duration-300 group-hover:text-[var(--accent-primary)] line-clamp-2 leading-tight">
+                  <h3 class="project-card-title text-base sm:text-lg mb-2 sm:mb-3 font-medium group-hover:text-[var(--accent-primary)] line-clamp-2 leading-tight">
                     {project.projectPage ? (
                       <a href={project.projectPage} class="hover:underline">
                         {project.title}
@@ -96,7 +97,7 @@ const displayProjects = projects.map((project) => ({
                       {project.projectPage && (
                         <a
                           href={project.projectPage}
-                          class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
+                          class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] flex items-center"
                         >
                           <iconify-icon
                             icon="material-symbols:article"
@@ -107,7 +108,7 @@ const displayProjects = projects.map((project) => ({
                       )}
                       <a
                         href={project.github}
-                        class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
+                        class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] flex items-center"
                       >
                         <iconify-icon
                           icon="simple-icons:github"
@@ -118,7 +119,7 @@ const displayProjects = projects.map((project) => ({
                       {project.npm && (
                         <a
                           href={project.npm}
-                          class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
+                          class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] flex items-center"
                         >
                           <iconify-icon
                             icon="simple-icons:npm"
@@ -129,7 +130,7 @@ const displayProjects = projects.map((project) => ({
                       )}
                       <a
                         href={project.demo}
-                        class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 flex items-center"
+                        class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] flex items-center"
                       >
                         <iconify-icon
                           icon="material-symbols:open-in-new"
@@ -181,7 +182,7 @@ const displayProjects = projects.map((project) => ({
             scrub: 1,
             once: true,
           },
-        }
+        },
       );
 
       // Staggered reveal for project cards
@@ -204,7 +205,7 @@ const displayProjects = projects.map((project) => ({
             scrub: 1,
             once: true,
           },
-        }
+        },
       );
 
       // Add magnetic effect to "View GitHub" link
@@ -275,7 +276,7 @@ const displayProjects = projects.map((project) => ({
     height: 100%;
     transform: none !important;
     will-change: auto;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-in-out;
     transform-style: flat;
     perspective: none;
     display: flex;
@@ -295,7 +296,7 @@ const displayProjects = projects.map((project) => ({
 
   .project-card-wrapper {
     transform: translateY(0);
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease-in-out;
     will-change: transform;
     height: 100%;
     display: flex;

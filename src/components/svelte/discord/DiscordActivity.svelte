@@ -164,7 +164,7 @@
 </script>
 
 <div
-  class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-all duration-300 overflow-hidden fixed-height {className}"
+  class="discord-activity border border-[var(--border-color)] p-0 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] overflow-hidden fixed-height {className}"
   class:fixed-height={!className.includes("h-")}
 >
   {#if showAllActivities}

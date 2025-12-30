@@ -66,7 +66,7 @@
       <img
         src={avatarUrl}
         alt="Discord Avatar"
-        class="avatar-image size-12 rounded-full object-cover border-2 border-[var(--border-color)]/30 hover:border-[var(--border-color)]/60 transition-all duration-300"
+        class="avatar-image size-12 rounded-full object-cover border-2 border-[var(--border-color)]/30 hover:border-[var(--border-color)]/60"
       />
       {#if userData}
         <StatusIndicator status={userData.discord_status} />
@@ -108,7 +108,7 @@
           >
             <div class="flex items-center gap-2">
               <button
-                class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 hover:border-[#5865F2]/50 transition-all duration-200"
+                class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 hover:border-[#5865F2]/50"
                 on:click={openDiscordDM}
               >
                 <svg
@@ -127,7 +127,7 @@
               </button>
 
               <button
-                class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 hover:border-[#5865F2]/50 transition-all duration-200"
+                class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 hover:border-[#5865F2]/50"
                 on:click={openDiscordAddFriend}
               >
                 <svg
@@ -146,7 +146,7 @@
 
               {#if inviteCode}
                 <button
-                  class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 hover:border-[#5865F2]/50 transition-all duration-200"
+                  class="discord-button flex items-center gap-1 hover:bg-[#5865F2]/10 hover:border-[#5865F2]/50"
                   on:click={openDiscordServer}
                 >
                   <svg
@@ -220,7 +220,7 @@
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }

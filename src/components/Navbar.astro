@@ -10,63 +10,50 @@ import Logo from "./icons/Logo.astro";
 <!-- Mobile Navigation Sidebar (Fullscreen) -->
 <div
   id="mobile-sidebar"
-  class="fixed inset-0 h-full w-full z-[40] bg-[var(--bg-secondary)] opacity-0 invisible transition-all duration-400 ease-in-out overflow-y-auto p-4 flex flex-col translate-y-8"
+  class="fixed inset-0 h-full w-full z-[40] bg-[var(--bg-secondary)] opacity-0 invisible ease-in-out overflow-y-auto p-4 flex flex-col translate-y-8"
 >
-  <!-- Commented out original header with close button
-  <div class="mb-8">
-    <div class="flex items-center justify-between">
-      <a href="/" class="font-medium text-xl">Rohit K.</a>
-      <button
-        class="close-sidebar text-sm bg-transparent border-none cursor-pointer opacity-0 transform transition-all duration-300 delay-100 ease-out translate-y-2"
-        aria-label="Close menu"
-      >
-        Close
-      </button>
-    </div>
-  </div> -->
-
   <nav class="flex flex-col justify-between h-full">
     <div></div>
     <ul class="list-none p-0 m-0">
       <li class="mb-6">
         <a
           href="/"
-          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
           >Home</a
         >
       </li>
       <li class="mb-6">
         <a
           href="/blogs"
-          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
           >Blog</a
         >
       </li>
       <li class="mb-6">
         <a
           href="/projects"
-          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
           >Projects</a
         >
       </li>
       <li class="mb-6">
         <a
           href="/uses"
-          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
           >Uses</a
         >
       </li>
       <li class="mb-6">
         <a
           href="/coming-soon"
-          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
           >Experience</a
         >
       </li>
       <li class="mb-6">
         <a
           href="/socials"
-          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+          class="text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
           >Contact</a
         >
       </li>
@@ -79,7 +66,7 @@ import Logo from "./icons/Logo.astro";
 <!-- Main Navigation Bar -->
 <nav
   id="main-navbar"
-  class="sticky top-0 left-0 right-0 z-50 bg-[var(--bg-secondary)] border-b border-[var(--border-color)] bg-opacity-80 backdrop-blur-sm h-16 transition-all duration-300"
+  class="sticky top-0 left-0 right-0 z-50 bg-[var(--bg-secondary)] border-b border-[var(--border-color)] bg-opacity-80 backdrop-blur-sm h-16 ease-in-out"
 >
   <div
     class="w-full max-w-7xl mx-auto px-4 xl:px-8 h-full flex items-center justify-between"
@@ -98,42 +85,42 @@ import Logo from "./icons/Logo.astro";
         <li>
           <a
             href="/"
-            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] py-2 text-base font-normal"
             >Home</a
           >
         </li>
         <li>
           <a
             href="/blogs"
-            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] py-2 text-base font-normal"
             >Blog</a
           >
         </li>
         <li>
           <a
             href="/projects"
-            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] py-2 text-base font-normal"
             >Projects</a
           >
         </li>
         <li>
           <a
             href="/uses"
-            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] py-2 text-base font-normal"
             >Uses</a
           >
         </li>
         <!-- <li>
           <a
             href="/coming-soon"
-            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)]  duration-200 py-2 text-base font-normal"
             >Experience</a
           >
         </li>
         <li>
           <a
             href="/coming-soon"
-            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors duration-200 py-2 text-base font-normal"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-primary)]  duration-200 py-2 text-base font-normal"
             >Contact</a
           >
         </li> -->
@@ -163,18 +150,18 @@ import Logo from "./icons/Logo.astro";
 </style>
 
 <script>
-  import { gsap } from 'gsap';
+  import { gsap } from "gsap";
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const navbar = document.getElementById('main-navbar');
+  document.addEventListener("DOMContentLoaded", () => {
+    const navbar = document.getElementById("main-navbar");
     if (navbar) {
       // Ensure GSAP targets the transform property correctly
       gsap.to(navbar, {
         opacity: 1,
         y: 0, // GSAP's shorthand for transform: translateY(0)
         duration: 0.8,
-        ease: 'power2.out',
-        delay: 0.5, 
+        ease: "power2.out",
+        delay: 0.5,
       });
     }
   });
@@ -286,7 +273,7 @@ import Logo from "./icons/Logo.astro";
       mobileSidebar?.classList.remove(
         "invisible",
         "opacity-0",
-        "translate-y-8"
+        "translate-y-8",
       );
       mobileSidebar?.classList.add("opacity-100", "translate-y-0");
 
@@ -332,7 +319,7 @@ import Logo from "./icons/Logo.astro";
         mobileSidebar?.classList.remove(
           "active",
           "opacity-100",
-          "translate-y-0"
+          "translate-y-0",
         );
         mobileSidebar?.classList.add("opacity-0", "translate-y-8");
 

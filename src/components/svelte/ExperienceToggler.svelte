@@ -82,8 +82,7 @@
         <button
           class="w-full text-left p-3 sm:p-5 md:p-8 md:py-9 {experience.isActive
             ? 'bg-[var(--accent-primary)] text-white'
-            : ' bg-[var(--card-bg)]'} transition-colors duration-300 {i ===
-          experiences.length - 1
+            : ' bg-[var(--card-bg)]'}  {i === experiences.length - 1
             ? 'md:border-b-0 border-b border-[var(--border-color)]'
             : ''}"
           on:click={() => setActiveExperience(experience.id)}
@@ -91,7 +90,7 @@
           <div
             class="transform {experience.isActive
               ? 'translate-x-1 sm:translate-x-2'
-              : ''} transition-transform duration-300"
+              : ''} transition-transform"
           >
             <h2 class="text-lg sm:text-xl md:text-3xl font-medium">
               {experience.title}
@@ -157,7 +156,7 @@
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center text-[var(--accent-primary)] text-xs sm:text-sm transition-all duration-300"
+                  class="flex items-center text-[var(--accent-primary)] text-xs sm:text-sm"
                   in:fly={{
                     y: 10,
                     duration: 300,

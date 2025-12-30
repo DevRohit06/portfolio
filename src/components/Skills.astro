@@ -92,7 +92,7 @@ const skillCategories = [
             <div class="flex flex-wrap gap-3 items-center">
               {category.skills.map((skill, skillIndex) => (
                 <div
-                  class="skill-pill inline-flex items-center gap-2 px-4 py-2 border border-border text-sm font-medium transition-all duration-300 hover:bg-accent/80"
+                  class="skill-pill inline-flex items-center gap-2 px-4 py-2 border border-border text-sm font-medium hover:bg-accent/80"
                   data-skill={skillIndex}
                 >
                   <iconify-icon icon={skill.icon} class="skill-icon" />
@@ -130,13 +130,12 @@ const skillCategories = [
 
     <a
       href="mailto:rohitk290106@gmail.com"
-      class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-border hover:bg-accent hover:text-white transition-all duration-300 cta-button"
+      class="inline-flex items-center justify-center px-6 py-3 mt-2 border border-border hover:bg-accent hover:text-white cta-button"
     >
       Let's Talk Tech 💻
     </a>
   </div>
-  <div class="size-4 bg-border absolute -bottom-2 -right-2 z-10">
-  </div>
+  <div class="size-4 bg-border absolute -bottom-2 -right-2 z-10"></div>
 </div>
 
 <!-- Load Iconify -->
@@ -156,8 +155,8 @@ const skillCategories = [
     opacity: 0;
     transform: translateY(20px);
     transition:
-      opacity 0.5s ease,
-      transform 0.5s ease;
+      opacity 0.3s ease-in-out,
+      transform 0.3s ease-in-out;
   }
 
   /* Text styling */
@@ -169,7 +168,6 @@ const skillCategories = [
   .skill-category {
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.5s ease;
   }
 
   /* Category title styling */
@@ -204,7 +202,6 @@ const skillCategories = [
 
   /* Icon styling within pills */
   .skill-icon {
-    transition: all 0.2s ease;
     filter: none; /* Icons keep their original colors in pills */
   }
 

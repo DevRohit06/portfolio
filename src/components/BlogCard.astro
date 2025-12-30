@@ -50,7 +50,7 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
 <div class="blog-card-wrapper group h-full flex flex-col">
   <a
     href={url}
-    class="blog-card flex flex-col h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative transition-all duration-300 bg-[var(--card-bg)]"
+    class="blog-card flex flex-col h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative bg-[var(--card-bg)]"
   >
     <div
       class="blog-card-image-container relative overflow-hidden w-full aspect-video"
@@ -79,7 +79,7 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
         {readingTime && <span class="ml-2">{readingTime} min read</span>}
       </div>
       <h3
-        class="blog-card-title text-base sm:text-lg mt-2 mb-2 sm:mb-3 font-medium transition-colors duration-300 group-hover:text-[var(--accent-primary)] line-clamp-2 leading-tight"
+        class="blog-card-title text-base sm:text-lg mt-2 mb-2 sm:mb-3 font-medium group-hover:text-[var(--accent-primary)] line-clamp-2 leading-tight"
       >
         {title}
       </h3>
@@ -90,10 +90,10 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
       </p>
       <div class="mt-auto">
         <div
-          class="blog-card-read-more mt-8 text-xs sm:text-sm font-medium text-[var(--text-secondary)] flex items-center group-hover:text-[var(--accent-primary)] transition-colors duration-300"
+          class="blog-card-read-more mt-8 text-xs sm:text-sm font-medium text-[var(--text-secondary)] flex items-center group-hover:text-[var(--accent-primary)]"
         >
           Read more <span
-            class="arrow ml-1 transition-transform duration-300 group-hover:translate-x-1"
+            class="arrow ml-1 transition-transform group-hover:translate-x-1"
             >→</span
           >
         </div>
@@ -105,7 +105,7 @@ const primaryTag = tags.length > 0 ? tags[0] : "Blog";
 <style>
   .blog-card-wrapper {
     transform: translateY(0);
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease-in-out;
     will-change: transform;
     height: 100%;
     display: flex;

@@ -32,6 +32,5 @@
     border-radius: 4px;
     border: none;
     background: transparent;
-    transition: all 0.2s ease;
   }
 </style>

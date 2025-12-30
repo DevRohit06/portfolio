@@ -83,7 +83,7 @@
 
       // Using GitHub's GraphQL API to get contribution data
       const response = await fetch(
-        `https://github-contributions-api.jogruber.de/v4/${username}`
+        `https://github-contributions-api.jogruber.de/v4/${username}`,
       );
 
       if (!response.ok) {
@@ -95,7 +95,7 @@
       // Check if today's data is in the response
       const todayStr = new Date().toISOString().split("T")[0];
       const todayData = data.contributions.find(
-        (c: { date: string }) => c.date === todayStr
+        (c: { date: string }) => c.date === todayStr,
       );
 
       // Update last pushed date if available
@@ -104,7 +104,7 @@
         const recentContributions = [...data.contributions]
           .filter((c) => c.count > 0)
           .sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
           );
 
         if (recentContributions.length > 0) {
@@ -115,7 +115,7 @@
       // Process the data into our format
       totalContributions = data.contributions.reduce(
         (sum: any, day: { count: any }) => sum + (day.count || 0),
-        0
+        0,
       );
 
       // Format the data for our grid display
@@ -126,7 +126,7 @@
     } catch (err) {
       console.error("Error fetching GitHub data:", err);
       error = true;
-      errorMessage = err.message || "Failed to load GitHub data";
+      errorMessage = (err as Error).message || "Failed to load GitHub data";
       loading = false;
     }
   };
@@ -206,7 +206,7 @@
     event: MouseEvent,
     w: number,
     d: number,
-    level: number
+    level: number,
   ) => {
     if (!enableInteraction || !showTooltip) return;
 
@@ -307,8 +307,7 @@
   .github-activity-wrapper {
     border-radius: 6px;
     margin: 0 auto;
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
       sans-serif;
   }
 
@@ -332,7 +331,7 @@
     color: #0366d6;
     text-decoration: none;
     font-size: 13px;
-    transition: text-decoration 0.2s ease;
+    transition: text-decoration 0.3s ease-in-out;
   }
 
   .username:hover {
@@ -365,8 +364,8 @@
 
     border-radius: var(--cell-radius);
     transition:
-      transform 0.2s ease,
-      opacity 0.2s ease;
+      transform 0.3s ease-in-out,
+      opacity 0.3s ease-in-out;
   }
 
   .tooltip {
@@ -431,7 +430,7 @@
     border-radius: 4px;
     font-size: 12px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s ease-in-out;
   }
 
   .retry-button:hover {

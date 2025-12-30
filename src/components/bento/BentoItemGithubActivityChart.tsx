@@ -82,7 +82,7 @@ const renderRect =
 
     return (
       <rect
-        className={`transition-all ${isDarkMode ? "dark-rect" : ""} hover:brightness-125`}
+        className={` ${isDarkMode ? "dark-rect" : ""} hover:brightness-125`}
         onMouseEnter={handleMouseEnterThrottled}
         {...props}
         {...customStyles}
@@ -250,7 +250,7 @@ if (isBrowser) {
     styles.id = styleId;
     styles.textContent = `
       .dark-heat-map .dark-rect {
-        transition: all 0.2s ease;
+        
       }
     `;
     document.head.appendChild(styles);

@@ -34,7 +34,7 @@ const canonicalURL = new URL("/projects", Astro.site || Astro.url.origin).href;
       <div class="projects-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {
           projects.map((project, index) => (
-            <div class="project-card-container border border-secondary p-6 bg-card hover:border-accent transition-all duration-300" data-index={index}>
+            <div class="project-card-container border border-secondary p-6 bg-card hover:border-accent  " data-index={index}>
               <div class="flex flex-col h-full">
                 <!-- Tags -->
                 <div class="flex flex-wrap gap-2 mb-4">
@@ -45,7 +45,7 @@ const canonicalURL = new URL("/projects", Astro.site || Astro.url.origin).href;
 
                 <!-- Title -->
                 <h2 class="text-2xl font-bold mb-3 text-primary">
-                  <a href={`/projects/${project.slug}`} class="hover:text-accent transition-colors">
+                  <a href={`/projects/${project.slug}`} class="hover:text-accent ">
                     {project.title}
                   </a>
                 </h2>
@@ -93,7 +93,7 @@ const canonicalURL = new URL("/projects", Astro.site || Astro.url.origin).href;
                       href={`https://github.com/${project.githubOwner}/${project.githubRepo}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-sm font-medium text-secondary hover:text-accent transition-colors"
+                      class="text-sm font-medium text-secondary hover:text-accent "
                     >
                       GitHub
                     </a>
@@ -103,7 +103,7 @@ const canonicalURL = new URL("/projects", Astro.site || Astro.url.origin).href;
                       href={project.npm}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-sm font-medium text-secondary hover:text-accent transition-colors"
+                      class="text-sm font-medium text-secondary hover:text-accent "
                     >
                       NPM
                     </a>
@@ -113,7 +113,7 @@ const canonicalURL = new URL("/projects", Astro.site || Astro.url.origin).href;
                       href={project.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-sm font-medium text-secondary hover:text-accent transition-colors"
+                      class="text-sm font-medium text-secondary hover:text-accent "
                     >
                       Demo
                     </a>
@@ -212,8 +212,17 @@ const canonicalURL = new URL("/projects", Astro.site || Astro.url.origin).href;
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Lenis from "lenis";
 
   gsap.registerPlugin(ScrollTrigger);
+
+  // Initialize smooth scrolling
+  const lenis = new Lenis();
+  function raf(time: number) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
 
   document.addEventListener("astro:page-load", () => {
     // Animate project cards on scroll

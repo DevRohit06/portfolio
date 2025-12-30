@@ -25,7 +25,7 @@ const sortedBlogs = blogs.sort((a, b) => {
         </div>
         <a
           href="/blogs"
-          class="all-blogs-link border p-2 px-4 border-border text-xs sm:text-base text-text-secondary font-medium hover:text-accent hover:border-accent transition-colors duration-300 magnetic-item"
+          class="all-blogs-link border p-2 px-4 border-border text-xs sm:text-base text-text-secondary font-medium hover:text-accent hover:border-accent magnetic-item"
           >All Blogs</a
         >
       </div>
@@ -82,7 +82,7 @@ const sortedBlogs = blogs.sort((a, b) => {
             scrub: 1,
             once: true,
           },
-        }
+        },
       );
 
       // Staggered reveal for blog cards
@@ -105,7 +105,7 @@ const sortedBlogs = blogs.sort((a, b) => {
             scrub: 1,
             once: true,
           },
-        }
+        },
       );
 
       // Remove hover effects from blog cards completely
@@ -184,7 +184,7 @@ const sortedBlogs = blogs.sort((a, b) => {
     right: -2px;
     bottom: -2px;
     border: 1px solid transparent;
-    transition: border-color 0.3s ease;
+
     pointer-events: none;
   }
 
@@ -202,7 +202,7 @@ const sortedBlogs = blogs.sort((a, b) => {
     height: 100%;
     transform: none !important;
     will-change: auto;
-    transition: opacity 0.3s ease;
+
     transform-style: flat;
     perspective: none;
     display: flex;

@@ -95,7 +95,7 @@
   <div class="mt-4 flex justify-center gap-2">
     {#each testimonials as _, i}
       <button
-        class="w-2 h-2 rounded-full border border-[#7B7B7B] p-0 cursor-pointer transition-colors duration-300 {i ===
+        class="w-2 h-2 rounded-full border border-[#7B7B7B] p-0 cursor-pointer {i ===
         currentIndex
           ? 'bg-[#0000CC]'
           : 'bg-transparent'}"

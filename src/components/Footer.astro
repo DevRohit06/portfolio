@@ -26,17 +26,17 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
         <div class="flex flex-col gap-2 sm:gap-3 lg:gap-4 footer-links">
           <a
             href="/coming-soon"
-            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300 footer-magnetic-item"
+            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] footer-magnetic-item"
             >About me</a
           >
           <a
             href="/coming-soon"
-            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300 footer-magnetic-item"
+            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] footer-magnetic-item"
             >Experience</a
           >
           <a
             href="/blogs"
-            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300 footer-magnetic-item"
+            class="footer-link text-sm sm:text-base hover:text-[var(--accent-primary)] footer-magnetic-item"
             >Blogs</a
           >
         </div>
@@ -59,42 +59,42 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
             href={socials.linkedIn}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)]"
             >LinkedIn</a
           >
           <a
             href={socials.discord}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)]"
             >Discord</a
           >
           <a
             href={socials.github}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)]"
             >GitHub</a
           >
           <a
             href={socials.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)]"
             >Instagram</a
           >
           <a
             href={socials.mail}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)]"
             >Mail</a
           >
           <a
             href={socials.twitter}
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)] transition-colors duration-300"
+            class="footer-link footer-magnetic-item text-sm sm:text-base hover:text-[var(--accent-primary)]"
             >X [Twitter]</a
           >
         </div>
@@ -113,8 +113,7 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
               class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[var(--accent-primary)] font-medium group flex items-center"
             >
               <span>Check Out</span>
-              <span
-                class="ml-1 group-hover:translate-x-1 transition-transform duration-300"
+              <span class="ml-1 group-hover:translate-x-1 transition-transform"
                 >→</span
               >
             </a>
@@ -133,7 +132,7 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
             >
               <a
                 href="https://github.com/devrohit06/portfolio/fork"
-                class="footer-link-subtle text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300"
+                class="footer-link-subtle text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                 >Fork this repo</a
               >
               <a
@@ -142,7 +141,7 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
               >
                 <span>Create Issue</span>
                 <span
-                  class="ml-1 group-hover:translate-x-1 transition-transform duration-300"
+                  class="ml-1 group-hover:translate-x-1 transition-transform"
                   >→</span
                 >
               </a>
@@ -392,7 +391,7 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
 
   .footer-scroll-reveal {
     will-change: transform, opacity;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease-in-out;
   }
 
   .char-span {
@@ -402,7 +401,7 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
 
   .footer-logo img {
     will-change: transform;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-in-out;
   }
 
   .footer-logo:hover img {
@@ -434,7 +433,7 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
       transparent
     );
     opacity: 0;
-    transition: opacity 0.5s;
+    transition: opacity 0.3s ease-in-out;
   }
 
   .footer-col:hover::after {

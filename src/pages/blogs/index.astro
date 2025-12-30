@@ -13,7 +13,7 @@ const allBlogPosts = await getCollection("blog");
 // Sort by publication date (newest first)
 const sortedPosts = allBlogPosts.sort(
   (a, b) =>
-    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
 );
 
 // Get unique tags from all blog posts
@@ -24,7 +24,7 @@ const allTags = [
 // Construct the canonical URL for SEO
 const canonicalURL = new URL(
   "/blogs",
-  Astro.site || "https://rohitk06.in"
+  Astro.site || "https://rohitk06.in",
 ).toString();
 
 // SEO metadata
@@ -84,14 +84,14 @@ const blogListingJsonLd = {
     tl.fromTo(
       ".blog-header",
       { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
     );
 
     tl.fromTo(
       ".blog-subheader",
       { opacity: 0, y: -10 },
       { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-      "-=0.4"
+      "-=0.4",
     );
 
     // Animate blog cards with stagger effect
@@ -109,7 +109,7 @@ const blogListingJsonLd = {
           start: "top 85%",
           once: true,
         },
-      }
+      },
     );
 
     // Initialize tag filter functionality
@@ -207,7 +207,7 @@ const blogListingJsonLd = {
           <Badge
             text="All"
             size="sm"
-            className="hover:bg-[#0000CC] hover:text-white hover:border-[#0000CC] transition-colors cursor-pointer"
+            className="hover:bg-[#0000CC] hover:text-white hover:border-[#0000CC]  cursor-pointer"
           />
         </button>
 
@@ -217,7 +217,7 @@ const blogListingJsonLd = {
               <Badge
                 text={tag}
                 size="sm"
-                className="hover:bg-[#0000CC] hover:text-white hover:border-[#0000CC] transition-colors cursor-pointer"
+                className="hover:bg-[#0000CC] hover:text-white hover:border-[#0000CC]  cursor-pointer"
               />
             </button>
           ))

@@ -118,7 +118,7 @@ export function TestimonialsCarousel({
           <button
             key={index}
             className={cn(
-              "w-2 h-2 rounded-full border border-[var(--border-color)] p-0 cursor-pointer transition-colors duration-300",
+              "w-2 h-2 rounded-full border border-[var(--border-color)] p-0 cursor-pointer  ",
               index === selectedIndex
                 ? "bg-[var(--accent-primary)]"
                 : "bg-transparent"

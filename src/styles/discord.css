@@ -35,6 +35,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -46,7 +47,7 @@
   border: 1px solid #7b7b7b;
   border-radius: 0;
   cursor: pointer;
-  transition: all 0.2s ease;
+
 }
 
 /* Activity image styles */
@@ -71,9 +72,11 @@
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.02);
   }
+
   100% {
     transform: scale(1);
   }
@@ -269,10 +272,12 @@
     transform: scale(1);
     opacity: 1;
   }
+
   70% {
     transform: scale(1.5);
     opacity: 0;
   }
+
   100% {
     transform: scale(1.5);
     opacity: 0;

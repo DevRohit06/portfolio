@@ -159,7 +159,7 @@
         gap: 0.75rem;
         text-decoration: none;
         color: var(--text-secondary);
-        transition: all 0.2s ease;
+
         border: 1px solid transparent;
     }
 

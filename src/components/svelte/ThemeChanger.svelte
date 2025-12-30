@@ -5,11 +5,7 @@
   let currentTheme: "light" | "dark" = "light";
 
   function setTheme(theme: typeof currentTheme) {
-    // Prevent the flash by hiding content momentarily
-    const originalVisibility = document.documentElement.style.visibility;
-    document.documentElement.style.visibility = "hidden";
-
-    // Update the theme class immediately
+    // Update the theme class
     document.documentElement.classList.toggle("dark-theme", theme === "dark");
 
     // Store the preference
@@ -21,16 +17,10 @@
 
     // Notify other components about the theme change
     document.dispatchEvent(new Event("themeChanged"));
-
-    // Make content visible again after a very brief delay
-    // This prevents the flash of incorrect theme
-    setTimeout(() => {
-      document.documentElement.style.visibility = originalVisibility;
-    }, 5);
   }
 
   // Update meta theme color to match current theme
-  function updateMetaThemeColor(isDark) {
+  function updateMetaThemeColor(isDark: boolean) {
     const themeColor = document.querySelector('meta[name="theme-color"]');
     if (themeColor) {
       themeColor.setAttribute("content", isDark ? "#202020" : "#C9CDD1");
@@ -40,7 +30,7 @@
   onMount(() => {
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
+      "(prefers-color-scheme: dark)",
     ).matches;
 
     // Set theme based on saved preference or system preference
@@ -57,7 +47,7 @@
     // Apply theme
     document.documentElement.classList.toggle(
       "dark-theme",
-      currentTheme === "dark"
+      currentTheme === "dark",
     );
 
     // Update meta theme color on initial load
@@ -65,7 +55,7 @@
 
     // Also listen to system preference changes
     const darkModeMediaQuery = window.matchMedia(
-      "(prefers-color-scheme: dark)"
+      "(prefers-color-scheme: dark)",
     );
     darkModeMediaQuery.addEventListener("change", (e) => {
       // Only update if there's no saved preference
@@ -108,8 +98,8 @@
     border: none;
     cursor: pointer;
     transition:
-      background-color 0.2s,
-      color 0.2s;
+      background-color 0.3s ease-in-out,
+      color 0.3s ease-in-out;
     min-width: 70px;
     text-align: center;
   }

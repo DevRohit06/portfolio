@@ -48,7 +48,7 @@ import SocialIcons from "./SocialIcons.astro";
             loading="eager"
             decoding="async"
             alt="Rohit Kushwaha"
-            class="object-cover w-full h-full aspect-square min-h-[20em] grayscale group-hover/hero:grayscale-0 transition-all duration-300"
+            class="object-cover w-full h-full aspect-square min-h-[20em] grayscale group-hover/hero:grayscale-0"
           />
           <div
             class="bg-black/50 flex justify-center items-center absolute inset-0 backdrop-blur-[1px] font-medium text-white opacity-0 hero-image-overlay"
@@ -70,10 +70,10 @@ import SocialIcons from "./SocialIcons.astro";
         </h2>
         <div class="bio-wrapper overflow-hidden mt-3 sm:mt-4">
           <p class="text-sm sm:text-base md:text-lg hero-bio leading-relaxed">
-            I'm a Full Stack Developer and vibe engineer who
-            transforms ideas into innovative, scalable solutions. With expertise
-            in SvelteKit, Astro, React, Next.js, and TailwindCSS, I craft
-            pixel-perfect interfaces with an intuitive feel.
+            I'm a Full Stack Developer and vibe engineer who transforms ideas
+            into innovative, scalable solutions. With expertise in SvelteKit,
+            Astro, React, Next.js, and TailwindCSS, I craft pixel-perfect
+            interfaces with an intuitive feel.
           </p>
           <!-- <p class="text-sm sm:text-base md:text-lg mt-3 hero-bio-2">
             Currently pursuing a BSc in Computer Science at <a
@@ -144,7 +144,7 @@ import SocialIcons from "./SocialIcons.astro";
         {
           opacity: 0,
           y: 20,
-        }
+        },
       );
 
       // Split text for character animations
@@ -173,7 +173,7 @@ import SocialIcons from "./SocialIcons.astro";
             duration: 0.5,
             ease: "power2.out",
           },
-          "-=0.4"
+          "-=0.4",
         )
         .to(
           ".hero-subtitle",
@@ -182,7 +182,7 @@ import SocialIcons from "./SocialIcons.astro";
             x: 0,
             duration: 0.5,
           },
-          "-=0.3"
+          "-=0.3",
         )
         .to(
           ".hero-badges > *",
@@ -192,7 +192,7 @@ import SocialIcons from "./SocialIcons.astro";
             stagger: 0.1,
             duration: 0.4,
           },
-          "-=0.3"
+          "-=0.3",
         );
 
       // Animate info section
@@ -204,7 +204,7 @@ import SocialIcons from "./SocialIcons.astro";
             y: 0,
             duration: 0.8,
           },
-          "-=0.2"
+          "-=0.2",
         )
         .to(
           ".hero-image",
@@ -214,7 +214,7 @@ import SocialIcons from "./SocialIcons.astro";
             duration: 0.9,
             ease: "power2.out",
           },
-          "-=0.6"
+          "-=0.6",
         )
         .to(
           nameSplitter.chars,
@@ -224,7 +224,7 @@ import SocialIcons from "./SocialIcons.astro";
             stagger: 0.015,
             duration: 0.5,
           },
-          "-=0.7"
+          "-=0.7",
         )
         .to(
           ".hero-bio, .hero-bio-2, .hero-bio-3",
@@ -234,7 +234,7 @@ import SocialIcons from "./SocialIcons.astro";
             stagger: 0.2,
             duration: 0.6,
           },
-          "-=0.5"
+          "-=0.5",
         );
 
       // Animate skills section
@@ -246,7 +246,7 @@ import SocialIcons from "./SocialIcons.astro";
             y: 0,
             duration: 0.6,
           },
-          "-=0.3"
+          "-=0.3",
         )
         .to(
           ".social-icon-link",
@@ -257,7 +257,7 @@ import SocialIcons from "./SocialIcons.astro";
             duration: 0.4,
             ease: "back.out(1.5)",
           },
-          "-=0.4"
+          "-=0.4",
         );
 
       // Create scroll-based animations
@@ -392,7 +392,6 @@ import SocialIcons from "./SocialIcons.astro";
     .social-icon-link {
       opacity: 0;
       transform: scale(0.8);
-      transition: color 0.3s ease;
     }
 
     .social-icon-wrapper {
