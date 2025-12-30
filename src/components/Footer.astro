@@ -13,9 +13,8 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
   >
     <!-- Grid containing all sections with their headings and links together -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 footer-grid">
-      <!-- Column 1: Rohit Kushwaha -->
       <div
-        class="footer-col p-4 sm:p-6 lg:p-8 border-b border-[var(--border-color)] sm:border-r lg:border-b-0 footer-scroll-reveal"
+        class="footer-col p-4 sm:p-6 lg:p-8 border-b border-[var(--border-color)] sm:border-b lg:border-b-0 footer-scroll-reveal"
         data-delay="0.1"
       >
         <h2
@@ -42,9 +41,8 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
         </div>
       </div>
 
-      <!-- Column 2: Contact & Socials -->
       <div
-        class="footer-col p-4 sm:p-6 lg:p-8 border-b border-[var(--border-color)] lg:border-r lg:border-b-0 footer-scroll-reveal"
+        class="footer-col p-4 sm:p-6 lg:p-8 border-b border-[var(--border-color)] lg:border-b-0 footer-scroll-reveal"
         data-delay="0.2"
       >
         <h2
@@ -100,9 +98,8 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
         </div>
       </div>
 
-      <!-- Column 3: Open Source Projects -->
       <div
-        class="footer-col border-b border-[var(--border-color)] sm:border-r lg:border-b-0 footer-scroll-reveal"
+        class="footer-col border-b border-[var(--border-color)] lg:border-b-0 footer-scroll-reveal"
         data-delay="0.3"
       >
         <div class="p-4 sm:p-6 lg:p-8">
@@ -442,15 +439,31 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
 
   /* Enhanced responsive styles */
 
+  /* Mobile-only: Single column layout */
+  @media (max-width: 639px) {
+    .footer-grid {
+      gap: 0;
+    }
+
+    .footer-col {
+      border-right: none !important;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .footer-col:last-child {
+      border-bottom: none;
+    }
+  }
+
   /* Extra small screens (< 475px) */
   @media (max-width: 474px) {
     .footer-container {
       width: 95%;
     }
 
-    .footer-col {
+    /* .footer-col {
       padding: 12px !important;
-    }
+    } */
 
     .footer-heading {
       font-size: 14px !important;
