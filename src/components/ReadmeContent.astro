@@ -170,14 +170,20 @@ const { content } = Astro.props;
     margin: 2em 0;
   }
 
-  /* Table styles */
+  /* Table styles - Responsive */
+  .blog-content .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 2em 0;
+    border: 1px solid var(--border-color);
+  }
+
   .blog-content table {
     width: 100%;
+    min-width: 600px;
     border-collapse: collapse;
-    margin: 2em 0;
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    overflow: hidden;
   }
 
   .blog-content th,
@@ -186,6 +192,7 @@ const { content } = Astro.props;
     border-bottom: 1px solid var(--border-color);
     text-align: left;
     color: var(--text-primary);
+    white-space: nowrap;
   }
 
   .blog-content th {
@@ -194,6 +201,8 @@ const { content } = Astro.props;
     font-weight: 600;
     font-size: 1.05em;
     border-bottom: 2px solid var(--border-color);
+    position: sticky;
+    top: 0;
   }
 
   .blog-content tr:last-child td {
@@ -202,6 +211,15 @@ const { content } = Astro.props;
 
   .blog-content tr:nth-child(even) td {
     background: rgba(var(--accent-primary-rgb), 0.03);
+  }
+
+  /* Mobile responsive adjustments for tables */
+  @media (max-width: 768px) {
+    .blog-content th,
+    .blog-content td {
+      padding: 0.65em 0.9em;
+      font-size: 0.9em;
+    }
   }
 
   /* Inline code in headings */
@@ -229,6 +247,20 @@ const { content } = Astro.props;
 </style>
 
 <script>
+  // Wrap tables in a scrollable container for responsiveness
+  function wrapTables() {
+    const tables = document.querySelectorAll(".blog-content table");
+    tables.forEach((table) => {
+      // Check if table is already wrapped
+      if (table.parentElement?.classList.contains("table-wrapper")) return;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-wrapper";
+      table.parentNode?.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+  }
+
   // Initialize mermaid for README content
   async function initMermaid() {
     const mermaidElements = document.querySelectorAll(".blog-content .mermaid");
@@ -265,13 +297,19 @@ const { content } = Astro.props;
     });
   }
 
-  // Run on page load
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMermaid);
-  } else {
+  // Combined initialization function
+  function initReadmeContent() {
+    wrapTables();
     initMermaid();
   }
 
+  // Run on page load
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initReadmeContent);
+  } else {
+    initReadmeContent();
+  }
+
   // Also run on Astro transitions
-  document.addEventListener("astro:page-load", initMermaid);
+  document.addEventListener("astro:page-load", initReadmeContent);
 </script>

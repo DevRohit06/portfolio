@@ -13,6 +13,22 @@ const { content: Content } = Astro.props;
   <Content />
 </div>
 
+<script>
+  // Wrap tables in a scrollable container for responsiveness
+  document.addEventListener("DOMContentLoaded", () => {
+    const tables = document.querySelectorAll(".blog-content table");
+    tables.forEach((table) => {
+      // Check if table is already wrapped
+      if (table.parentElement?.classList.contains("table-wrapper")) return;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-wrapper";
+      table.parentNode?.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+  });
+</script>
+
 <style>
   .blog-content {
     color: var(--text-primary);
@@ -103,32 +119,55 @@ const { content: Content } = Astro.props;
     margin-bottom: 0.5em;
   }
 
-  /* Custom Table Styling for Blog Content */
+  /* Custom Table Styling for Blog Content - Responsive */
+  :global(.blog-content .table-wrapper) {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 2em 0;
+    border-radius: 8px;
+    border: 1px solid rgba(var(--text-secondary-rgb), 0.12);
+  }
+
   :global(.blog-content table) {
     width: 100%;
+    min-width: 600px;
     border-collapse: collapse;
-    margin: 2em 0;
     background: var(--bg-secondary);
-    border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
+
   :global(.blog-content th),
   :global(.blog-content td) {
     padding: 0.85em 1.2em;
     border-bottom: 1px solid rgba(var(--text-secondary-rgb), 0.12);
     text-align: left;
+    white-space: nowrap;
   }
+
   :global(.blog-content th) {
     background: var(--bg-primary);
     color: var(--accent-primary);
     font-weight: 600;
     font-size: 1.05em;
+    position: sticky;
+    top: 0;
   }
+
   :global(.blog-content tr:last-child td) {
     border-bottom: none;
   }
+
   :global(.blog-content tr:nth-child(even)) td {
     background: rgba(var(--accent-primary-rgb), 0.03);
+  }
+
+  /* Mobile responsive adjustments */
+  @media (max-width: 768px) {
+    :global(.blog-content th),
+    :global(.blog-content td) {
+      padding: 0.65em 0.9em;
+      font-size: 0.9em;
+    }
   }
 </style>

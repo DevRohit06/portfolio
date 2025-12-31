@@ -290,16 +290,14 @@ const ogImage = entry.data.heroImage ? entry.data.heroImage : "/images/og.webp";
           </div>
         </div>
 
-        <div
-          class="relative w-full aspect-video overflow-hidden border border-secondary"
-        >
+        <div class="relative w-full overflow-hidden border border-secondary">
           <Image
             transition:name={entry.data.slug}
             src={entry.data.heroImage}
             alt={entry.data.title}
             class="w-full h-full object-cover"
             width={1200}
-            height={675}
+            height={630}
           />
         </div>
       </div>
