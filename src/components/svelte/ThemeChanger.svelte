@@ -4,12 +4,15 @@
   // We'll focus on Light/Dark toggle instead of system
   let currentTheme: "light" | "dark" = "light";
 
-  function setTheme(theme: typeof currentTheme) {
+  function setTheme(theme: typeof currentTheme, save: boolean = true) {
     // Update the theme class
     document.documentElement.classList.toggle("dark-theme", theme === "dark");
 
-    // Store the preference
-    localStorage.setItem("theme", theme);
+    // Store the preference only if requested
+    if (save) {
+      localStorage.setItem("theme", theme);
+    }
+    
     currentTheme = theme;
 
     // Update theme color meta tag for mobile browsers
@@ -41,7 +44,7 @@
     } else {
       // Use system preference by default
       currentTheme = prefersDark ? "dark" : "light";
-      localStorage.setItem("theme", currentTheme);
+      // Do NOT set localStorage here, allowing it to stay in "system" mode
     }
 
     // Apply theme
@@ -61,7 +64,7 @@
       // Only update if there's no saved preference
       if (!localStorage.getItem("theme")) {
         const newTheme = e.matches ? "dark" : "light";
-        setTheme(newTheme);
+        setTheme(newTheme, false);
       }
     });
   });
