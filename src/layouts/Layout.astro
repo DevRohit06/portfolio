@@ -3,9 +3,13 @@ import "../styles/global.css";
 import "lenis/dist/lenis.css";
 import Loader from "../components/Loader.astro";
 import Seo from "../components/Seo.astro";
+import AnnouncementBar from "../components/AnnouncementBar.astro";
 import { mainMetaData } from "../lib/metaData";
 import { ClientRouter } from "astro:transitions";
-import { PUBLIC_GOOGLE_TAG_KEY } from "astro:env/client";
+import { PUBLIC_GOOGLE_TAG_KEY, PUBLIC_DIALOGH_URL } from "astro:env/client";
+
+const dialoghUrl = PUBLIC_DIALOGH_URL;
+
 interface Props {
   showLoader?: boolean;
   description?: string;
@@ -156,6 +160,11 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
     )}
   </head>
   <body class="antialiased w-full">
+    <AnnouncementBar
+      id="dialogh-launch"
+      href={dialoghUrl}
+      text="Dialogh community is now live on WhatsApp! Join us"
+    />
     <main class="2xl:max-w-[120rem] mx-auto">
       <slot />
     </main>
