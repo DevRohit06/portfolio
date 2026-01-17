@@ -15,6 +15,7 @@ import LiveClock from "../components/svelte/LiveClock.svelte";
 import AboutMe from "../components/AboutMe.astro";
 import Projects from "../components/Projects.astro";
 import Skills from "../components/Skills.astro";
+import ContactSection from "../components/ContactSection.astro";
 
 // Set showLoader to true only for the first visit in a session
 // We'll handle this client-side to avoid hydration issues
@@ -48,7 +49,7 @@ const jsonLd = {
     "@type": "Person",
     name: "Rohit Kushwaha",
     jobTitle: "Software Engineer",
-    url: "https://rohitk06.in",
+    url: Astro.site?.toString() || "https://rohitk06.in",
     sameAs: [
       "https://github.com/devrohit06",
       "https://linkedin.com/in/rohitk06",
@@ -229,6 +230,13 @@ const jsonLd = {
     <!-- Blog Section with increased spacing -->
     <div class="mb-40 md:mb-48 lg:mb-56">
       <BlogSection />
+    </div>
+
+    <!-- Contact Section -->
+    <div
+      class="w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] mx-auto mb-40 md:mb-48 lg:mb-56"
+    >
+      <ContactSection />
     </div>
 
     <Footer />

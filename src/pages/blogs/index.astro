@@ -22,10 +22,8 @@ const allTags = [
 ];
 
 // Construct the canonical URL for SEO
-const canonicalURL = new URL(
-  "/blogs",
-  Astro.site || "https://rohitk06.in",
-).toString();
+const siteUrl = Astro.site?.toString().replace(/\/$/, "") || "https://rohitk06.in";
+const canonicalURL = new URL("/blogs", Astro.site || siteUrl).toString();
 
 // SEO metadata
 const title = "Blog - Rohit Kushwaha";
@@ -52,7 +50,7 @@ const blogListingJsonLd = {
     itemListElement: sortedPosts.map((post, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `https://rohitk06.in/blogs/${post.slug || post.id}`,
+      url: `${siteUrl}/blogs/${post.slug || post.id}`,
       name: post.data.title,
       image: post.data.heroImage,
       description: post.data.description,

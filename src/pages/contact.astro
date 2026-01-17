@@ -1,0 +1,303 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Badge from "../components/Badge.astro";
+import TextReveal from "../components/TextReveal.astro";
+import ThemeChanger from "../components/svelte/ThemeChanger.svelte";
+import ContactForm from "../components/svelte/ContactForm.svelte";
+import { PUBLIC_TURNSTILE_SITE_KEY } from "astro:env/client";
+
+// Use test key in development, real key in production
+const turnstileSiteKey = import.meta.env.PROD
+  ? PUBLIC_TURNSTILE_SITE_KEY
+  : "1x00000000000000000000AA"; // Cloudflare test key (always passes)
+
+// SEO metadata
+const pageTitle = "Contact - Rohit Kushwaha";
+const description =
+  "Get in touch with Rohit Kushwaha. Send a message for collaborations, projects, or just to say hello.";
+const canonicalURL = new URL("/contact", Astro.site || Astro.url.origin).href;
+
+// Social links
+const socialLinks = [
+  {
+    name: "Email",
+    href: "mailto:rohitk2006@gmail.com",
+    icon: "mdi:email",
+    username: "rohitk2006@gmail.com",
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/devrohit06",
+    icon: "simple-icons:github",
+    username: "@devrohit06",
+  },
+  {
+    name: "LinkedIn",
+    href: "https://linkedin.com/in/rohitk06",
+    icon: "simple-icons:linkedin",
+    username: "/in/rohitk06",
+  },
+  {
+    name: "Twitter",
+    href: "https://twitter.com/rohitk_06",
+    icon: "simple-icons:x",
+    username: "@rohitk_06",
+  },
+  {
+    name: "Discord",
+    href: "https://discord.com/users/961554851505987584",
+    icon: "simple-icons:discord",
+    username: "rohitk06",
+  },
+];
+
+// Structured data
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: pageTitle,
+  description: description,
+  mainEntity: {
+    "@type": "Person",
+    name: "Rohit Kushwaha",
+    email: "rohitk2006@gmail.com",
+    sameAs: socialLinks.map((s) => s.href),
+  },
+};
+---
+
+<Layout title={pageTitle} description={description} canonicalURL={canonicalURL}>
+  <div class="page-content relative z-0">
+    <Navbar />
+
+    <div
+      class="w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] relative z-20 mx-auto mt-[120px] md:mt-[160px] mb-32"
+    >
+      <!-- Header Section -->
+      <div
+        class="contact-header border border-[var(--border-color)] p-6 sm:p-8 md:p-12 relative"
+      >
+        <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2">
+        </div>
+
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">Contact</span>
+        </Badge>
+
+        <TextReveal
+          element="h1"
+          text="Let's Connect"
+          className="text-3xl sm:text-4xl md:text-5xl font-semibold contact-title split-text"
+          splitBy="chars"
+          stagger={0.03}
+          from="bottom"
+        />
+
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-4 max-w-2xl"
+        >
+          Have a project in mind, want to collaborate, or just want to say
+          hello? I'd love to hear from you. Fill out the form below or reach out
+          through any of my social channels.
+        </p>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-0">
+        <!-- Contact Form Section -->
+        <div
+          class="contact-form-section lg:col-span-3 border border-[var(--border-color)] border-t-0 lg:border-r-0 p-6 sm:p-8 md:p-12"
+        >
+          <h2 class="text-xl sm:text-2xl font-medium mb-6">Send a Message</h2>
+          <ContactForm siteKey={turnstileSiteKey} client:load />
+        </div>
+
+        <!-- Social Links Section -->
+        <div
+          class="contact-socials lg:col-span-2 border border-[var(--border-color)] border-t-0 lg:border-t p-6 sm:p-8 md:p-12"
+        >
+          <h2 class="text-xl sm:text-2xl font-medium mb-6">Other Ways to Reach Me</h2>
+
+          <div class="flex flex-col gap-4">
+            {
+              socialLinks.map((link) => (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="social-link group flex items-center gap-4 p-4 border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors"
+                >
+                  <iconify-icon
+                    icon={link.icon}
+                    class="text-2xl text-[var(--text-secondary)] group-hover:text-[var(--accent-primary)] transition-colors"
+                  />
+                  <div class="flex-1">
+                    <div class="font-medium group-hover:text-[var(--accent-primary)] transition-colors">
+                      {link.name}
+                    </div>
+                    <div class="text-sm text-[var(--text-secondary)]">
+                      {link.username}
+                    </div>
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-[var(--text-secondary)] group-hover:text-[var(--accent-primary)] transition-colors"
+                  >
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="7 7 17 7 17 17" />
+                  </svg>
+                </a>
+              ))
+            }
+          </div>
+
+          <!-- Availability Status -->
+          <div class="mt-8 p-4 border border-[var(--border-color)] bg-[var(--bg-primary)]">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span class="text-sm font-medium">Available for Work</span>
+            </div>
+            <p class="text-sm text-[var(--text-secondary)]">
+              Open to freelance projects, collaborations, and interesting opportunities.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Section -->
+      <div
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12 relative"
+      >
+        <p class="text-sm text-[var(--text-secondary)]">
+          I typically respond within 24-48 hours. For urgent matters, please
+          reach out via
+          <a
+            href="https://twitter.com/rohitk_06"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[var(--accent-primary)] hover:underline">Twitter DM</a
+          >.
+        </p>
+
+        <div
+          class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10"
+        >
+        </div>
+      </div>
+    </div>
+
+    <Footer />
+  </div>
+
+  <!-- Theme changer -->
+  <div class="sticky bottom-8 right-8 z-50">
+    <div class="flex justify-end sm:pr-8 pr-5">
+      <ThemeChanger client:only="svelte" />
+    </div>
+  </div>
+
+  <!-- Load Iconify -->
+  <script
+    src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"
+  ></script>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Lenis from "lenis";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Initialize smooth scrolling
+  const lenis = new Lenis();
+  function raf(time: number) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Animate header
+    gsap.fromTo(
+      ".contact-header",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+    );
+
+    // Animate form section
+    gsap.fromTo(
+      ".contact-form-section",
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: "power2.out" }
+    );
+
+    // Animate socials section
+    gsap.fromTo(
+      ".contact-socials",
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, delay: 0.3, ease: "power2.out" }
+    );
+
+    // Animate social links
+    const socialLinks = document.querySelectorAll(".social-link");
+    socialLinks.forEach((link, index) => {
+      gsap.fromTo(
+        link,
+        { opacity: 0, x: 20 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.4,
+          delay: 0.4 + index * 0.08,
+          ease: "back.out(1.2)",
+        }
+      );
+    });
+  });
+</script>
+
+<style>
+  .contact-header,
+  .contact-form-section,
+  .contact-socials {
+    opacity: 0;
+  }
+
+  .contact-title {
+    overflow: hidden;
+  }
+
+  .social-link {
+    will-change: transform;
+  }
+
+  .social-link:hover {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-header,
+    .contact-form-section,
+    .contact-socials {
+      opacity: 1;
+    }
+
+    .social-link:hover {
+      transform: none;
+    }
+  }
+</style>
