@@ -35,6 +35,18 @@ export default defineConfig({
         context: "server",
         access: "secret",
       }),
+      RESEND_API_KEY: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      TURNSTILE_SECRET_KEY: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      PUBLIC_TURNSTILE_SITE_KEY: envField.string({
+        context: "client",
+        access: "public",
+      }),
       PUBLIC_VERCEL_ENV: envField.string({
         context: "client",
         access: "public",
@@ -55,6 +67,12 @@ export default defineConfig({
         context: "client",
         access: "public",
         optional: true,
+      }),
+      PUBLIC_DIALOGH_URL: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+        default: "https://dialogh.in",
       }),
     },
   },
