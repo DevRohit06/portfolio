@@ -5,6 +5,10 @@ import Badge from "./Badge.astro";
 import { socials } from "../lib/socials";
 import SocialIcons from "./SocialIcons.astro";
 import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
+import { PUBLIC_DIALOGH_URL } from "astro:env/client";
+
+const dialoghUrl = PUBLIC_DIALOGH_URL;
+const siteUrl = Astro.site?.toString() || "https://rohitk06.in";
 ---
 
 <footer id="footer" class="footer-section mt-20 mb-2">
@@ -174,12 +178,12 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
           class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 footer-dialogh-links"
         >
           <a
-            href="https://dialogh.in"
+            href={dialoghUrl}
             class="footer-link-subtle text-xs sm:text-sm text-[var(--text-secondary)]"
             >dialogh.in</a
           >
           <a
-            href="https://dialogh.in"
+            href={dialoghUrl}
             class="footer-join-link footer-magnetic-item text-xs sm:text-sm text-[var(--accent-primary)] font-medium"
             >Join Now →</a
           >
@@ -205,7 +209,7 @@ import DiscordStatusCompact from "./svelte/discord/DiscordStatusCompact.svelte";
         >
 
         <a
-          href="https://rohitk06.in"
+          href={siteUrl}
           class="footer-website-link text-xs sm:text-sm flex items-center group footer-magnetic-item whitespace-nowrap"
         >
           <span class="mr-1">rohitk06.in</span>

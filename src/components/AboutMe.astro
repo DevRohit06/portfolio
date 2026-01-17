@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { className = "" } = Astro.props;
+const siteUrl = Astro.site?.toString().replace(/\/$/, "") || "https://rohitk06.in";
 
 // Personal description sections - concise and engaging
 const introSection =
@@ -175,7 +176,7 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
     itemprop="knowsAbout"
     content="Web Development, Svelte, SvelteKit, React, Next.js, TypeScript, Node.js, Tailwind CSS"
   />
-  <meta itemprop="url" content="https://www.rohitk06.in" />
+  <meta itemprop="url" content={siteUrl} />
   <meta itemprop="birthPlace" content="India" />
   <meta itemprop="nationality" content="Indian" />
   <link itemprop="sameAs" href="https://github.com/rohitkushwaha0" />

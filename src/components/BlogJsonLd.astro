@@ -18,13 +18,15 @@ interface Props {
   readingTime?: number;
 }
 
+const siteUrl = Astro.site?.toString().replace(/\/$/, "") || "https://rohitk06.in";
+
 const {
   title,
   description,
   publishDate,
   updatedDate,
   authorName = "Rohit Kushwaha",
-  authorUrl = "https://rohitk06.in",
+  authorUrl = siteUrl,
   heroImage,
   tags = [],
   canonicalUrl,
@@ -43,7 +45,7 @@ const jsonLd = {
   "@type": "BlogPosting",
   headline: title,
   description: description,
-  image: heroImage || "https://rohitk06.in/images/og.webp",
+  image: heroImage || `${siteUrl}/images/og.webp`,
   datePublished: formattedPubDate,
   dateModified: formattedUpdatedDate,
   author: {
@@ -57,7 +59,7 @@ const jsonLd = {
     url: authorUrl,
     logo: {
       "@type": "ImageObject",
-      url: "https://rohitk06.in/favicon.svg",
+      url: `${siteUrl}/favicon.svg`,
     },
   },
   mainEntityOfPage: {

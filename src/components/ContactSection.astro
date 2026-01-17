@@ -1,0 +1,59 @@
+---
+import Badge from "./Badge.astro";
+import TextReveal from "./TextReveal.astro";
+import ContactForm from "./svelte/ContactForm.svelte";
+import RandomGame from "./svelte/RandomGame.svelte";
+import { PUBLIC_TURNSTILE_SITE_KEY } from "astro:env/client";
+
+// Use test key in development, real key in production
+const turnstileSiteKey = import.meta.env.PROD
+  ? PUBLIC_TURNSTILE_SITE_KEY
+  : "1x00000000000000000000AA"; // Cloudflare test key (always passes)
+---
+
+<section class="contact-section" id="contact">
+  <div class="border border-[var(--border-color)] p-6 sm:p-8 md:p-12 relative">
+    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
+
+    <Badge size="sm" className="mb-4">
+      <span class="text-xs font-bold uppercase">Contact</span>
+    </Badge>
+
+    <TextReveal
+      element="h2"
+      text="Get in Touch"
+      className="text-2xl sm:text-3xl md:text-4xl font-semibold"
+      splitBy="chars"
+      stagger={0.03}
+      from="bottom"
+    />
+
+    <p
+      class="text-sm sm:text-base text-[var(--text-secondary)] mt-4 max-w-xl mb-8"
+    >
+      Have a project in mind or want to collaborate? I'd love to hear from you.
+    </p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Contact Form -->
+      <div class="contact-form-wrapper">
+        <ContactForm siteKey={turnstileSiteKey} compact={true} client:visible />
+      </div>
+
+      <!-- Right Side: Game -->
+      <div class="game-wrapper">
+        <p class="text-sm text-[var(--text-secondary)] mb-3">
+          While you wait, have some fun:
+        </p>
+        <RandomGame client:visible />
+      </div>
+    </div>
+
+    <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2">
+    </div>
+  </div>
+</section>
+
+<style>
+  /* No additional styles needed */
+</style>
