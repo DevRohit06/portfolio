@@ -187,3 +187,13 @@ body {
     visibility: visible;
   }
 }
+
+/* View Transition background - set dynamically via JS based on theme */
+::view-transition {
+  background-color: var(--view-transition-bg, #c9cdd1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  background-color: var(--view-transition-bg, #c9cdd1);
+}
