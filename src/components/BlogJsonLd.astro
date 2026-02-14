@@ -16,6 +16,7 @@ interface Props {
   tags?: string[];
   canonicalUrl: string;
   readingTime?: number;
+  wordCount?: number;
 }
 
 const siteUrl = Astro.site?.toString().replace(/\/$/, "") || "https://rohitk06.in";
@@ -31,6 +32,7 @@ const {
   tags = [],
   canonicalUrl,
   readingTime,
+  wordCount,
 } = Astro.props;
 
 // Format dates for structured data
@@ -54,12 +56,12 @@ const jsonLd = {
     url: authorUrl,
   },
   publisher: {
-    "@type": "Person",
-    name: authorName,
-    url: authorUrl,
+    "@type": "Organization",
+    name: "Rohit Kushwaha",
+    url: siteUrl,
     logo: {
       "@type": "ImageObject",
-      url: `${siteUrl}/favicon.svg`,
+      url: `${siteUrl}/images/rohit.webp`,
     },
   },
   mainEntityOfPage: {
@@ -67,10 +69,38 @@ const jsonLd = {
     "@id": canonicalUrl,
   },
   keywords: Array.isArray(tags) ? tags.join(", ") : "",
+  ...(wordCount ? { wordCount } : {}),
   timeRequired: readingTime ? `PT${readingTime}M` : "PT5M",
   inLanguage: "en-US",
+};
+
+// Breadcrumb structured data for blog navigation
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: siteUrl,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Blog",
+      item: `${siteUrl}/blogs`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: title,
+      item: canonicalUrl,
+    },
+  ],
 };
 ---
 
 <!-- Render the JSON-LD structured data -->
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
