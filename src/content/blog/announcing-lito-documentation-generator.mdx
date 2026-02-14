@@ -1,6 +1,6 @@
 ---
 title: "Announcing Lito: Documentation That Developers Actually Love"
-description: "Introducing Lito — an open-source documentation site generator that transforms Markdown into searchable, beautiful docs with zero configuration, 20+ MDX components, and offline search powered by Pagefind."
+description: "Introducing Lito, an open-source documentation site generator that transforms Markdown into searchable, beautiful docs with zero configuration, 20+ MDX components, and offline search powered by Pagefind."
 heroImage: "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=800&h=400&fit=crop&crop=entropy&auto=format"
 tags: ["Open Source", "Documentation", "Developer Tools", "MDX", "CLI"]
 slug: "announcing-lito-documentation-generator"
@@ -11,9 +11,9 @@ wordsCount: 1900
 
 # Announcing Lito: Documentation That Developers Actually Love
 
-I've spent a lot of time thinking about documentation tooling. After building [SuperDocs](/blog/superdocs-open-source-documentation) and learning from its strengths and limitations, I wanted to take everything I'd learned and build something better — something that nails the developer experience from day one.
+I've spent a lot of time thinking about documentation tooling. After building [SuperDocs](/blog/superdocs-open-source-documentation) and learning from its strengths and limitations, I wanted to take everything I'd learned and build something better, something that nails the developer experience from day one.
 
-Today, I'm excited to announce **Lito** — an open-source documentation site generator that transforms your Markdown into searchable, beautiful documentation websites. No complex configuration. No framework boilerplate. Just your content and a single command.
+Today, I'm excited to announce **Lito**, an open-source documentation site generator that transforms your Markdown into searchable, beautiful documentation websites. No complex configuration. No framework boilerplate. Just your content and a single command.
 
 ## Why Another Documentation Tool?
 
@@ -28,7 +28,7 @@ Lito addresses every one of these. It's the documentation tool I always wanted t
 
 ## Zero Configuration, Real Results
 
-Getting started with Lito requires exactly one file — a `lito.json` configuration:
+Getting started with Lito requires exactly one file, a `lito.json` configuration:
 
 ```bash
 npx lito init
@@ -93,7 +93,7 @@ Show related code snippets together with automatic syntax highlighting:
 
 ### Cards, Accordions, and More
 
-Steps, cards, accordions, file trees, API reference blocks — Lito has components for every common documentation pattern. No third-party plugins needed.
+Steps, cards, accordions, file trees, API reference blocks - Lito has components for every common documentation pattern. No third-party plugins needed.
 
 ## Offline Search with Pagefind
 
@@ -101,10 +101,10 @@ One of my biggest frustrations with documentation tools is search. Most solution
 
 Lito takes a different approach: **full-text search powered by Pagefind**. It runs entirely in the browser with zero server infrastructure:
 
-- **Builds at compile time** — Search index is generated during the build step
-- **Runs offline** — Works without internet after the initial page load
-- **Zero cost** — No search service subscriptions
-- **Fast** — Pagefind's compressed index format keeps search responsive even for large doc sites
+- **Builds at compile time**:Search index is generated during the build step
+- **Runs offline**:Works without internet after the initial page load
+- **Zero cost**:No search service subscriptions
+- **Fast**:Pagefind's compressed index format keeps search responsive even for large doc sites
 
 Your users get instant, accurate search results without you maintaining any backend infrastructure.
 
@@ -121,12 +121,12 @@ No more maintaining API docs by hand and hoping they stay in sync with your actu
 
 ## Dual-Theme System
 
-Lito ships with a polished **dual-theme system** — light and dark modes with smooth transitions:
+Lito ships with a polished **dual-theme system**:light and dark modes with smooth transitions:
 
-- **System preference detection** — Automatically matches the user's OS theme
-- **Manual toggle** — Users can override with a click
-- **Smooth transitions** — No jarring flashes when switching themes
-- **Custom theming** — Override CSS variables to match your brand
+- **System preference detection**:Automatically matches the user's OS theme
+- **Manual toggle**:Users can override with a click
+- **Smooth transitions**:No jarring flashes when switching themes
+- **Custom theming**:Override CSS variables to match your brand
 
 Both themes are designed from the ground up, not just an inverted color scheme bolted on as an afterthought.
 
@@ -158,13 +158,13 @@ No external i18n libraries or complex routing configurations needed.
 
 If you've used SuperDocs, you'll feel right at home with Lito. It builds on the same CLI-first philosophy but takes it further:
 
-- **Richer component library** — 20+ components vs. basic Markdown
-- **Better search** — Pagefind's offline-first approach vs. basic full-text
-- **OpenAPI support** — First-class API documentation
-- **i18n** — Multilingual docs out of the box
-- **More polished themes** — Production-ready from day one
+- **Richer component library**:20+ components vs. basic Markdown
+- **Better search**:Pagefind's offline-first approach vs. basic full-text
+- **OpenAPI support**:First-class API documentation
+- **i18n**:Multilingual docs out of the box
+- **More polished themes**:Production-ready from day one
 
-Think of Lito as SuperDocs grown up — same philosophy, vastly expanded capabilities.
+Think of Lito as SuperDocs grown up, same philosophy, vastly expanded capabilities.
 
 ## Quick Start
 
@@ -181,7 +181,7 @@ npx lito dev
 npx lito build
 ```
 
-Write your docs in Markdown or MDX, use the built-in components, and deploy the static output anywhere — Vercel, Netlify, GitHub Pages, Cloudflare Pages, or your own server.
+Write your docs in Markdown or MDX, use the built-in components, and deploy the static output anywhere: Vercel, Netlify, GitHub Pages, Cloudflare Pages, or your own server.
 
 ## Open Source and Community-Driven
 
@@ -191,7 +191,7 @@ Lito is fully **open-source** and community-driven:
 - **Discord**: Active community for questions and contributions
 - **Current Version**: v1.0.0
 
-Contributions are welcome — whether it's new components, bug fixes, documentation improvements, or feature requests.
+Contributions are welcome, whether it's new components, bug fixes, documentation improvements, or feature requests.
 
 ## What's Next
 
@@ -205,7 +205,7 @@ Lito v1.0.0 is just the beginning. The roadmap includes:
 
 ## Try It Today
 
-If you've been struggling with documentation tooling — too much configuration, missing components, search headaches — give Lito a try. It's free, open-source, and designed to make documentation something developers actually enjoy writing.
+If you've been struggling with documentation tooling - too much configuration, missing components, search headaches - give Lito a try. It's free, open-source, and designed to make documentation something developers actually enjoy writing.
 
 ```bash
 npx lito init

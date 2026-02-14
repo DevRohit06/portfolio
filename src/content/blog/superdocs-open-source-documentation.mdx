@@ -13,7 +13,7 @@ wordsCount: 2800
 
 Documentation. It's the backbone of every successful software project, yet it's also one of the most neglected aspects of development. How many times have you used a library only to find its docs are outdated, incomplete, or just plain ugly? I've been there more times than I can count.
 
-That frustration led me to build **SuperDocs**—a CLI-first documentation engine that transforms your Markdown files into beautiful, searchable documentation sites. Think of it as the open-source alternative to Mintlify, but with full control over your content and zero vendor lock-in.
+That frustration led me to build **SuperDocs**, a CLI-first documentation engine that transforms your Markdown files into beautiful, searchable documentation sites. Think of it as the open-source alternative to Mintlify, but with full control over your content and zero vendor lock-in.
 
 In this deep dive, I'll walk you through the architecture, features, and the philosophy behind SuperDocs. Whether you're a maintainer looking for better docs or a developer curious about building CLI tools, there's something here for you.
 
@@ -38,7 +38,7 @@ What if you could just point a CLI at your Markdown folder and get a production-
 
 ## Introducing SuperDocs
 
-SuperDocs is built on a simple philosophy: **your docs should be as easy to deploy as they are to write**. No complex configuration files, no framework boilerplate—just your Markdown files and a single command.
+SuperDocs is built on a simple philosophy: **your docs should be as easy to deploy as they are to write**. No complex configuration files, no framework boilerplate. Just your Markdown files and a single command.
 
 ### Core Features
 
@@ -137,7 +137,7 @@ The template includes:
 
 #### 2. Sync Phase
 
-Your Markdown files are synced into the Astro project's `src/pages/` directory. This leverages Astro's file-based routing—every `.md` or `.mdx` file becomes a route automatically:
+Your Markdown files are synced into the Astro project's `src/pages/` directory. This leverages Astro's file-based routing. Every `.md` or `.mdx` file becomes a route automatically:
 
 ```javascript
 // src/core/sync.js
@@ -276,7 +276,7 @@ superdocs build \
   --search
 ```
 
-The output is a fully static site that can be deployed anywhere—Vercel, Netlify, GitHub Pages, or your own server.
+The output is a fully static site that can be deployed anywhere: Vercel, Netlify, GitHub Pages, or your own server.
 
 ## Documentation Structure
 
@@ -393,7 +393,7 @@ After ejecting, you can:
 - Integrate with your existing Astro site
 - Modify the build process
 
-Think of it as training wheels—SuperDocs gets you started fast, and when you outgrow it, you can take full control without starting over.
+Think of it as training wheels. SuperDocs gets you started fast, and when you outgrow it, you can take full control without starting over.
 
 ## What's Next for SuperDocs
 
@@ -420,7 +420,7 @@ SuperDocs is open-source and welcomes contributions! Here's how to get involved:
 
 ## Conclusion
 
-Building documentation shouldn't be harder than building the software it describes. SuperDocs embodies this philosophy—it's fast, simple, and just works.
+Building documentation shouldn't be harder than building the software it describes. SuperDocs embodies this philosophy: it's fast, simple, and just works.
 
 Whether you're documenting a side project, an open-source library, or internal company tools, SuperDocs gives you beautiful results with minimal effort. And because it's open-source and built on Astro, you're never locked in.
 
