@@ -16,18 +16,18 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: "superdocs",
-    title: "SuperDocs",
+    slug: "lito",
+    title: "Lito",
     description:
-      "The open-source Mintlify alternative. CLI-first docs engine that transforms Markdown into beautiful, searchable documentation sites. Features hot reload, MDX support, SEO optimization, and full landing page control.",
+      "The open-source Mintlify alternative. CLI-first docs engine that transforms Markdown into beautiful, searchable documentation sites. Features 20+ MDX components, offline search powered by Pagefind, OpenAPI integration, i18n, and dual-theme support.",
     image:
       "/blog-images/superdocs.webp",
     tags: ["TypeScript", "Astro", "CLI"],
     status: "In Development",
-    githubOwner: "DevRohit06",
-    githubRepo: "superdocs",
+    githubOwner: "Lito-docs",
+    githubRepo: "cli",
     npm: "https://www.npmjs.com/package/@devrohit06/superdocs",
-    demo: "https://devrohit06.github.io/superdocs-demo/",
+    demo: "https://lito.rohitk06.in",
     technologies: [
       "TypeScript",
       "Astro",
