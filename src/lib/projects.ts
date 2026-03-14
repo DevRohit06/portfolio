@@ -82,6 +82,26 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "discli",
+    title: "discli",
+    description:
+      "Discord CLI for AI agents and humans. Manage servers, send messages, react, handle DMs, threads, and monitor events from the terminal. Built with security profiles, audit logging, and rate limiting for safe AI agent integration.",
+    image:
+      "/blog-images/discli.svg",
+    tags: ["Python", "CLI", "Discord"],
+    status: "Completed",
+    githubOwner: "DevRohit06",
+    githubRepo: "discli",
+    technologies: [
+      "Python",
+      "discord.py",
+      "Click",
+      "Async",
+      "JSONL",
+      "Claude Agent SDK",
+    ],
+  },
+  {
     slug: "klaro",
     title: "Klaro",
     description:
