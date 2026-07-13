@@ -231,8 +231,7 @@
 
 <style>
   .discord-activity {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
-      sans-serif;
+    font-family: inherit;
   }
 
   /* Fixed height container */
