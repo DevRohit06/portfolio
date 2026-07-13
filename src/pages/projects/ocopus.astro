@@ -1,0 +1,562 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import Badge from "../../components/Badge.astro";
+import ThemeChanger from "../../components/svelte/ThemeChanger.svelte";
+import { getProjectBySlug } from "../../lib/projects";
+
+const project = getProjectBySlug("ocopus")!;
+
+// --- CTA configuration -------------------------------------------------------
+// Swap these for real links whenever you have them.
+const CONTACT_EMAIL = "rohitk290106@gmail.com";
+// Point DEMO_URL at a Calendly / Cal.com booking link when you set one up.
+const DEMO_URL = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Ocopus — book a demo")}`;
+// Paste your pitch-deck link (Google Drive / DocSend / PDF). If left empty, the
+// button falls back to an email request so it's never a dead link.
+const DECK_URL = "https://docs.google.com/presentation/d/1E6GZDtYWG144NmttFul8jb-XPbqVLUjZACYF3b1j3sM/edit?usp=sharing";
+const deckHref =
+  DECK_URL ||
+  `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Ocopus — request investor deck")}`;
+const CONTACT_URL = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Ocopus — partnership / investment")}`;
+// ----------------------------------------------------------------------------
+
+const siteOrigin = (Astro.site || Astro.url.origin)
+  .toString()
+  .replace(/\/$/, "");
+const canonicalURL = `${siteOrigin}/projects/ocopus`;
+const ogImageAbsolute = project.image.startsWith("http")
+  ? project.image
+  : `${siteOrigin}${project.image}`;
+
+const features = [
+  {
+    title: "AI-native, with MCP tools",
+    body: "Built AI-first. MCP (Model Context Protocol) tools let AI agents query and act on the platform directly, and a personal AI assistant for owners and staff is on the way.",
+    building: true,
+  },
+  {
+    title: "Offline-first POS",
+    body: "A point of sale that keeps selling when the internet drops. Service-worker caching and an IndexedDB queue sync automatically on reconnect.",
+    building: true,
+  },
+  {
+    title: "One platform, many businesses",
+    body: "A business-adapter pattern lets a single codebase serve restaurants, salons, gyms, and cafés, each with the right workflows.",
+  },
+  {
+    title: "Real-time operations",
+    body: "WebSocket order lifecycle, live kitchen and customer displays, and instant availability updates across every device on the floor.",
+  },
+  {
+    title: "Inventory & purchasing",
+    body: "Stock tracking with min-stock alerts, supplier management, and cron-based auto-reorder that drafts purchase orders when stock runs low.",
+  },
+  {
+    title: "Tables & reservations",
+    body: "Drag-and-drop floor plans, a walk-in waitlist with SMS updates, and full-screen customer-facing 'Preparing / Ready' displays.",
+  },
+  {
+    title: "Loyalty & marketing",
+    body: "Points, tiers, referrals, and rule-based customer segments feeding email and SMS campaigns with delivery-funnel analytics.",
+    building: true,
+  },
+  {
+    title: "Multi-gateway payments",
+    body: "Cash, card, UPI, wallet, Stripe, and Razorpay with split payments and refunds. Payment credentials are encrypted per tenant.",
+  },
+  {
+    title: "Built for real hardware",
+    body: "ESC/POS thermal printing, kitchen order tickets, and barcode scanning via the browser and USB scanners. No fragile middleware.",
+    building: true,
+  },
+];
+
+const audience = ["Restaurants", "Salons", "Gyms", "Cafés", "Service businesses"];
+
+const security = [
+  {
+    title: "Field-level encryption",
+    body: "AES-256-GCM encrypts PII and payment credentials at rest, with an HMAC blind index so encrypted fields stay searchable.",
+  },
+  {
+    title: "Authentication & 2FA",
+    body: "Better Auth with email/password, Google OAuth, email OTP, and TOTP two-factor authentication.",
+  },
+  {
+    title: "Full audit logging",
+    body: "Every mutation is recorded with the user, IP, user agent, and resource, giving a complete, tamper-evident trail.",
+  },
+  {
+    title: "Tenant isolation & roles",
+    body: "Per-business data separation with granular role-based permissions, plus multi-tier rate limiting on every endpoint.",
+  },
+  {
+    title: "GDPR-ready",
+    body: "Consent tracking, data-export, and deletion-request flows are built in rather than bolted on.",
+  },
+  {
+    title: "Tax compliance (India)",
+    body: "E-invoicing with IRN generation and e-way bill hooks for GST-compliant billing out of the box.",
+  },
+];
+
+const stack = project.technologies ?? [];
+
+// FAQ — visible on the page AND emitted as FAQPage structured data, so answer
+// engines (Google, Perplexity, ChatGPT) can cite it directly.
+const faqs = [
+  {
+    q: "What is Ocopus?",
+    a: "Ocopus is a multi-tenant SaaS platform for point of sale, inventory, and billing, built for service businesses like restaurants, salons, gyms, and cafés. It replaces the separate POS, inventory, booking, and payment tools most operators stitch together.",
+  },
+  {
+    q: "Who is Ocopus for?",
+    a: "Restaurants, salons, gyms, cafés, and other service businesses that want to run their operations from one platform instead of juggling five disconnected tools.",
+  },
+  {
+    q: "What can Ocopus do?",
+    a: "It handles the full order lifecycle, inventory and purchasing, tables and reservations, loyalty and marketing, and multi-gateway payments including Stripe, Razorpay, and UPI, all from a single system.",
+  },
+  {
+    q: "What is Ocopus built with?",
+    a: "A NestJS and PostgreSQL backend with BullMQ queues and real-time WebSocket gateways, and a SvelteKit (Svelte 5) progressive web app frontend. Payment credentials and PII are encrypted with AES-256-GCM.",
+  },
+  {
+    q: "Is Ocopus AI-powered?",
+    a: "Ocopus is built AI-native. It exposes MCP (Model Context Protocol) tools so AI agents can query and act on the platform, and a personal AI assistant for owners and staff is on the way.",
+  },
+  {
+    q: "Is Ocopus available yet?",
+    a: "Ocopus is in active development. You can book a demo or request the investor deck to get involved early as a pilot customer or investor.",
+  },
+  {
+    q: "Who is building Ocopus?",
+    a: "Ocopus is built by Rohit Kushwaha, a full-stack engineer focused on AI developer tooling and SaaS platforms.",
+  },
+];
+
+// ---- Structured data (SEO / GEO / AEO) -------------------------------------
+const softwareApplicationLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Ocopus",
+  applicationCategory: "BusinessApplication",
+  applicationSubCategory: "Point of Sale (POS) Software",
+  operatingSystem: "Web, Progressive Web App",
+  url: canonicalURL,
+  image: ogImageAbsolute,
+  description: project.description,
+  featureList: features.map((f) => f.title),
+  softwareRequirements: "Modern web browser",
+  creator: {
+    "@type": "Person",
+    name: "Rohit Kushwaha",
+    url: siteOrigin,
+  },
+  audience: {
+    "@type": "BusinessAudience",
+    name: "Restaurants, salons, gyms, cafés, and service businesses",
+  },
+  keywords:
+    "AI POS, AI-native POS, MCP tools, AI assistant for business, SaaS POS, restaurant POS, multi-tenant billing, inventory management, point of sale, service business software",
+};
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${siteOrigin}/` },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Projects",
+      item: `${siteOrigin}/projects`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Ocopus",
+      item: canonicalURL,
+    },
+  ],
+};
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<Layout
+  title="Ocopus - Multi-tenant SaaS POS & Billing Platform"
+  description={project.description}
+  ogImage={ogImageAbsolute}
+  canonicalURL={canonicalURL}
+  keywords={[
+    "Ocopus",
+    "AI-native POS",
+    "AI POS software",
+    "MCP tools",
+    "SaaS POS",
+    "restaurant POS",
+    "multi-tenant billing platform",
+    "point of sale",
+    "Rohit Kushwaha",
+  ]}
+>
+  <div class="page-content">
+    <Navbar />
+
+    <div
+      class="w-[92%] sm:w-[88%] md:w-[80%] lg:w-[72%] xl:w-[64%] 2xl:w-[58%] mx-auto mt-[90px] md:mt-[120px] pb-24"
+    >
+      <!-- Back link -->
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-2 text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent-primary)] mb-6"
+      >
+        <span aria-hidden="true">←</span> All projects
+      </a>
+
+      <!-- ============ HERO ============ -->
+      <section
+        class="border border-[var(--border-color)] relative p-6 sm:p-8 md:p-12"
+      >
+        <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2">
+        </div>
+        <div class="flex flex-wrap gap-2 mb-5">
+          {project.tags.map((tag) => <Badge text={tag} size="sm" />)}
+          <Badge size="sm">
+            <span class="text-xs font-medium text-[var(--accent-primary)]"
+              >AI-native</span
+            >
+          </Badge>
+          <Badge size="sm">
+            <span class="text-xs font-medium text-[var(--accent-primary)]"
+              >In Development</span
+            >
+          </Badge>
+        </div>
+
+        <h1
+          class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight"
+        >
+          Ocopus
+        </h1>
+        <p
+          class="text-lg sm:text-xl md:text-2xl text-[var(--text-secondary)] mt-3"
+        >
+          Run the whole business from one platform.
+        </p>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-5 max-w-2xl leading-relaxed"
+        >
+          Ocopus is an AI-native, multi-tenant SaaS platform for point of sale,
+          inventory, and billing, built for restaurants, salons, gyms, and
+          cafés. One system replaces the tangle of tools service businesses
+          stitch together today.
+        </p>
+
+        <div class="flex flex-wrap gap-3 mt-8">
+          <a href={DEMO_URL} class="cta cta--primary">Book a demo</a>
+          <a href={deckHref} class="cta cta--ghost">Request investor deck</a>
+          <a href={CONTACT_URL} class="cta cta--ghost">Get in touch</a>
+        </div>
+      </section>
+
+      <!-- ============ PROBLEM ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">The problem</span>
+        </Badge>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold max-w-3xl">
+          Service businesses are running on five tools that don't talk to each
+          other.
+        </h2>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-4 max-w-3xl leading-relaxed"
+        >
+          A separate POS, a spreadsheet for inventory, a booking app, a loyalty
+          program, and a payment terminal. Nothing syncs, staff double-enter
+          everything, and the owner never has one clear picture. Ocopus collapses
+          all of it into a single platform that adapts to how each business
+          actually operates.
+        </p>
+      </section>
+
+      <!-- ============ FEATURES ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-6">
+          <span class="text-xs font-bold uppercase">What's inside</span>
+        </Badge>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          {
+            features.map((f) => (
+              <div class="feature-card border border-[var(--border-color)] p-5 bg-[var(--card-bg)]">
+                <div class="flex items-start justify-between gap-3 mb-2">
+                  <h3 class="text-base sm:text-lg font-medium">{f.title}</h3>
+                  {f.building && <span class="building-badge">Building</span>}
+                </div>
+                <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  {f.body}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ BUILT FOR ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">Built for</span>
+        </Badge>
+        <div class="flex flex-wrap gap-2 sm:gap-3">
+          {
+            audience.map((a) => (
+              <span class="px-4 py-2 border border-[var(--border-color)] text-sm text-[var(--text-secondary)]">
+                {a}
+              </span>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ ARCHITECTURE / WHY ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">Why it holds up</span>
+        </Badge>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] max-w-3xl leading-relaxed"
+        >
+          The moat is the engineering. A NestJS and PostgreSQL backend with
+          queue-driven jobs and real-time WebSocket gateways, an installable
+          SvelteKit progressive web app, per-tenant encrypted payment
+          credentials, and a business-adapter architecture that makes new
+          verticals a configuration change rather than a rewrite.
+        </p>
+        {
+          stack.length > 0 && (
+            <div class="flex flex-wrap gap-2 mt-6">
+              {stack.map((t) => (
+                <span class="text-xs px-2 py-1 bg-[var(--bg-secondary)] text-[var(--text-secondary)] rounded">
+                  {t}
+                </span>
+              ))}
+            </div>
+          )
+        }
+      </section>
+
+      <!-- ============ SECURITY & COMPLIANCE ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">Security &amp; compliance</span>
+        </Badge>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold max-w-3xl">
+          Enterprise-grade from day one, not a phase two.
+        </h2>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-4 max-w-3xl leading-relaxed"
+        >
+          Handling payments and customer data for other businesses raises the
+          bar. Security and compliance are built into the core, so onboarding a
+          serious operator doesn't mean re-architecting.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mt-8">
+          {
+            security.map((s) => (
+              <div class="feature-card border border-[var(--border-color)] p-5 bg-[var(--card-bg)]">
+                <h3 class="text-base sm:text-lg font-medium mb-2 flex items-center gap-2">
+                  <span
+                    class="text-[var(--accent-primary)]"
+                    aria-hidden="true"
+                  >
+                    ✦
+                  </span>
+                  {s.title}
+                </h3>
+                <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  {s.body}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ FAQ ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-6">
+          <span class="text-xs font-bold uppercase">FAQ</span>
+        </Badge>
+        <div class="divide-y divide-[var(--border-color)]">
+          {
+            faqs.map((f) => (
+              <details class="faq-item group py-4">
+                <summary class="flex items-center justify-between gap-4 cursor-pointer list-none">
+                  <h3 class="text-base sm:text-lg font-medium">{f.q}</h3>
+                  <span
+                    class="faq-icon text-[var(--accent-primary)] text-xl shrink-0"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p class="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed mt-3 max-w-3xl">
+                  {f.a}
+                </p>
+              </details>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ CTA BAND ============ -->
+      <section class="border border-[var(--border-color)] border-t-0 relative">
+        <div
+          class="cta-band p-6 sm:p-8 md:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+        >
+          <div>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold">
+              Building the operating system for service businesses.
+            </h2>
+            <p class="text-sm sm:text-base text-[var(--text-secondary)] mt-3 max-w-xl">
+              If you're an operator who wants a pilot, or an investor who wants
+              the full story, let's talk.
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
+            <a href={DEMO_URL} class="cta cta--primary">Book a demo</a>
+            <a href={deckHref} class="cta cta--ghost">Request investor deck</a>
+          </div>
+        </div>
+        <div
+          class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10"
+        >
+        </div>
+      </section>
+    </div>
+
+    <Footer />
+  </div>
+
+  <div class="sticky bottom-8 right-8 z-50">
+    <div class="flex justify-end sm:pr-8 pr-5">
+      <ThemeChanger client:only="svelte" />
+    </div>
+  </div>
+
+  <!-- Structured data: SoftwareApplication + Breadcrumb + FAQ -->
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(softwareApplicationLd)}
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbLd)}
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+</Layout>
+
+<style>
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.4rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid var(--border-color);
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease,
+      transform 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .cta:hover {
+    transform: translateY(-2px);
+  }
+
+  .cta--primary {
+    background-color: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+  }
+
+  .cta--primary:hover {
+    filter: brightness(1.05);
+  }
+
+  .cta--ghost:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  .building-badge {
+    flex-shrink: 0;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.5rem;
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-primary);
+    border-radius: 0.25rem;
+    white-space: nowrap;
+  }
+
+  .feature-card {
+    transition:
+      border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .feature-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+  }
+
+  .cta-band {
+    background-color: color-mix(
+      in srgb,
+      var(--accent-primary) 7%,
+      var(--card-bg)
+    );
+  }
+
+  /* FAQ accordion */
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    transition: transform 0.25s ease;
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+</style>
