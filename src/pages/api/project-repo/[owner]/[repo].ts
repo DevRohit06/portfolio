@@ -21,6 +21,8 @@ export const GET: APIRoute = async ({ params }) => {
     // Add auth token if available to avoid rate limiting
     if (GITHUB_ACCESS_TOKEN) {
       headers["Authorization"] = `Bearer ${GITHUB_ACCESS_TOKEN}`;
+    } else {
+      console.warn("[API] GITHUB_ACCESS_TOKEN not set - requests may be rate limited");
     }
 
     // Fetch repository info
@@ -30,6 +32,8 @@ export const GET: APIRoute = async ({ params }) => {
     );
 
     if (!repoResponse.ok) {
+      const errorText = await repoResponse.text();
+      console.error(`[API] GitHub API error: ${repoResponse.status} ${repoResponse.statusText}`, errorText);
       throw new Error(`Failed to fetch repo info: ${repoResponse.statusText}`);
     }
 
