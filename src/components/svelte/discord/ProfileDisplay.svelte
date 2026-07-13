@@ -55,10 +55,27 @@
         userData.discord_user.username,
       )
     : "Discord User";
+
+  // Presence status → readable label + color
+  const STATUS_LABEL: Record<string, string> = {
+    online: "Online",
+    idle: "Idle",
+    dnd: "Do Not Disturb",
+    offline: "Offline",
+  };
+  const STATUS_COLOR: Record<string, string> = {
+    online: "#43b581",
+    idle: "#faa61a",
+    dnd: "#f04747",
+    offline: "#747f8d",
+  };
+  $: status = userData?.discord_status ?? "offline";
+  $: statusLabel = STATUS_LABEL[status] ?? "Offline";
+  $: statusColor = STATUS_COLOR[status] ?? STATUS_COLOR.offline;
 </script>
 
 <div
-  class="profile-header p-4 flex flex-col justify-between"
+  class="profile-header p-4 flex flex-col gap-4"
   in:fade={{ duration: 300, delay: 100 }}
 >
   <div class="flex items-center w-full">
@@ -73,30 +90,36 @@
       {/if}
     </div>
     <div class="flex items-start justify-between w-full ml-4">
-      <div class="user-info flex-1">
-        <div class="flex flex-col">
+      <div class="user-info flex-1 min-w-0">
+        <div class="flex flex-col gap-0.5">
           <div
-            class="user-name font-semibold text-[var(--text-primary)] text-lg"
+            class="user-name font-semibold text-[var(--text-primary)] text-lg leading-tight truncate"
             in:slide={{ duration: 300, delay: 150 }}
           >
             {displayName}
           </div>
-          {#if userData?.discord_user?.discriminator && userData?.discord_user?.discriminator !== "0"}
-            <div
-              class="user-tag text-xs text-[var(--text-secondary)]"
-              in:slide={{ duration: 300, delay: 200 }}
-            >
-              {userData.discord_user.username}#{userData.discord_user
-                .discriminator}
-            </div>
-          {:else}
-            <div
-              class="user-tag text-xs text-[var(--text-secondary)]"
-              in:slide={{ duration: 300, delay: 200 }}
-            >
-              {userData?.discord_user?.username || ""}
-            </div>
-          {/if}
+          <div
+            class="status-line flex items-center gap-1.5"
+            in:slide={{ duration: 300, delay: 200 }}
+          >
+            <span
+              class="status-dot-inline"
+              style={`background:${statusColor}`}
+            ></span>
+            <span class="text-xs font-medium" style={`color:${statusColor}`}>
+              {statusLabel}
+            </span>
+            {#if userData?.discord_user?.discriminator && userData?.discord_user?.discriminator !== "0"}
+              <span class="text-xs text-[var(--text-secondary)] truncate">
+                · {userData.discord_user.username}#{userData.discord_user
+                  .discriminator}
+              </span>
+            {:else if userData?.discord_user?.username}
+              <span class="text-xs text-[var(--text-secondary)] truncate">
+                · {userData.discord_user.username}
+              </span>
+            {/if}
+          </div>
         </div>
       </div>
 
@@ -197,7 +220,6 @@
 
 <style>
   .profile-header {
-    min-height: 105px; /* Maintain consistent height for profile display */
     display: flex;
     flex-direction: column;
   }
@@ -210,6 +232,13 @@
     background-color: var(--bg-secondary);
   }
 
+  .status-dot-inline {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
   /* Discord buttons */
   .discord-button {
     padding: 6px 12px;
@@ -220,9 +249,7 @@
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
-
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-family: inherit;
   }
 
   .discord-button:hover {

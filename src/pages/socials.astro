@@ -6,14 +6,9 @@ import ThemeChanger from "../components/svelte/ThemeChanger.svelte";
 import { Image } from "astro:assets";
 import Pfp from "../assets/rohit.webp";
 import DiscordActivity from "../components/DiscordActivity.astro";
-import Mail from "../components/icons/Mail.astro";
-import Discord from "../components/icons/Discord.astro";
-import Instagram from "../components/icons/Instagram.astro";
-import Twitter from "../components/icons/Twitter.astro";
-import LinkedIn from "../components/icons/LinkedIn.astro";
-import GitHub from "../components/icons/GitHub.astro";
 import Favicon from "../components/icons/Favicon.astro";
 import SocialIcons from "../components/SocialIcons.astro";
+import SocialGithubGraph from "../components/svelte/SocialGithubGraph.svelte";
 import { PUBLIC_DIALOGH_URL } from "astro:env/client";
 
 const dialoghUrl = PUBLIC_DIALOGH_URL;
@@ -87,6 +82,29 @@ const pageUrl = Astro.site ? new URL("/socials", Astro.site).href : "/socials";
           >
         </Badge>
         <DiscordActivity showButtons={true} showAllActivities={true} />
+      </div>
+
+      <!-- GitHub Activity Section -->
+      <div
+        class="github-section links-section border border-[var(--border-color)] border-t-0 p-4 sm:p-6"
+      >
+        <div class="flex items-center gap-3 mb-4">
+          <Badge size="xs">
+            <span class="whitespace-nowrap text-xs uppercase"
+              >GitHub Activity</span
+            >
+          </Badge>
+          <div class="flex-1 h-px bg-[var(--border-color)]"></div>
+          <a
+            href={socials.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-xs uppercase text-[var(--text-secondary)] hover:text-[var(--accent-primary)] whitespace-nowrap"
+            >@DevRohit06 ↗</a
+          >
+        </div>
+
+        <SocialGithubGraph client:visible username="devrohit06" />
       </div>
 
       <!-- Portfolio Links Section -->
@@ -193,81 +211,6 @@ const pageUrl = Astro.site ? new URL("/socials", Astro.site).href : "/socials";
               </svg>
             </span>
             <span class="link-text">Download Resume</span>
-            <span class="link-arrow group-hover:translate-x-1">→</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Connect Links Section -->
-      <div
-        class="links-section border border-[var(--border-color)] border-t-0 p-4 sm:p-6"
-      >
-        <div class="flex items-center gap-3 mb-4">
-          <Badge size="xs">
-            <span class="whitespace-nowrap text-xs uppercase">Connect</span>
-          </Badge>
-          <div class="flex-1 h-px bg-[var(--border-color)]"></div>
-        </div>
-
-        <div class="flex flex-col gap-3">
-          <a
-            href={socials.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-button group"
-          >
-            <span class="link-icon"><GitHub /></span>
-            <span class="link-text">GitHub</span>
-            <span class="link-arrow group-hover:translate-x-1">→</span>
-          </a>
-
-          <a
-            href={socials.linkedIn}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-button group"
-          >
-            <span class="link-icon"><LinkedIn /></span>
-            <span class="link-text">LinkedIn</span>
-            <span class="link-arrow group-hover:translate-x-1">→</span>
-          </a>
-
-          <a
-            href={socials.twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-button group"
-          >
-            <span class="link-icon"><Twitter /></span>
-            <span class="link-text">Twitter / X</span>
-            <span class="link-arrow group-hover:translate-x-1">→</span>
-          </a>
-
-          <a
-            href={socials.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-button group"
-          >
-            <span class="link-icon"><Instagram /></span>
-            <span class="link-text">Instagram</span>
-            <span class="link-arrow group-hover:translate-x-1">→</span>
-          </a>
-
-          <a
-            href={socials.discord}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-button group"
-          >
-            <span class="link-icon"><Discord /></span>
-            <span class="link-text">Discord</span>
-            <span class="link-arrow group-hover:translate-x-1">→</span>
-          </a>
-
-          <a href={socials.mail} class="link-button group">
-            <span class="link-icon"><Mail /></span>
-            <span class="link-text">Email Me</span>
             <span class="link-arrow group-hover:translate-x-1">→</span>
           </a>
         </div>
