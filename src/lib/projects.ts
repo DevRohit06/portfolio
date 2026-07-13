@@ -12,6 +12,9 @@ export interface Project {
   npm?: string;
   demo?: string;
   technologies?: string[];
+  /** When true, this project has a hand-built page at /projects/<slug> instead
+   *  of the auto-generated GitHub-backed detail page. */
+  customPage?: boolean;
 }
 
 export const projects: Project[] = [
@@ -102,15 +105,45 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "klaro",
-    title: "Klaro",
+    slug: "big-calendar",
+    title: "Big Calendar (Svelte)",
     description:
-      "A single billing system that adapts to many industries with pluggable business types. Features flexible catalogs, adaptive UI, multi-tenant architecture, and handles orders, invoices, payments across retail, services, healthcare, and education.",
+      "A feature-rich calendar for SvelteKit, built with Svelte 5 runes, Tailwind v4, and shadcn-svelte. Day, week, month, and agenda views with drag-and-drop events. A Svelte port of the popular lramos33/big-calendar.",
     image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop&crop=entropy&auto=format",
-    tags: ["Multi-tenant", "PWA", "Billing"],
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=600&h=400&fit=crop&crop=entropy&auto=format",
+    tags: ["Svelte 5", "SvelteKit", "Calendar"],
+    status: "Completed",
+    githubOwner: "DevRohit06",
+    githubRepo: "big-calendar-svelte",
+    demo: "https://big-calendar.rohitk06.in/",
+    technologies: [
+      "Svelte 5",
+      "SvelteKit",
+      "TypeScript",
+      "Tailwind CSS v4",
+      "shadcn-svelte",
+    ],
+  },
+  {
+    slug: "ocopus",
+    title: "Ocopus",
+    customPage: true,
+    description:
+      "An AI-native, multi-tenant SaaS POS, inventory, and billing platform for restaurants, salons, gyms, and cafés. A business-adapter pattern lets one codebase serve many business types, with an offline-first POS, real-time order updates, inventory and reservations, loyalty, and multi-gateway payments, plus MCP tools for AI agents and a personal AI assistant on the way.",
+    image:
+      "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&h=400&fit=crop&crop=entropy&auto=format",
+    tags: ["Multi-tenant", "SaaS", "POS"],
     status: "In Development",
-    technologies: ["TypeScript", "React", "Node.js", "PostgreSQL"],
+    technologies: [
+      "SvelteKit",
+      "Svelte 5",
+      "NestJS",
+      "Prisma",
+      "PostgreSQL",
+      "BullMQ",
+      "WebSockets",
+      "PWA",
+    ],
   },
 ];
 
@@ -119,5 +152,9 @@ export function getProjectBySlug(slug: string): Project | undefined {
 }
 
 export function getAllProjectSlugs(): string[] {
-  return projects.map((project) => project.slug);
+  // Exclude projects that have a hand-built custom page, so the dynamic
+  // [slug] route doesn't collide with the dedicated page.
+  return projects
+    .filter((project) => !project.customPage)
+    .map((project) => project.slug);
 }
