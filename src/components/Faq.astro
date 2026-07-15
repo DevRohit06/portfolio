@@ -1,0 +1,122 @@
+---
+import Badge from "./Badge.astro";
+
+// Single source of truth: the visible FAQ and the FAQPage JSON-LD are both
+// generated from this array, so the structured data always matches the page
+// (a Google requirement for FAQ structured data). Answers are written
+// "answer-first" so AI answer engines can extract a clean, citable chunk.
+const faqs = [
+  {
+    q: "Who is Rohit Kushwaha?",
+    a: "Rohit Kushwaha is a full-stack engineer from Ambernath, Maharashtra, India, focused on AI developer tooling. He builds products end to end across Svelte, React, Next.js, Astro, Python, and Node.js, and is a core contributor to open-source AI-agent platforms.",
+  },
+  {
+    q: "What technologies and frameworks does Rohit work with?",
+    a: "Rohit works across the full stack: Svelte and SvelteKit, React, Next.js, and Astro on the frontend, with Python and Node.js on the backend, all in TypeScript. Most of his recent work is AI developer tooling — CLIs, agent platforms, and documentation engines.",
+  },
+  {
+    q: "What is Rohit's experience with AI developer tooling?",
+    a: "Rohit is a core contributor to the open-source AI-agent platform PocketPaw and has merged 180+ pull requests into open-source AI-agent projects. He also builds and maintains his own developer tools, including the CLI tool discli and Lito.",
+  },
+  {
+    q: "What open-source projects has Rohit contributed to?",
+    a: "Rohit is a core contributor to PocketPaw, added internationalization (i18n) to Astro's official documentation, and maintains his own open-source tools discli and Lito. His work spans AI-agent platforms, developer CLIs, and documentation engines.",
+  },
+  {
+    q: "Is Rohit available for freelance work or collaboration?",
+    a: "Yes. Rohit is open to freelance projects, collaborations, and interesting engineering problems. The fastest way to reach him is by email at rohitk290106@gmail.com, or through his GitHub, LinkedIn, or X profiles.",
+  },
+  {
+    q: "How can I contact Rohit Kushwaha?",
+    a: "You can email Rohit at rohitk290106@gmail.com, or connect on GitHub (DevRohit06), LinkedIn (in/rohitk06), and X/Twitter (@rohitk_06).",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
+---
+
+<section class="faq-container relative" aria-labelledby="faq-heading">
+  <div
+    class="border border-[var(--border-color)] p-4 sm:p-6 md:p-12 relative faq-title-section"
+  >
+    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
+    <Badge size="sm" className="mb-4">
+      <span class="text-xs font-bold uppercase">FAQ</span>
+    </Badge>
+
+    <h2
+      id="faq-heading"
+      class="text-3xl sm:text-4xl md:text-5xl font-semibold"
+    >
+      Frequently Asked Questions
+    </h2>
+  </div>
+
+  <div class="border border-[var(--border-color)] border-t-0">
+    {
+      faqs.map((item, index) => (
+        <details
+          class="faq-item group border-b border-[var(--border-color)] last:border-b-0"
+          name="faq"
+          open={index === 0}
+        >
+          <summary
+            class="flex items-center justify-between gap-4 cursor-pointer list-none px-4 sm:px-6 md:px-12 py-5 sm:py-6 text-base sm:text-lg md:text-xl font-medium select-none"
+          >
+            <span>{item.q}</span>
+            <span
+              class="faq-icon shrink-0 text-2xl leading-none text-[var(--accent-primary)] transition-transform duration-300 group-open:rotate-45"
+              aria-hidden="true"
+            >
+              +
+            </span>
+          </summary>
+          <p
+            class="px-4 sm:px-6 md:px-12 pb-5 sm:pb-6 -mt-1 text-sm sm:text-base md:text-lg text-[var(--text-secondary)]"
+          >
+            {item.a}
+          </p>
+        </details>
+      ))
+    }
+  </div>
+  <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10">
+  </div>
+
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(faqJsonLd)}
+  />
+</section>
+
+<style>
+  /* Remove the default disclosure triangle across browsers */
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary::marker {
+    content: "";
+  }
+  .faq-item summary:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--border-color) 18%,
+      transparent
+    );
+  }
+  .faq-item summary:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: -2px;
+  }
+</style>

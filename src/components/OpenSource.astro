@@ -1,0 +1,383 @@
+---
+import TextReveal from "./TextReveal.astro";
+import Badge from "./Badge.astro";
+
+interface Props {
+  className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<div class={`opensource-container relative ${className}`}>
+  <!-- Header -->
+  <div
+    class="border border-[var(--border-color)] p-4 sm:p-6 md:p-12 relative os-title-section os-anim"
+  >
+    <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2"></div>
+    <Badge size="sm" className="mb-4">
+      <span class="text-xs font-bold uppercase">Open Source</span>
+    </Badge>
+
+    <TextReveal
+      element="h2"
+      text="Building in the open"
+      className="text-3xl sm:text-4xl md:text-5xl font-semibold os-title split-text"
+      splitBy="chars"
+      stagger={0.03}
+      from="bottom"
+    />
+
+    <p
+      class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-4 max-w-2xl"
+    >
+      Most of what I build ships publicly. Here's where I contribute, maintain,
+      and occasionally break things in front of everyone.
+    </p>
+  </div>
+
+  <!-- Bento grid -->
+  <div class="os-bento border border-[var(--border-color)] border-t-0">
+    <!-- Flagship: PocketPaw -->
+    <a
+      href="https://github.com/pocketpaw/pocketpaw"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="os-tile os-tile--flagship group os-anim"
+      style="grid-area: pocket;"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <span class="os-role">Core Contributor</span>
+        <span class="os-stat os-stat--lg">866★</span>
+      </div>
+      <h3
+        class="text-2xl sm:text-3xl md:text-4xl font-semibold mt-4 group-hover:text-[var(--accent-primary)]"
+      >
+        PocketPaw
+      </h3>
+      <div class="os-bignum text-[var(--accent-primary)]">180+</div>
+      <div class="text-xs sm:text-sm text-[var(--text-secondary)] -mt-1 mb-4">
+        pull requests merged
+      </div>
+      <p
+        class="text-xs sm:text-sm md:text-base text-[var(--text-secondary)] leading-relaxed"
+      >
+        Self-hosted, open-source platform to spin up your own AI agent in
+        seconds. I'm one of the top contributors, shipping across site
+        deployment, the agent runtime, and cross-platform tooling.
+      </p>
+      <div class="flex flex-wrap gap-2 mt-auto pt-5">
+        {
+          ["Python", "AI Agents", "Cloudflare"].map((tag) => (
+            <span class="os-tag">{tag}</span>
+          ))
+        }
+      </div>
+    </a>
+
+    <!-- discli -->
+    <a
+      href="https://github.com/DevRohit06/discli"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="os-tile group os-anim"
+      style="grid-area: discli;"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <h3 class="text-lg sm:text-xl font-medium group-hover:text-[var(--accent-primary)]">
+          discli
+        </h3>
+        <span class="os-stat">23K+</span>
+      </div>
+      <p class="os-role mt-1">Creator &amp; Maintainer</p>
+      <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed mt-2">
+        A Discord CLI for AI agents and humans, with security profiles and audit
+        logging built in.
+      </p>
+      <div class="flex flex-wrap gap-2 mt-auto pt-4">
+        {["Python", "CLI", "PyPI"].map((tag) => <span class="os-tag">{tag}</span>)}
+      </div>
+    </a>
+
+    <!-- Lito -->
+    <a
+      href="https://github.com/Lito-docs/cli"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="os-tile group os-anim"
+      style="grid-area: lito;"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <h3 class="text-lg sm:text-xl font-medium group-hover:text-[var(--accent-primary)]">
+          Lito
+        </h3>
+        <span class="os-stat">npm</span>
+      </div>
+      <p class="os-role mt-1">Creator &amp; Maintainer</p>
+      <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed mt-2">
+        The open-source Mintlify alternative. A CLI-first docs engine that turns
+        Markdown into fast, searchable docs.
+      </p>
+      <div class="flex flex-wrap gap-2 mt-auto pt-4">
+        {["TypeScript", "Astro", "Docs"].map((tag) => <span class="os-tag">{tag}</span>)}
+      </div>
+    </a>
+
+    <!-- Astro Docs -->
+    <a
+      href="https://github.com/withastro/docs"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="os-tile group os-anim"
+      style="grid-area: astro;"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <h3 class="text-lg sm:text-xl font-medium group-hover:text-[var(--accent-primary)]">
+          Astro Docs
+        </h3>
+        <span class="os-stat">Merged</span>
+      </div>
+      <p class="os-role mt-1">i18n Contributor</p>
+      <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed mt-2">
+        Contributed Hindi internationalization to Astro's official
+        documentation.
+      </p>
+      <div class="flex flex-wrap gap-2 mt-auto pt-4">
+        {["Astro", "i18n", "Docs"].map((tag) => <span class="os-tag">{tag}</span>)}
+      </div>
+    </a>
+
+    <!-- CTA tile -->
+    <a
+      href="https://github.com/DevRohit06"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="os-tile os-tile--cta group os-anim"
+      style="grid-area: cta;"
+    >
+      <div>
+        <div class="text-2xl sm:text-3xl md:text-4xl font-semibold">
+          211 merged PRs
+        </div>
+        <div class="text-sm sm:text-base opacity-90 mt-1">and counting.</div>
+      </div>
+      <span
+        class="inline-flex items-center gap-2 mt-4 sm:mt-0 font-medium whitespace-nowrap group-hover:gap-3 transition-all"
+      >
+        See it all on GitHub
+        <span aria-hidden="true">→</span>
+      </span>
+    </a>
+  </div>
+
+  <div class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10">
+  </div>
+</div>
+
+<style>
+  .opensource-container {
+    perspective: 1000px;
+  }
+
+  .os-title {
+    overflow: hidden;
+  }
+
+  /* Reveal: content is visible by default (no-JS safe). The pre-hidden state
+     is only applied by JS after IntersectionObserver support is confirmed. */
+  .os-anim {
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+
+  .os-anim.os-pre {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .os-anim.os-in {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .os-anim,
+    .os-anim.os-pre {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Bento grid: single column on mobile, asymmetric grid on md+ */
+  .os-bento {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "pocket"
+      "discli"
+      "lito"
+      "astro"
+      "cta";
+  }
+
+  @media (min-width: 768px) {
+    .os-bento {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-areas:
+        "pocket pocket discli"
+        "pocket pocket lito"
+        "astro  cta    cta";
+    }
+  }
+
+  .os-tile {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  @media (min-width: 768px) {
+    .os-tile {
+      padding: 1.5rem;
+      border-top: none;
+    }
+    /* Interior separators so tiles read as one grid */
+    .os-tile[style*="discli"],
+    .os-tile[style*="lito"],
+    .os-tile[style*="cta"] {
+      border-left: 1px solid var(--border-color);
+    }
+    .os-tile[style*="lito"],
+    .os-tile[style*="astro"],
+    .os-tile[style*="cta"] {
+      border-top: 1px solid var(--border-color);
+    }
+  }
+
+  .os-tile:hover {
+    transform: translateY(-2px);
+  }
+
+  .os-tile--flagship {
+    justify-content: flex-start;
+  }
+
+  .os-bignum {
+    font-size: clamp(2.75rem, 7vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1;
+    margin-top: 0.75rem;
+  }
+
+  .os-role {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+  }
+
+  .os-stat {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.2rem 0.5rem;
+    white-space: nowrap;
+  }
+
+  .os-stat--lg {
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+  }
+
+  .os-tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-radius: 0.25rem;
+  }
+
+  /* CTA tile: accent-tinted, horizontal on desktop */
+  .os-tile--cta {
+    background-color: color-mix(in srgb, var(--accent-primary) 8%, var(--card-bg));
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .os-tile--cta {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .os-tile--cta:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--accent-primary) 16%,
+      var(--card-bg)
+    );
+  }
+</style>
+
+<script>
+  // Bulletproof reveal: independent of GSAP / ScrollTrigger / smooth-scroll.
+  // Content ships visible; JS only hides-then-reveals when IO is supported,
+  // so it can never get stuck invisible.
+  function initOpenSourceReveal() {
+    const items = Array.from(
+      document.querySelectorAll<HTMLElement>(".opensource-container .os-anim"),
+    );
+    if (!items.length) return;
+
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (!("IntersectionObserver" in window) || reduce) {
+      items.forEach((el) => el.classList.add("os-in"));
+      return;
+    }
+
+    // Apply the pre-hidden state, then stagger reveal on scroll into view.
+    items.forEach((el, i) => {
+      el.classList.add("os-pre");
+      el.style.transitionDelay = `${Math.min(i * 70, 350)}ms`;
+    });
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            el.classList.add("os-in");
+            io.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    items.forEach((el) => io.observe(el));
+
+    // Safety net: if anything is still hidden after 2.5s, force it visible.
+    window.setTimeout(() => {
+      items.forEach((el) => {
+        if (!el.classList.contains("os-in")) el.classList.add("os-in");
+      });
+    }, 2500);
+  }
+
+  initOpenSourceReveal();
+  document.addEventListener("astro:page-load", initOpenSourceReveal);
+</script>

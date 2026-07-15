@@ -88,7 +88,9 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
       }}
       extend={{
         link: [
-          { rel: "canonical", href: canonicalURL },
+          // Canonical is emitted once by <Seo> via astro-seo's `canonical` prop.
+          // Adding it here caused duplicate <link rel="canonical"> tags (one with
+          // a trailing slash, one without) — do not re-add it.
           {
             rel: "alternate",
             type: "application/rss+xml",

@@ -35,16 +35,16 @@ type MetaData = z.output<typeof metaDataSchema>;
 type MetaDataInput = z.input<typeof metaDataSchema>;
 
 const _mainMetaData: MetaDataInput = {
-  title: "Hey, I'm Rohit Kushwaha | AI Enthusiast & Creative Developer",
+  title: "Hey, I'm Rohit Kushwaha | Full-Stack & AI Tooling Engineer",
   description:
-    "Hi there! I'm Rohit, crafting digital vibes with AI and modern tech.{n}I build smart, intuitive experiences that merge AI with React, Svelte, and Node.js.{nMd}When I'm not coding, I'm exploring how human creativity and artificial intelligence can create something amazing together.",
+    "I'm Rohit, a full-stack engineer who ships end to end.{n}Svelte and React on the front, Python and Node on the back, and a lot of AI developer tooling in between.{nMd}I contribute to open-source AI-agent platforms and build my own tools like discli and Lito.",
 };
 export const mainMetaData = metaDataSchema.parse(_mainMetaData);
 
 const _projectMetaData: MetaDataInput = {
-  title: "Cool stuff I've built{n}along the way",
+  title: "Things I've built{n}and shipped",
   description:
-    "Every project here tells a story about a problem I wanted to solve.{nMd}Dig in to see how I've tackled interesting challenges and what I've learned from them!",
+    "Every project here started as a problem I wanted to solve, from AI dev tools to docs engines.{nMd}Dig in to see how I approached each one and what I learned along the way.",
 };
 export const projectMetaData: MetaData = metaDataSchema.parse(_projectMetaData);
 

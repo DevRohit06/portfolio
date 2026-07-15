@@ -8,18 +8,28 @@ export async function GET({ site }: APIContext) {
 User-agent: *
 Allow: /
 
-# Important pages that should be prioritized
-Allow: /index.html
-Allow: /about
-Allow: /projects
-Allow: /blogs
-Allow: /socials
+# AI / LLM crawlers — explicitly welcomed for GEO/AEO visibility
+# (ChatGPT, Claude, Perplexity, and Google's AI training/answer bots)
+User-agent: GPTBot
+Allow: /
 
-# Slightly less important content - still allow but with lower priority
-Allow: /images/
+User-agent: OAI-SearchBot
+Allow: /
 
-# Optimize crawling rate
-Crawl-delay: 5
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
 
 # Sitemaps
 Sitemap: ${siteUrl}sitemap-index.xml

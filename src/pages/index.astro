@@ -15,6 +15,8 @@ import LiveClock from "../components/svelte/LiveClock.svelte";
 import AboutMe from "../components/AboutMe.astro";
 import Projects from "../components/Projects.astro";
 import Skills from "../components/Skills.astro";
+import OpenSource from "../components/OpenSource.astro";
+import Faq from "../components/Faq.astro";
 import ContactSection from "../components/ContactSection.astro";
 
 // Set showLoader to true only for the first visit in a session
@@ -22,57 +24,63 @@ import ContactSection from "../components/ContactSection.astro";
 const showLoader = true;
 
 // SEO metadata for the homepage
-const pageTitle = "Rohit Kushwaha - Software Engineer Portfolio";
+// ~59 chars — within Google's recommended 50–60 char title length.
+const pageTitle = "Rohit Kushwaha — Full-Stack Engineer & AI Tooling Developer";
 const description =
-  "Portfolio of Rohit Kushwaha, a software engineer specializing in web development, React, Next.js, Svelte, and modern JavaScript frameworks.";
+  "Portfolio of Rohit Kushwaha, a full-stack engineer building AI developer tooling and web apps with Svelte, React, Next.js, Python, and Node.js. 180+ merged PRs into open-source AI-agent platforms.";
 const canonicalURL = new URL("/", Astro.site || Astro.url.origin).href;
 const keywords = [
-  "software engineer",
-  "web developer",
-  "portfolio",
   "Rohit Kushwaha",
+  "Rohit Kushwaha portfolio",
+  "Rohit Kushwaha developer",
+  "full-stack engineer",
+  "AI developer tooling",
+  "open source",
+  "PocketPaw",
+  "discli",
   "React",
   "Next.js",
   "Svelte",
-  "JavaScript",
+  "Python",
 ];
 
 // Structured data for search engines
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  headline: "Rohit Kushwaha - Software Engineer Portfolio",
+  headline: "Rohit Kushwaha - Full-Stack Engineer",
   datePublished: "2025-05-08",
   dateModified: new Date().toISOString(),
   description: description,
   author: {
     "@type": "Person",
     name: "Rohit Kushwaha",
-    jobTitle: "Software Engineer",
+    jobTitle: "Full-Stack Engineer",
     url: Astro.site?.toString() || "https://rohitk06.in",
     sameAs: [
-      "https://github.com/devrohit06",
-      "https://linkedin.com/in/rohitk06",
+      "https://github.com/DevRohit06",
+      "https://www.linkedin.com/in/rohitk06/",
       "https://twitter.com/rohitk_06",
-      "https://instagram.com/rohitk.06",
+      "https://www.instagram.com/rohitk.06/",
     ],
   },
   mainEntity: {
     "@type": "Person",
     name: "Rohit Kushwaha",
-    jobTitle: "Software Engineer",
+    jobTitle: "Full-Stack Engineer",
+    description:
+      "Rohit Kushwaha is a full-stack engineer from Ambernath, India, and a core contributor to the open-source AI-agent platform PocketPaw. He builds AI developer tooling such as discli and Lito across Svelte, React, Next.js, Python, and Node.js.",
     alumniOf: "SMT. CHM College, Ulhasnagar",
     knowsAbout: [
-      "svelte",
-      "sveltekit",
-      "astro",
-      "ai",
-      "Web Development",
-      "JavaScript",
-      "React",
+      "Full-Stack Development",
+      "AI Developer Tooling",
       "Svelte",
+      "SvelteKit",
+      "Astro",
+      "React",
       "Next.js",
       "Node.js",
+      "Python",
       "TypeScript",
     ],
   },
@@ -227,10 +235,26 @@ const jsonLd = {
     </div>
     <!-- End Projects Section -->
 
+    <!-- Open Source Section -->
+    <div
+      class="w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] mx-auto mb-40 md:mb-56 lg:mb-64"
+    >
+      <OpenSource />
+    </div>
+    <!-- End Open Source Section -->
+
     <!-- Blog Section with increased spacing -->
     <div class="mb-40 md:mb-48 lg:mb-56">
       <BlogSection />
     </div>
+
+    <!-- FAQ Section -->
+    <div
+      class="w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] mx-auto mb-40 md:mb-56 lg:mb-64"
+    >
+      <Faq />
+    </div>
+    <!-- End FAQ Section -->
 
     <!-- Contact Section -->
     <div
