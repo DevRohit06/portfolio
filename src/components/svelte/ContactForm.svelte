@@ -259,7 +259,7 @@
   input,
   textarea {
     padding: 0.75rem 1rem;
-    background-color: var(--bg-primary);
+    background-color: var(--input-bg);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     font-family: inherit;
