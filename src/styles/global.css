@@ -2,18 +2,21 @@
   font-family: "Roobert Mono";
   src: url("/fonts/RoobertTRIAL-Regular.woff2") format("woff2");
   font-weight: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Roobert Mono";
   src: url("/fonts/RoobertTRIAL-Bold.woff2") format("woff2");
   font-weight: bold;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Roobert Mono";
   src: url("/fonts/RoobertTRIAL-SemiBold.woff2") format("woff2");
   font-weight: 600;
+  font-display: swap;
 }
 
 @import "tailwindcss";
@@ -55,6 +58,9 @@
   --accent-secondary: #000088;
   --border-color: #7b7b7b;
   --card-bg: #c9cdd1;
+  /* Soft off-white for form fields — avoids the harsh pure-white glare
+     against the muted #c9cdd1 page background in light mode. */
+  --input-bg: #eef0f2;
   --code-bg: rgba(123, 123, 123, 0.1);
   --blockquote-bg: rgba(7, 7, 172, 0.05);
   --progress-bar-bg: #0707ac;
@@ -83,6 +89,8 @@
   --accent-secondary: #a0a0a0;
   --border-color: #555555;
   --card-bg: #202020;
+  /* Dark mode already looked fine — keep the prior input surface. */
+  --input-bg: #121212;
   --code-bg: rgba(123, 123, 123, 0.2);
   --blockquote-bg: rgba(123, 123, 123, 0.1);
   --progress-bar-bg: #ff5533;

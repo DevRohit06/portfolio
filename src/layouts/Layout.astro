@@ -51,11 +51,24 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Preload above-the-fold fonts to cut LCP: Regular (body) + SemiBold (hero title) -->
+    <link
+      rel="preload"
+      href="/fonts/RoobertTRIAL-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/RoobertTRIAL-SemiBold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
 
     <!-- Theme initialization script - runs before anything renders -->
@@ -88,7 +101,9 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
       }}
       extend={{
         link: [
-          { rel: "canonical", href: canonicalURL },
+          // Canonical is emitted once by <Seo> via astro-seo's `canonical` prop.
+          // Adding it here caused duplicate <link rel="canonical"> tags (one with
+          // a trailing slash, one without) — do not re-add it.
           {
             rel: "alternate",
             type: "application/rss+xml",
@@ -118,8 +133,6 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
       }}
     />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     

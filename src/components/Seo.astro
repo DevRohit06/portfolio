@@ -72,7 +72,7 @@ const defaultProps: SEOProps = {
       {
         name: "keywords",
         content:
-          "Rohit Kushwaha, AI Vibe Engineer, Vibe Engineering, AI Developer, Full Stack Developer, Artificial Intelligence, Human-AI Collaboration, React, Svelte, Node.js",
+          "Rohit Kushwaha, Rohit Kushwaha developer, Rohit Kushwaha engineer, Full-Stack Engineer, AI developer tooling, open source, PocketPaw, discli, Lito, Svelte, React, Next.js, Python, Node.js, Ambernath India",
       },
       // Add noindex tag for pages that should be excluded from search engines
       ...(props.noindex
@@ -84,14 +84,33 @@ const defaultProps: SEOProps = {
       ...(props.extend?.meta || []),
     ],
     link: [
-      // Add the canonical link as a rel="canonical" tag
-      { rel: "canonical", href: canonicalUrl },
+      // Canonical is emitted by astro-seo via the `canonical` prop above.
+      // Do NOT add a second rel="canonical" here or pages get duplicate tags.
       ...(props.extend?.link || []),
     ],
   },
 };
 
 const combinedProps = { ...defaultProps, ...props };
+
+// Build BreadcrumbList structured data for non-home pages.
+// Helps search engines and AI answer engines understand the site hierarchy.
+const pathSegments = Astro.url.pathname.split("/").filter(Boolean);
+const breadcrumbList = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: baseUrl },
+    ...pathSegments.map((segment, index) => ({
+      "@type": "ListItem",
+      position: index + 2,
+      name: decodeURIComponent(segment)
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase()),
+      item: getCanonicalUrl("/" + pathSegments.slice(0, index + 1).join("/")),
+    })),
+  ],
+};
 ---
 
 <AstroSEO {...combinedProps} />
@@ -103,22 +122,42 @@ const combinedProps = { ...defaultProps, ...props };
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Rohit Kushwaha",
+    alternateName: "Rohit Kushwaha (DevRohit06)",
     url: baseUrl,
     image: `${baseUrl}/images/rohit.webp`,
-    jobTitle: "AI Vibe Engineer & Full Stack Developer",
+    jobTitle: "Full-Stack Engineer",
+    worksFor: {
+      "@type": "Organization",
+      name: "Qbtrix",
+      url: "https://qbtrix.com",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Ambernath",
+      addressRegion: "Maharashtra",
+      addressCountry: "India",
+    },
+    nationality: "Indian",
     sameAs: [
-      "https://github.com/devrohit06",
-      "https://linkedin.com/in/rohitk06",
+      "https://github.com/DevRohit06",
+      "https://www.linkedin.com/in/rohitk06/",
       "https://twitter.com/rohitk_06",
+      "https://www.instagram.com/rohitk.06/",
     ],
     description:
-      "AI Vibe Engineer specializing in creating intelligent digital experiences through human-AI collaboration and modern web technologies.",
+      "Rohit Kushwaha is a full-stack engineer from Ambernath, India, focused on AI developer tooling. He is a core contributor to the open-source AI-agent platform PocketPaw and the creator of developer tools including discli and Lito, building end to end across Svelte, React, Next.js, Python, and Node.js.",
     knowsAbout: [
-      "Artificial Intelligence",
-      "Web Development",
-      "Human-AI Collaboration",
-      "User Experience Design",
-      "Vibe Engineering",
+      "Full-Stack Development",
+      "AI Developer Tooling",
+      "Svelte",
+      "SvelteKit",
+      "React",
+      "Next.js",
+      "Astro",
+      "TypeScript",
+      "Python",
+      "Node.js",
+      "Open Source",
     ],
   })}
 />
@@ -133,11 +172,21 @@ const combinedProps = { ...defaultProps, ...props };
     name: mainMetaData.title,
     description: mainMetaData.description,
     keywords:
-      "AI Vibe Engineer, Rohit Kushwaha, Artificial Intelligence, Human-AI Collaboration",
+      "Rohit Kushwaha, Full-Stack Engineer, AI developer tooling, open source, Svelte, React, Next.js, Python",
     author: {
       "@type": "Person",
       name: "Rohit Kushwaha",
-      jobTitle: "AI Vibe Engineer",
+      jobTitle: "Full-Stack Engineer",
     },
   })}
 />
+
+<!-- BreadcrumbList structured data (only for pages below the homepage) -->
+{
+  pathSegments.length > 0 && (
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(breadcrumbList)}
+    />
+  )
+}

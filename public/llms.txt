@@ -1,0 +1,23 @@
+# Rohit Kushwaha
+
+> Rohit Kushwaha is a full-stack engineer from Ambernath, India, focused on AI developer tooling. He builds end to end across Svelte, React, Next.js, Astro, Python, and Node.js, contributes to open-source AI-agent platforms, and creates developer tools such as discli and Lito.
+
+## About
+
+- [Portfolio home](https://www.rohitk06.in): Overview of Rohit Kushwaha, skills, experience, and featured work.
+- [Projects](https://www.rohitk06.in/projects): Things Rohit has built and shipped — AI developer tools, docs engines, and more.
+- [Blog](https://www.rohitk06.in/blog): Notes on what Rohit is learning, building, and thinking about.
+
+## Focus areas
+
+- Full-stack development (frontend + backend, end to end)
+- AI developer tooling and AI-agent platforms
+- Open-source contribution and personal developer tools (discli, Lito)
+- Stacks: Svelte / SvelteKit, React, Next.js, Astro, TypeScript, Python, Node.js
+
+## Links
+
+- [GitHub](https://github.com/DevRohit06)
+- [LinkedIn](https://www.linkedin.com/in/rohitk06/)
+- [X / Twitter](https://twitter.com/rohitk_06)
+- [Instagram](https://www.instagram.com/rohitk.06/)

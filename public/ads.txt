@@ -1,0 +1,13 @@
+# ads.txt — Authorized Digital Sellers (IAB Tech Lab spec)
+# https://iabtechlab.com/ads-txt/
+#
+# This site (rohitk06.in) does not currently sell programmatic advertising,
+# so there are no authorized sellers to declare.
+#
+# When you onboard an ad network, add one line per authorized seller:
+#   <exchange-domain>, <publisher-account-id>, <DIRECT|RESELLER>, <certification-authority-id>
+#
+# Example (Google AdSense — replace with your real publisher ID before enabling):
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+
+contact=https://www.rohitk06.in
