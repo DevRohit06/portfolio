@@ -1,0 +1,109 @@
+---
+title: "Announcing astryx-svelte: Meta's Design System, Now for Svelte"
+description: "Meta open sourced Astryx, a beautiful design system, and shipped it for React only. I spent months porting all 101 components to Svelte 5, then wrote a checker that proves the port matches the original."
+heroImage: "/blog-images/astryx-svelte.webp"
+tags: ["Open Source", "Svelte", "Design Systems", "Frontend", "StyleX", "Announcement"]
+slug: "announcing-astryx-svelte"
+pubDate: 2026-08-13
+readingTime: 7
+wordsCount: 1400
+---
+
+# Announcing astryx-svelte: Meta's Design System, Now for Svelte
+
+Meta open sourced a design system this year. It is called Astryx, it is genuinely lovely, and it came with one catch: it only worked if you built your website with React.
+
+I do not build with React. I build with Svelte. So I spent the last few months porting the whole thing over, all 101 pieces of it, and today it is out. It is free, it is open source, and you can install it right now.
+
+That is the short version. The longer version is a bit more interesting, and you do not need to write code to follow it.
+
+## What a design system actually is
+
+If you have never heard the term, it sounds grander than it is.
+
+A design system is a box of ready-made parts for building software. Buttons. Text boxes. Dropdown menus. Date pickers. The little switches that turn dark mode on. Tabs, tooltips, the pop-up that asks if you are sure you want to delete something. All the small furniture that every app needs and nobody notices until it is wrong.
+
+Here is why companies build them. Imagine a large kitchen where twenty cooks each bought their own knives, their own pans, their own measuring cups. Nothing matches. Nothing stacks. Every new cook has to learn where things are all over again. A design system is the decision to stock one good set of everything, so the cooks can spend their time actually cooking.
+
+For software teams, this is the difference between shipping a feature in a week and shipping it in a month. Nobody rebuilds the button. The button already exists, it already works, and it already looks right.
+
+## The problem I ran into
+
+React and Svelte are two different ways of building websites. Think of them as two languages that describe the same thing. Both are popular. Both are good. They are simply not the same, and parts written for one do not fit the other.
+
+Astryx was built for React. So if you work in Svelte, you had two choices: give up on it, or rewrite your entire project to use a tool you did not want to use. That is not much of a choice.
+
+The third option is the one I took. Rebuild the parts, keep the design.
+
+## What is in it
+
+The finished thing has 101 components, which is the entire set Meta shipped. Nothing is missing, and nothing is made up. If Astryx does not have it, neither do I, on purpose.
+
+There are 8 themes, so the same app can look warm and buttery, or dark and gothic, or like a Y2K website, by changing a single line. There are 184 design tokens, which is the vocabulary underneath all of that: the specific greys, the exact spacing, the corner radius that shows up in a hundred places. There are 43 ready-made page templates, so a settings page or a pricing page starts at eighty percent finished instead of zero.
+
+There is a documentation site where every example is real, running software rather than a picture of software. You can click the buttons on the page. And there is a command line tool, which means an AI coding assistant can look up how a component works without you copying and pasting docs into a chat window.
+
+Ten packages, released together.
+
+## The part I actually care about
+
+Anyone can claim a copy matches the original. That claim is usually worth very little, because the person making it is also the person who made the copy.
+
+A design system happens to be an unusual case, though. "Is this the same as the original?" has a mechanical answer here, not an opinion-based one. Two buttons either produce identical styling instructions or they do not. There is no room to argue about it.
+
+So instead of asking anyone to take my word for it, I made the project check itself.
+
+The trick is that I wrote every component against the same underlying design values Meta uses. Because of how the styling tool works, that means the compiler spits out byte-for-byte identical output. Then three scripts open up Meta's published packages, pull out their already-finished styling, and compare it against mine line by line.
+
+The current score: 1,528 style keys, 1,463 style classes, and 2,418 theme values, all compared, zero differences. It runs again every single time the project is built. If I ever break something, the build fails and tells me exactly where.
+
+## The bug that proved it was worth doing
+
+The day I finished the last of those three checkers, it immediately found something.
+
+In Astryx, an avatar can show a small status dot, the green circle that means someone is online. In languages that read right to left, like Arabic, Hebrew and Urdu, the whole interface flips. That dot is supposed to flip with it. Mine did not. It sat on the wrong side.
+
+Here is the embarrassing part. I had reviewed that exact file myself. I had looked at it, thought about it, and left a written comment defending the version that was wrong.
+
+That is the entire argument for building the checker, in one small green circle. Code review is a person deciding that something looks right to them. Checking is something else, and only one of the two catches you when you are confidently mistaken.
+
+## Trying it
+
+If you do write Svelte, this is the whole setup:
+
+```bash
+npm install @astryx-svelte/core @astryx-svelte/theme-neutral @stylexjs/stylex
+```
+
+The stylesheet ships ready to go, so there is no build tool to configure and no compiler to wire up. Import a button, use the button. If you would rather compile it yourself to strip out the parts you do not use, there is a one line option for that too.
+
+It needs Svelte 5. It is built entirely with the new runes system, with no backwards compatibility mode, because half-supporting an old version is a promise I did not want to make badly.
+
+The documentation lives at [astryx-svelte.rohitk06.in](https://astryx-svelte.rohitk06.in/).
+
+## What is not finished
+
+I would rather you hear this from me than discover it on a Tuesday afternoon.
+
+Astryx has a second collection called `lab`, with 17 more experimental components in it. I have not started those. Four of them wrap heavy third party React libraries that have no Svelte equivalent, so porting them means making design decisions rather than copying answers, and I want to make those decisions carefully rather than quickly.
+
+The test suites are the other honest gap. There are 5,066 tests passing today, which sounds like a lot, and there are still 434 test cases from the original that have no counterpart here. Both gaps are written down in the project's own status file. A known gap is a task. An unknown gap is a bug waiting for a user to find.
+
+The version number is 0.3.1, and that number is worth explaining because it looks like early software. It is not a count of my releases. It is the Astryx version this port matches. Version 0.3.1 means "level with Astryx 0.3.0", which felt more useful than inventing a 1.0 to look confident.
+
+## Why I did this at all
+
+Partly because I wanted it and it did not exist, which is the honest reason behind most side projects.
+
+But partly because open source works best when good work travels. Meta built something careful and gave it away. Giving it away only to people who already agreed to use React puts a smaller fence around it than the license does. Taking that fence down was a few months of work, and now it is done, and anyone can use it.
+
+It is MIT licensed, so use it for whatever you like, commercial work included. Astryx itself belongs to Meta Platforms. This port reuses their design and their documentation writing, and it is unofficial: not affiliated with Meta, and not endorsed by them.
+
+If you build something with it, I would genuinely like to see it. And if you break it, I would like to hear about that even more.
+
+---
+
+**Links:**
+- [Documentation](https://astryx-svelte.rohitk06.in/)
+- [GitHub Repository](https://github.com/DevRohit06/astryx-svelte)
+- [Astryx by Meta](https://astryx.atmeta.com/)
