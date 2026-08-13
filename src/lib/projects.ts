@@ -19,6 +19,28 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "astryx-svelte",
+    title: "astryx-svelte",
+    description:
+      "A Svelte 5 port of Astryx, Meta's open source design system, which shipped for React only. All 101 components, 8 themes, 184 design tokens, 43 page templates and a CLI for humans and AI agents. The port is checked rather than claimed: three scripts diff our compiled output against the already-compiled CSS inside Meta's published packages on every build, currently at zero mismatches across 1,528 style keys, 1,463 style classes and 2,418 theme declarations.",
+    image: "/blog-images/astryx-svelte.webp",
+    tags: ["Svelte 5", "Design System", "Open Source"],
+    status: "In Development",
+    githubOwner: "DevRohit06",
+    githubRepo: "astryx-svelte",
+    npm: "https://www.npmjs.com/package/@astryx-svelte/core",
+    demo: "https://astryx-svelte.rohitk06.in/",
+    technologies: [
+      "Svelte 5",
+      "SvelteKit",
+      "TypeScript",
+      "StyleX",
+      "Vitest",
+      "Playwright",
+      "pnpm Monorepo",
+    ],
+  },
+  {
     slug: "lito",
     title: "Lito",
     description:
