@@ -1,0 +1,840 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import Badge from "../../components/Badge.astro";
+import ThemeChanger from "../../components/svelte/ThemeChanger.svelte";
+import { getProjectBySlug } from "../../lib/projects";
+
+const project = getProjectBySlug("luna")!;
+
+// --- CTA configuration -------------------------------------------------------
+// Swap these for real links whenever you have them.
+const CONTACT_EMAIL = "rohitk290106@gmail.com";
+const SITE_URL = project.demo ?? "https://luna.rohitk06.in";
+// Point DEMO_URL at a Calendly / Cal.com booking link when you set one up.
+const DEMO_URL = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Luna — book a demo")}`;
+// Paste your pitch-deck link (Google Drive / DocSend / PDF). If left empty, the
+// button falls back to an email request so it's never a dead link.
+const DECK_URL = "https://docs.google.com/presentation/d/1E6GZDtYWG144NmttFul8jb-XPbqVLUjZACYF3b1j3sM/edit?usp=sharing";
+const deckHref =
+  DECK_URL ||
+  `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Luna — request investor deck")}`;
+const CONTACT_URL = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Luna — partnership / investment")}`;
+// ----------------------------------------------------------------------------
+
+const siteOrigin = (Astro.site || Astro.url.origin)
+  .toString()
+  .replace(/\/$/, "");
+const canonicalURL = `${siteOrigin}/projects/luna`;
+const ogImageAbsolute = project.image.startsWith("http")
+  ? project.image
+  : `${siteOrigin}${project.image}`;
+
+const SHOTS = "/images/projects/luna";
+
+const hero = {
+  src: `${SHOTS}/pos-hero.webp`,
+  width: 1200,
+  height: 750,
+  alt: "The Luna billing screen with a dine-in order in progress: menu tiles by category on the left, and the bill with item lines, CGST, SGST and the total on the right.",
+};
+
+// Product tour: each module with the real screenshot from the app.
+const tour = [
+  {
+    title: "Bill at the counter in a few taps",
+    body: "GST worked out on each line at its own rate and split into CGST and SGST. Cash, card, UPI or split on one bill, with your UPI QR and the amount on the payment screen. Discounts above the limit need a manager's approval.",
+    src: "pos-payment-upi.webp",
+    alt: "Taking payment for a takeaway order: UPI selected with the restaurant's UPI QR code, and the bill with CGST, SGST and the total.",
+  },
+  {
+    title: "Orders reach the kitchen as they're placed",
+    body: "KOTs print from the browser on 80 mm rolls, routed by category to each station. The kitchen display shows tickets by station, flags late tickets after 15 minutes, and lets cooks mark lines preparing and ready.",
+    src: "kds-queue.webp",
+    alt: "The kitchen display: order tickets in columns with their items and timers; one ticket is marked late.",
+    width: 1200,
+    height: 675,
+  },
+  {
+    title: "See the floor, and let tables order",
+    body: "A seat-accurate floor plan with rooms and tables coloured by status. Merge and move tables, run reservations on a timeline, and keep a waitlist with quoted waits and a tracker link for guests.",
+    src: "tables-floor.webp",
+    alt: "The floor plan: tables drawn with their chairs, coloured by status, with a legend for free, seated and booked.",
+  },
+  {
+    title: "The owner's day at a glance",
+    body: "Net sales against the same day last week, orders by hour, and a live 'Now' panel: tickets in the kitchen, open orders, occupied tables, the cash drawer, low stock and the next booking.",
+    src: "dashboard-owner.webp",
+    alt: "The owner dashboard: net sales compared with last Tuesday, orders by hour, and a live panel for the kitchen, tables, cash drawer and stock.",
+  },
+  {
+    title: "An assistant that asks before it acts",
+    body: "Ask how yesterday compared with last Tuesday or which items are running low, and get the answer from your own data. It follows your role's permissions, and anything that would change data stops at an approval card first.",
+    src: "assistant.webp",
+    alt: "The assistant: suggested questions about sales, stock, best sellers and tables waiting for bills, with a prompt box.",
+  },
+  {
+    title: "Close the day with the numbers done",
+    body: "GSTR-1 data straight from your invoices (B2B, B2CL, B2CS, HSN/SAC and credit notes), sales reports, and exports to Tally, Zoho Books and CSV.",
+    src: "gst-month.webp",
+    alt: "The GST page for the month: tax payable split into CGST, SGST and IGST, with the B2B, B2CL, B2CS and HSN summary sections.",
+  },
+];
+
+// The back office, shown as a smaller grid.
+const backOffice = [
+  { title: "Kitchen stations", src: "kitchen-stations.webp", alt: "Kitchen stations settings, with the categories routed to each station." },
+  { title: "Dine-in billing", src: "pos-dine-in.webp", alt: "The POS with a dine-in order attached to a table." },
+  { title: "Table QR codes", src: "qr-print.webp", alt: "Printable QR codes, one for each table." },
+  { title: "Reports", src: "reports.webp", alt: "Sales reports with totals and trends." },
+  { title: "Inventory counts", src: "inventory-count.webp", alt: "A stock count under review, with variance and items outside tolerance." },
+  { title: "Customer profiles", src: "customer-profile.webp", alt: "A customer's profile with orders, visits, masked contact details, tags and notes." },
+  { title: "Team rota", src: "team-schedule.webp", alt: "The weekly rota with each person's shifts by day." },
+  { title: "Expenses", src: "expenses-month.webp", alt: "Expenses for the month, by category, with approvals." },
+  { title: "Cash drawer close", src: "drawer-close.webp", alt: "Closing the cash drawer: expected, counted and the difference recorded." },
+];
+
+// Phone-sized screens: the guest side and the POS on a phone.
+const phones = [
+  { title: "QR menu at the table", src: "store-menu.webp", alt: "A guest's phone at the table: the restaurant's menu with categories and dishes." },
+  { title: "Guest cart", src: "store-cart.webp", alt: "The ordering page's cart on a phone, with the items and the total." },
+  { title: "Takeaway ordering page", src: "online-store.webp", alt: "The restaurant's own takeaway ordering page, open with a 20 minute wait, categories and recommended dishes." },
+  { title: "POS on a phone", src: "pos-phone.webp", alt: "A new dine-in order on a phone: items, CGST and SGST, the total, and cash, card, UPI or split." },
+];
+
+const features = [
+  {
+    title: "POS & GST billing",
+    body: "GST on each line, a UPI QR with the amount, split bills by item or payment method, and manager approval for big discounts and voids. On every plan, including Free.",
+  },
+  {
+    title: "KOTs & kitchen display",
+    body: "KOTs on every plan, plus a kitchen display with tickets by station, late tickets flagged, and ready-to-serve items that skip the kitchen.",
+  },
+  {
+    title: "Tables, reservations & waitlist",
+    body: "Seat-accurate floor plans with rooms, merge and transfer, reservations on a timeline, and a waitlist with a tracker link for guests.",
+  },
+  {
+    title: "QR table ordering",
+    body: "Guests scan the table's QR, order on their phone, staff accept each order, and the guest pays at the end. Seated-table rule and spam limits built in.",
+  },
+  {
+    title: "Your own ordering page",
+    body: "Takeaway for pickup, paid at the counter or online through your own Razorpay or Stripe account. No commission, plus an order board for the counter screen.",
+  },
+  {
+    title: "Inventory & recipes",
+    body: "Stock comes off by recipe as you sell. Blind counts with tolerance bands, suppliers, purchase orders, and wastage with reasons.",
+  },
+  {
+    title: "Customers & loyalty",
+    body: "Profiles with encrypted, masked phone numbers, points on what customers actually paid, coupons, and email campaigns with consent.",
+  },
+  {
+    title: "Staff, shifts & expenses",
+    body: "Roles that keep money figures from staff, a weekly rota with leave requests, clock-in attendance, expense approvals, and a note-by-note blind drawer count.",
+  },
+  {
+    title: "Several outlets",
+    body: "One sign-in across outlets, each with its own menu, staff, GST invoice series and plan, and the other outlets' sales on the dashboard.",
+  },
+  {
+    title: "AI assistant",
+    body: "Ask about orders, menu, stock and team in plain words. It follows your role's permissions and shows an approval card before it changes anything.",
+  },
+  {
+    title: "Daily summary",
+    body: "Yesterday's sales, orders and stock for each outlet, sent every morning at the time you set.",
+  },
+  {
+    title: "Web, Android & Windows",
+    body: "A web app, an Android app for tills and phones, and a Windows outlet hub that keeps the counter selling when the internet drops.",
+  },
+];
+
+const audience = ["Restaurants", "Cafés", "Bars", "Food trucks", "Quick service (QSR)"];
+
+const pricing = [
+  { name: "Free", price: "₹0" },
+  { name: "Starter", price: "₹299" },
+  { name: "Growth", price: "₹699" },
+  { name: "Pro", price: "₹1,199" },
+];
+
+const security = [
+  {
+    title: "Field-level encryption",
+    body: "Guest phone numbers, emails, addresses and tax IDs, and every copy of them, are encrypted with AES-256-GCM. Searches use keyed hashes, and keys are versioned for rotation.",
+  },
+  {
+    title: "Tamper-evident audit log",
+    body: "Every view of a customer record is logged. Audit rows are hash-chained, and the database refuses edits and early deletion.",
+  },
+  {
+    title: "Roles & two-step sign-in",
+    body: "Each person sees only what their role allows; staff never see money totals and guest contacts are masked. 2FA for everyone, with reviewable sessions.",
+  },
+  {
+    title: "Signed devices",
+    body: "Each app install has its own key in secure hardware (Android Keystore, Windows CNG) and signs its requests. Offline sales sit in an encrypted store.",
+  },
+  {
+    title: "A PII firewall for the AI",
+    body: "Phone numbers, emails, addresses and tax IDs are replaced with placeholders before anything reaches the model provider, which neither keeps nor trains on requests.",
+  },
+  {
+    title: "Tenant isolation",
+    body: "Automated tests check that each business's data stays separate, and database queries are never logged with their values.",
+  },
+];
+
+const stack = project.technologies ?? [];
+
+// FAQ — visible on the page AND emitted as FAQPage structured data, so answer
+// engines (Google, Perplexity, ChatGPT) can cite it directly.
+const faqs = [
+  {
+    q: "What is Luna?",
+    a: "Luna is restaurant POS and billing software for India. One system runs the counter, the kitchen and the floor, with GST on every bill, UPI at the counter, kitchen tickets and a kitchen display, tables and QR table ordering.",
+  },
+  {
+    q: "Is Luna the same project as Ocopus?",
+    a: "Yes. Ocopus was the working name. The product is now Luna, built by Ocopus Labs, and focused on restaurants, cafés, bars and food trucks in India.",
+  },
+  {
+    q: "Who is Luna for?",
+    a: "Restaurants, cafés, bars, food trucks and quick-service outlets in India, from a single counter to a group of outlets.",
+  },
+  {
+    q: "How much does Luna cost?",
+    a: "Pricing is per outlet, per month, in rupees: Free, Starter at ₹299, Growth at ₹699 and Pro at ₹1,199, with a 14-day free trial and no card needed. Enterprise is priced with you.",
+  },
+  {
+    q: "Does Luna have an AI assistant?",
+    a: "Yes. On Pro, the assistant answers questions about orders, menu, stock and team from your own data. It follows the user's role permissions and asks for approval before changing anything.",
+  },
+  {
+    q: "Does Luna work offline?",
+    a: "Devices set up to sell offline keep unsent sales in an encrypted store, and a Windows outlet hub talks to tills over the local network, so the counter keeps billing when the internet drops.",
+  },
+  {
+    q: "What is Luna built with?",
+    a: "A NestJS, PostgreSQL and Redis backend with BullMQ queues and Socket.IO, a SvelteKit (Svelte 5) web app, Capacitor for Android, Tauri for the Windows hub, and an Astro marketing site.",
+  },
+  {
+    q: "Who is building Luna?",
+    a: "Luna is built by Rohit Kushwaha, a full-stack engineer focused on AI developer tooling and SaaS platforms.",
+  },
+];
+
+// ---- Structured data (SEO / GEO / AEO) -------------------------------------
+const softwareApplicationLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Luna",
+  alternateName: "Ocopus",
+  applicationCategory: "BusinessApplication",
+  applicationSubCategory: "Restaurant POS",
+  operatingSystem: "Web, Android, Windows",
+  url: SITE_URL,
+  image: ogImageAbsolute,
+  screenshot: tour.map((t) => `${siteOrigin}${SHOTS}/${t.src}`),
+  description: project.description,
+  featureList: features.map((f) => f.title),
+  inLanguage: "en-IN",
+  offers: pricing.map((p) => ({
+    "@type": "Offer",
+    name: p.name,
+    price: p.price.replace(/[₹,]/g, ""),
+    priceCurrency: "INR",
+  })),
+  creator: {
+    "@type": "Person",
+    name: "Rohit Kushwaha",
+    url: siteOrigin,
+  },
+  audience: {
+    "@type": "BusinessAudience",
+    name: "Restaurants, cafés, bars, food trucks and quick-service outlets in India",
+  },
+  keywords:
+    "restaurant POS India, GST billing software, UPI POS, kitchen display system, KOT, QR table ordering, restaurant inventory, AI assistant for restaurants",
+};
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${siteOrigin}/` },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Projects",
+      item: `${siteOrigin}/projects`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Luna",
+      item: canonicalURL,
+    },
+  ],
+};
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<Layout
+  title="Luna - Restaurant POS & GST Billing Software for India"
+  description={project.description}
+  ogImage={ogImageAbsolute}
+  canonicalURL={canonicalURL}
+  keywords={[
+    "Luna",
+    "Luna POS",
+    "Ocopus",
+    "restaurant POS India",
+    "GST billing software",
+    "kitchen display system",
+    "QR table ordering",
+    "AI assistant for restaurants",
+    "Rohit Kushwaha",
+  ]}
+>
+  <div class="page-content">
+    <Navbar />
+
+    <div
+      class="w-[92%] sm:w-[88%] md:w-[80%] lg:w-[72%] xl:w-[64%] 2xl:w-[58%] mx-auto mt-[90px] md:mt-[120px] pb-24"
+    >
+      <!-- Back link -->
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-2 text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent-primary)] mb-6"
+      >
+        <span aria-hidden="true">←</span> All projects
+      </a>
+
+      <!-- ============ HERO ============ -->
+      <section
+        class="border border-[var(--border-color)] relative p-6 sm:p-8 md:p-12"
+      >
+        <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2">
+        </div>
+        <div class="flex flex-wrap gap-2 mb-5">
+          {project.tags.map((tag) => <Badge text={tag} size="sm" />)}
+          <Badge size="sm">
+            <span class="text-xs font-medium text-[var(--accent-primary)]"
+              >AI assistant</span
+            >
+          </Badge>
+          <Badge size="sm">
+            <span class="text-xs font-medium text-[var(--accent-primary)]"
+              >In Development</span
+            >
+          </Badge>
+        </div>
+
+        <h1
+          class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight"
+        >
+          Luna
+        </h1>
+        <p
+          class="text-lg sm:text-xl md:text-2xl text-[var(--text-secondary)] mt-3"
+        >
+          Billing, kitchen and tables for restaurants in India.
+        </p>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-5 max-w-2xl leading-relaxed"
+        >
+          One system for the counter, the kitchen and the floor, with GST on
+          every bill. Luna runs billing, KOTs and the kitchen display, tables
+          and QR ordering, inventory, staff and the back office for
+          restaurants, cafés, bars and food trucks. Formerly Ocopus, built by
+          Ocopus Labs.
+        </p>
+
+        <div class="flex flex-wrap gap-3 mt-8">
+          <a href={SITE_URL} target="_blank" rel="noopener" class="cta cta--primary"
+            >Visit luna.rohitk06.in ↗</a
+          >
+          <a href={DEMO_URL} class="cta cta--ghost">Book a demo</a>
+          <a href={deckHref} class="cta cta--ghost">Request investor deck</a>
+        </div>
+
+        <figure class="shot mt-10">
+          <img
+            src={hero.src}
+            width={hero.width}
+            height={hero.height}
+            alt={hero.alt}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </figure>
+      </section>
+
+      <!-- ============ PROBLEM ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">The problem</span>
+        </Badge>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold max-w-3xl">
+          Indian restaurants run on a billing app, a notebook and a WhatsApp
+          group.
+        </h2>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-4 max-w-3xl leading-relaxed"
+        >
+          A billing machine that doesn't talk to the kitchen, paper KOTs that
+          go missing, stock counted in a register, and GST figures rebuilt by
+          the accountant every month. Luna puts the counter, the kitchen, the
+          floor and the books in one system, so the GST return falls out of the
+          day's invoices instead of a spreadsheet.
+        </p>
+      </section>
+
+      <!-- ============ PRODUCT TOUR ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-6">
+          <span class="text-xs font-bold uppercase">Product tour</span>
+        </Badge>
+        <div class="flex flex-col gap-14 md:gap-20">
+          {
+            tour.map((t, i) => (
+              <div
+                class={`grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-center`}
+              >
+                <div class={`lg:col-span-2 ${i % 2 === 1 ? "lg:order-2" : ""}`}>
+                  <span class="text-xs font-mono text-[var(--accent-primary)]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 class="text-xl sm:text-2xl font-semibold mt-2">
+                    {t.title}
+                  </h3>
+                  <p class="text-sm sm:text-base text-[var(--text-secondary)] mt-3 leading-relaxed">
+                    {t.body}
+                  </p>
+                </div>
+                <figure class={`shot lg:col-span-3 ${i % 2 === 1 ? "lg:order-1" : ""}`}>
+                  <a href={`${SHOTS}/${t.src}`} target="_blank" rel="noopener">
+                    <img
+                      src={`${SHOTS}/${t.src}`}
+                      width={t.width ?? 1200}
+                      height={t.height ?? 750}
+                      alt={t.alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </a>
+                </figure>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ PHONES ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">On the phone</span>
+        </Badge>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold max-w-3xl">
+          Guests order from their table. Staff bill from their pocket.
+        </h2>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-4 max-w-3xl leading-relaxed"
+        >
+          A QR code per table opens the menu on the guest's phone; staff accept
+          each order before it reaches the kitchen. The same restaurant gets
+          its own takeaway page with no commission, and the POS fits a phone
+          for tables and small counters.
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8">
+          {
+            phones.map((p) => (
+              <figure class="phone">
+                <a href={`${SHOTS}/${p.src}`} target="_blank" rel="noopener">
+                  <img
+                    src={`${SHOTS}/${p.src}`}
+                    width={390}
+                    height={844}
+                    alt={p.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+                <figcaption class="text-xs sm:text-sm text-[var(--text-secondary)] mt-3 text-center">
+                  {p.title}
+                </figcaption>
+              </figure>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ FEATURES ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-6">
+          <span class="text-xs font-bold uppercase">What's inside</span>
+        </Badge>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {
+            features.map((f) => (
+              <div class="feature-card border border-[var(--border-color)] p-5 bg-[var(--card-bg)]">
+                <h3 class="text-base sm:text-lg font-medium mb-2">{f.title}</h3>
+                <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  {f.body}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ BACK OFFICE GALLERY ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">The back office</span>
+        </Badge>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold max-w-3xl">
+          Everything after the last bill of the night.
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mt-8">
+          {
+            backOffice.map((b) => (
+              <figure class="shot shot--card">
+                <a href={`${SHOTS}/${b.src}`} target="_blank" rel="noopener">
+                  <img
+                    src={`${SHOTS}/${b.src}`}
+                    width={1200}
+                    height={750}
+                    alt={b.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+                <figcaption class="text-xs sm:text-sm text-[var(--text-secondary)] px-3 py-2 border-t border-[var(--border-color)]">
+                  {b.title}
+                </figcaption>
+              </figure>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ BUILT FOR + PRICING ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">Built for</span>
+        </Badge>
+        <div class="flex flex-wrap gap-2 sm:gap-3">
+          {
+            audience.map((a) => (
+              <span class="px-4 py-2 border border-[var(--border-color)] text-sm text-[var(--text-secondary)]">
+                {a}
+              </span>
+            ))
+          }
+        </div>
+
+        <Badge size="sm" className="mt-10 mb-4">
+          <span class="text-xs font-bold uppercase">Pricing</span>
+        </Badge>
+        <p class="text-sm sm:text-base text-[var(--text-secondary)] max-w-3xl">
+          Per outlet, per month, in rupees. 14 days free, no card.
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
+          {
+            pricing.map((p) => (
+              <div class="border border-[var(--border-color)] p-4 bg-[var(--card-bg)]">
+                <div class="text-xs uppercase tracking-wide text-[var(--text-secondary)]">
+                  {p.name}
+                </div>
+                <div class="text-2xl font-semibold mt-1">{p.price}</div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ ARCHITECTURE / WHY ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">Under the hood</span>
+        </Badge>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] max-w-3xl leading-relaxed"
+        >
+          A pnpm monorepo with five apps on shared packages: a NestJS API on
+          PostgreSQL and Redis with BullMQ jobs and Socket.IO for the live
+          kitchen and floor, a SvelteKit web app, a Capacitor Android app with
+          native plugins for printing, device keys and the offline store, a
+          Tauri Windows hub that serves tills on the local network, and an
+          Astro marketing site. The assistant runs on the Vercel AI SDK with
+          MCP tools behind a PII firewall.
+        </p>
+        {
+          stack.length > 0 && (
+            <div class="flex flex-wrap gap-2 mt-6">
+              {stack.map((t) => (
+                <span class="text-xs px-2 py-1 bg-[var(--bg-secondary)] text-[var(--text-secondary)] rounded">
+                  {t}
+                </span>
+              ))}
+            </div>
+          )
+        }
+      </section>
+
+      <!-- ============ SECURITY & COMPLIANCE ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">Security &amp; privacy</span>
+        </Badge>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold max-w-3xl">
+          Guest data is encrypted, masked and logged by default.
+        </h2>
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-4 max-w-3xl leading-relaxed"
+        >
+          Handling payments and guest data for other businesses raises the bar.
+          These controls are in the product today, not on a roadmap.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mt-8">
+          {
+            security.map((s) => (
+              <div class="feature-card border border-[var(--border-color)] p-5 bg-[var(--card-bg)]">
+                <h3 class="text-base sm:text-lg font-medium mb-2 flex items-center gap-2">
+                  <span
+                    class="text-[var(--accent-primary)]"
+                    aria-hidden="true"
+                  >
+                    ✦
+                  </span>
+                  {s.title}
+                </h3>
+                <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  {s.body}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ FAQ ============ -->
+      <section
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <Badge size="sm" className="mb-6">
+          <span class="text-xs font-bold uppercase">FAQ</span>
+        </Badge>
+        <div class="divide-y divide-[var(--border-color)]">
+          {
+            faqs.map((f) => (
+              <details class="faq-item group py-4">
+                <summary class="flex items-center justify-between gap-4 cursor-pointer list-none">
+                  <h3 class="text-base sm:text-lg font-medium">{f.q}</h3>
+                  <span
+                    class="faq-icon text-[var(--accent-primary)] text-xl shrink-0"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p class="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed mt-3 max-w-3xl">
+                  {f.a}
+                </p>
+              </details>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============ CTA BAND ============ -->
+      <section class="border border-[var(--border-color)] border-t-0 relative">
+        <div
+          class="cta-band p-6 sm:p-8 md:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+        >
+          <div>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold">
+              From the first ticket to the last bill of the night.
+            </h2>
+            <p class="text-sm sm:text-base text-[var(--text-secondary)] mt-3 max-w-xl">
+              If you run a restaurant and want a pilot, or you're an investor
+              who wants the full story, let's talk.
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
+            <a href={SITE_URL} target="_blank" rel="noopener" class="cta cta--primary"
+              >Try Luna free ↗</a
+            >
+            <a href={DEMO_URL} class="cta cta--ghost">Book a demo</a>
+            <a href={CONTACT_URL} class="cta cta--ghost">Get in touch</a>
+          </div>
+        </div>
+        <div
+          class="size-4 bg-[var(--border-color)] absolute -bottom-2 -right-2 z-10"
+        >
+        </div>
+      </section>
+    </div>
+
+    <Footer />
+  </div>
+
+  <div class="sticky bottom-8 right-8 z-50">
+    <div class="flex justify-end sm:pr-8 pr-5">
+      <ThemeChanger client:only="svelte" />
+    </div>
+  </div>
+
+  <!-- Structured data: SoftwareApplication + Breadcrumb + FAQ -->
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(softwareApplicationLd)}
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbLd)}
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+</Layout>
+
+<style>
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.4rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid var(--border-color);
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease,
+      transform 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .cta:hover {
+    transform: translateY(-2px);
+  }
+
+  .cta--primary {
+    background-color: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+  }
+
+  .cta--primary:hover {
+    filter: brightness(1.05);
+  }
+
+  .cta--ghost:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  /* Screenshots */
+  .shot {
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    overflow: hidden;
+  }
+
+  .shot img,
+  .phone img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .shot--card {
+    transition:
+      border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .shot--card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+  }
+
+  .phone a {
+    display: block;
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transition:
+      border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .phone a:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+  }
+
+  .feature-card {
+    transition:
+      border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .feature-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+  }
+
+  .cta-band {
+    background-color: color-mix(
+      in srgb,
+      var(--accent-primary) 7%,
+      var(--card-bg)
+    );
+  }
+
+  /* FAQ accordion */
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    transition: transform 0.25s ease;
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+</style>
