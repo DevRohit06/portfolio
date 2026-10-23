@@ -35,9 +35,9 @@ type MetaData = z.output<typeof metaDataSchema>;
 type MetaDataInput = z.input<typeof metaDataSchema>;
 
 const _mainMetaData: MetaDataInput = {
-  title: "Hey, I'm Rohit Kushwaha | Full-Stack & AI Tooling Engineer",
+  title: "Hey, I'm Rohit Kushwaha | AI Engineer & Full-Stack Developer",
   description:
-    "I'm Rohit, a full-stack engineer who ships end to end.{n}Svelte and React on the front, Python and Node on the back, and a lot of AI developer tooling in between.{nMd}I contribute to open-source AI-agent platforms and build my own tools like discli and Lito.",
+    "I'm Rohit, an AI engineer and full-stack developer who ships end to end.{n}Svelte and React on the front, Python and Node on the back, and a lot of AI developer tooling in between.{nMd}I contribute to open-source AI-agent platforms and build my own tools like discli and Lito.",
 };
 export const mainMetaData = metaDataSchema.parse(_mainMetaData);
 
