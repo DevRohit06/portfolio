@@ -25,16 +25,22 @@ const showLoader = true;
 
 // SEO metadata for the homepage
 // ~59 chars — within Google's recommended 50–60 char title length.
-const pageTitle = "Rohit Kushwaha — Full-Stack Engineer & AI Tooling Developer";
+const pageTitle = "Rohit Kushwaha — AI Engineer & Full-Stack Developer";
 const description =
-  "Portfolio of Rohit Kushwaha, a full-stack engineer building AI developer tooling and web apps with Svelte, React, Next.js, Python, and Node.js. 180+ merged PRs into open-source AI-agent platforms.";
+  "Portfolio of Rohit Kushwaha, an AI engineer and full-stack developer in Ambernath, near Badlapur, Kalyan and Thane. He builds AI agents, generative UI and developer tools, with 180+ merged PRs into open-source AI-agent platforms.";
 const canonicalURL = new URL("/", Astro.site || Astro.url.origin).href;
 const keywords = [
   "Rohit Kushwaha",
   "Rohit Kushwaha portfolio",
   "Rohit Kushwaha developer",
-  "full-stack engineer",
+  "AI engineer",
+  "full-stack developer",
+  "AI agents",
   "AI developer tooling",
+  "AI engineer Ambernath",
+  "AI engineer Badlapur",
+  "AI engineer Kalyan Dombivli",
+  "AI engineer Thane",
   "open source",
   "PocketPaw",
   "discli",
@@ -48,14 +54,14 @@ const keywords = [
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  headline: "Rohit Kushwaha - Full-Stack Engineer",
+  headline: "Rohit Kushwaha - AI Engineer & Full-Stack Developer",
   datePublished: "2025-05-08",
   dateModified: new Date().toISOString(),
   description: description,
   author: {
     "@type": "Person",
     name: "Rohit Kushwaha",
-    jobTitle: "Full-Stack Engineer",
+    jobTitle: "AI Engineer & Full-Stack Developer",
     url: Astro.site?.toString() || "https://rohitk06.in",
     sameAs: [
       "https://github.com/DevRohit06",
@@ -67,11 +73,22 @@ const jsonLd = {
   mainEntity: {
     "@type": "Person",
     name: "Rohit Kushwaha",
-    jobTitle: "Full-Stack Engineer",
+    jobTitle: "AI Engineer & Full-Stack Developer",
     description:
-      "Rohit Kushwaha is a full-stack engineer from Ambernath, India, and a core contributor to the open-source AI-agent platform PocketPaw. He builds AI developer tooling such as discli and Lito across Svelte, React, Next.js, Python, and Node.js.",
+      "Rohit Kushwaha is an AI engineer and full-stack developer based in Ambernath, Maharashtra, India (Thane district, Mumbai region), near Badlapur, Ulhasnagar, Kalyan and Dombivli. He builds AI agents, generative UI and developer tools: he is a core contributor to the open-source AI-agent platform PocketPaw, works on the ripple-iui generative UI framework and soul-protocol at Qbtrix, and created discli and Lito. He builds end to end across Svelte, React, Next.js, Python, and Node.js.",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Ambernath",
+      addressRegion: "Maharashtra",
+      addressCountry: "India",
+    },
     alumniOf: "SMT. CHM College, Ulhasnagar",
     knowsAbout: [
+      "AI Engineering",
+      "AI Agents",
+      "Generative UI",
+      "LLM Applications",
+      "Model Context Protocol (MCP)",
       "Full-Stack Development",
       "AI Developer Tooling",
       "Svelte",
@@ -266,7 +283,7 @@ const jsonLd = {
     <Footer />
   </div>
   <!-- Theme changer - positioned at bottom right on large screens, top right on mobile -->
-  <div class="sticky bottom-8 right-8 z-50">
+  <div class="sticky bottom-28 md:bottom-8 right-8 z-50">
     <div class="flex justify-end sm:pr-8 pr-5">
       <ThemeChanger client:only="svelte" />
     </div>

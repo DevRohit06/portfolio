@@ -25,6 +25,9 @@ export default defineConfig({
   output: "static",
   site: "https://rohitk06.in",
   trailingSlash: "never", // Enforce no trailing slashes for consistent canonical URLs
+  redirects: {
+    "/projects/ocopus": "/projects/luna",
+  },
   vite: {
     plugins: [tailwindcss()],
   },

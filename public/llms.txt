@@ -1,6 +1,12 @@
 # Rohit Kushwaha
 
-> Rohit Kushwaha is a full-stack engineer from Ambernath, India, focused on AI developer tooling. He builds end to end across Svelte, React, Next.js, Astro, Python, and Node.js, contributes to open-source AI-agent platforms, and creates developer tools such as discli and Lito.
+> Rohit Kushwaha is an AI engineer and full-stack developer from Ambernath, Maharashtra, India. He builds AI agents, generative UI and developer tools end to end across Svelte, React, Next.js, Astro, Python, and Node.js, contributes to open-source AI-agent platforms, and creates developer tools such as discli and Lito.
+
+## Location and contact
+
+- Based in Ambernath, Thane district, Maharashtra, India (Mumbai Metropolitan Region), close to Badlapur, Ulhasnagar, Kalyan and Dombivli.
+- Open to freelance AI and full-stack work, remotely.
+- Email: rohitk290106@gmail.com
 
 ## About
 
@@ -10,6 +16,7 @@
 
 ## Focus areas
 
+- AI engineering: AI agents, generative UI, LLM applications and MCP tools
 - Full-stack development (frontend + backend, end to end)
 - AI developer tooling and AI-agent platforms
 - Open-source contribution and personal developer tools (discli, Lito)

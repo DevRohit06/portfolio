@@ -11,13 +11,13 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, "") || "https://rohitk06.i
 
 // Personal description sections - concise and engaging
 const introSection =
-  "Hey there! I'm Rohit, and I build digital experiences that feel natural and intuitive. I turn complex ideas into user-friendly applications.";
+  "Hey there! I'm Rohit, an AI engineer and full-stack developer from Ambernath who builds products end to end and cares about the small details that make software feel effortless.";
 const skillsSection =
-  "I'm a tech mixologist, blending AI with Svelte, React, and Node.js to create apps that truly understand users. Building solutions that just work.";
+  "I'm equally at home in a SvelteKit or Next.js frontend and a Python or Node backend. Most of my recent work is in AI developer tooling: CLIs, agent platforms, and docs engines that other developers actually use.";
 const interestsSection =
-  "What excites me? 'Vibe engineering' - making technology that feels right. I explore how humans and AI can create amazing things together.";
+  "That plays out in the open: I'm a core contributor to the AI-agent platform PocketPaw, I've added internationalization to Astro's official docs, and I build and maintain my own open-source tools like discli and Lito.";
 const valuesSection =
-  "I believe technology should adapt to you, not the other way around. My goal is building experiences as natural as conversation.";
+  "I like the 'vibe engineering' side of the craft: shipping fast, keeping things intuitive, and figuring out how humans and AI build better things together.";
 
 // SEO-friendly content summary from the sections above
 const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${valuesSection}`;
@@ -111,14 +111,14 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
           class="text-sm sm:text-base mt-2 text-[var(--text-secondary)] education-period"
           itemprop="eduTimeframe"
         >
-          SMT. CHM College, Ulhasnagar · 2023 - 2026 (Expected)
+          SMT. CHM College, Ulhasnagar · 2023 - 2026
         </p>
         <p
           class="text-sm sm:text-base mt-4 education-desc text-[var(--text-secondary)]"
         >
-          Diving deeper into the "why" behind code while building real projects.
-          I'm especially into algorithms and data structures - the secret recipes
-          that make good software great!
+          Where I learned the "why" behind the code while shipping real projects
+          on the side. Algorithms and data structures are still my favorite part,
+          the secret recipes that make good software great.
         </p>
       </div>
       <div
@@ -169,7 +169,7 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
   <meta itemprop="name" content="Rohit Kushwaha" />
   <meta
     itemprop="jobTitle"
-    content="Full Stack Developer & Software Engineer"
+    content="AI Engineer & Full-Stack Developer"
   />
   <meta itemprop="description" content={bioSummary} />
   <meta
@@ -179,8 +179,8 @@ const bioSummary = `${introSection} ${skillsSection} ${interestsSection} ${value
   <meta itemprop="url" content={siteUrl} />
   <meta itemprop="birthPlace" content="India" />
   <meta itemprop="nationality" content="Indian" />
-  <link itemprop="sameAs" href="https://github.com/rohitkushwaha0" />
-  <link itemprop="sameAs" href="https://linkedin.com/in/rohit-kushwaha" />
+  <link itemprop="sameAs" href="https://github.com/DevRohit06" />
+  <link itemprop="sameAs" href="https://www.linkedin.com/in/rohitk06/" />
   <link itemprop="sameAs" href="https://twitter.com/rohitk_06" />
 </div>
 
