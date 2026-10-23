@@ -110,6 +110,14 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
             href: "/rss.xml",
             title: "Rohit Kushwaha's Blog RSS Feed",
           },
+          // RFC 9727: advertise the API catalog so agents can find it from any
+          // page, not only by probing the well-known URI.
+          {
+            rel: "api-catalog",
+            type: "application/linkset+json",
+            href: "/.well-known/api-catalog",
+            title: "API catalog",
+          },
         ],
         meta: [
           { name: "author", content: "Rohit Kushwaha" },

@@ -1,0 +1,316 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Badge from "../components/Badge.astro";
+import TextReveal from "../components/TextReveal.astro";
+import {
+  CATALOG_PATH,
+  DOCS_PATH,
+  HEALTH_MEDIA_TYPE,
+  HEALTH_PATH,
+  OPENAPI_PATH,
+  absoluteUrl,
+  apis,
+} from "../lib/apiCatalog";
+
+const pageTitle = "API Documentation - Rohit Kushwaha";
+const description =
+  "Reference for the public HTTP API of rohitk06.in: GitHub insights, link metadata, project repository data, and the contact endpoint. Discoverable via RFC 9727.";
+const canonicalURL = new URL(DOCS_PATH, Astro.site || Astro.url.origin).href;
+
+const site = Astro.site;
+const openapiUrl = absoluteUrl(OPENAPI_PATH, site);
+const catalogUrl = absoluteUrl(CATALOG_PATH, site);
+const healthUrl = absoluteUrl(HEALTH_PATH, site);
+const origin = absoluteUrl("", site);
+
+/** Example curl for an operation, with path/query templates filled in. */
+function exampleRequest(op: (typeof apis)[number]["operations"][number]) {
+  let path = op.path;
+  const query = new URLSearchParams();
+
+  for (const parameter of op.parameters ?? []) {
+    if (parameter.in === "path") {
+      path = path.replace(`{${parameter.name}}`, parameter.example);
+    } else {
+      query.set(parameter.name, parameter.example);
+    }
+  }
+
+  const url = `${origin}${path}${query.size ? `?${query}` : ""}`;
+
+  if (op.method === "get") return `curl "${url}"`;
+
+  const body = Object.keys(
+    (op.requestBody?.schema.properties as Record<string, unknown>) ?? {},
+  )
+    .map((key) => `"${key}": "..."`)
+    .join(", ");
+
+  return [
+    `curl -X POST "${url}" \\`,
+    `  -H "Content-Type: application/json" \\`,
+    `  -d '{ ${body} }'`,
+  ].join("\n");
+}
+---
+
+<Layout title={pageTitle} description={description} canonicalURL={canonicalURL}>
+  <div class="page-content relative z-0">
+    <Navbar />
+
+    <div
+      class="w-[95%] xs:w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] relative z-20 mx-auto mt-[120px] md:mt-[160px] mb-32"
+    >
+      <!-- Header -->
+      <div
+        class="border border-[var(--border-color)] p-6 sm:p-8 md:p-12 relative"
+      >
+        <div class="size-4 bg-[var(--border-color)] absolute -top-2 -left-2">
+        </div>
+
+        <Badge size="sm" className="mb-4">
+          <span class="text-xs font-bold uppercase">API</span>
+        </Badge>
+
+        <TextReveal
+          element="h1"
+          text="API Documentation"
+          className="text-3xl sm:text-4xl md:text-5xl font-semibold split-text"
+          splitBy="chars"
+          stagger={0.03}
+          from="bottom"
+        />
+
+        <p
+          class="text-sm sm:text-base md:text-lg text-[var(--text-secondary)] mt-4 max-w-2xl"
+        >
+          The public HTTP API behind this site. Every endpoint is
+          unauthenticated — the read endpoints proxy GitHub with a server-side
+          token, so you don't spend your own rate limit.
+        </p>
+
+        <div class="flex flex-wrap gap-3 mt-6 text-xs sm:text-sm">
+          <a
+            href={OPENAPI_PATH}
+            class="px-3 py-2 border border-[var(--border-color)] hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] transition-colors"
+            >OpenAPI 3.1 description</a
+          >
+          <a
+            href={CATALOG_PATH}
+            class="px-3 py-2 border border-[var(--border-color)] hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] transition-colors"
+            >RFC 9727 catalog</a
+          >
+          <a
+            href={HEALTH_PATH}
+            class="px-3 py-2 border border-[var(--border-color)] hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] transition-colors"
+            >Status</a
+          >
+        </div>
+      </div>
+
+      <!-- Discovery -->
+      <div
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <h2 class="text-xl sm:text-2xl font-medium mb-4">Discovery</h2>
+        <p class="text-sm sm:text-base text-[var(--text-secondary)] mb-4">
+          These APIs are published as a machine-readable catalog at the
+          well-known location defined by
+          <a
+            href="https://www.rfc-editor.org/rfc/rfc9727"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[var(--accent-primary)] hover:underline">RFC 9727</a
+          >. An agent can find every API, its description, its documentation,
+          and its health from one request:
+        </p>
+        <pre
+          class="text-xs sm:text-sm p-4 border border-[var(--border-color)] overflow-x-auto"><code>curl "{
+            catalogUrl
+          }"</code></pre>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] mt-4">
+          The response is a <code class="text-[var(--accent-primary)]"
+            >application/linkset+json</code
+          > document. Each entry carries an <code>anchor</code> identifying the
+          API and the
+          <code>service-desc</code>, <code>service-doc</code>, and
+          <code>status</code> link relations.
+        </p>
+      </div>
+
+      <!-- Base URL -->
+      <div
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <h2 class="text-xl sm:text-2xl font-medium mb-4">Base URL</h2>
+        <pre
+          class="text-xs sm:text-sm p-4 border border-[var(--border-color)] overflow-x-auto"><code>{
+            origin
+          }</code></pre>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] mt-4">
+          Responses are JSON. Read endpoints are cached at the edge for one
+          hour and send
+          <code>Access-Control-Allow-Origin: *</code>.
+        </p>
+      </div>
+
+      <!-- APIs -->
+      {
+        apis.map((api) => (
+          <section
+            id={api.id}
+            class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12 scroll-mt-32"
+          >
+            <h2 class="text-xl sm:text-2xl font-medium">{api.name}</h2>
+            <p class="text-sm sm:text-base text-[var(--text-secondary)] mt-3 max-w-3xl">
+              {api.description}
+            </p>
+
+            <div class="mt-8 space-y-8">
+              {api.operations.map((op) => (
+                <article class="border border-[var(--border-color)] p-4 sm:p-6">
+                  <div class="flex flex-wrap items-center gap-3">
+                    <span
+                      class:list={[
+                        "px-2 py-1 text-xs font-bold uppercase border",
+                        op.method === "get"
+                          ? "border-[var(--accent-primary)] text-[var(--accent-primary)]"
+                          : "border-[var(--border-color)]",
+                      ]}
+                    >
+                      {op.method}
+                    </span>
+                    <code class="text-sm sm:text-base break-all">{op.path}</code>
+                  </div>
+
+                  <h3 class="font-medium text-base sm:text-lg mt-4">
+                    {op.summary}
+                  </h3>
+                  <p class="text-sm text-[var(--text-secondary)] mt-2">
+                    {op.description}
+                  </p>
+
+                  {op.parameters?.length ? (
+                    <div class="mt-5">
+                      <h4 class="text-xs font-bold uppercase text-[var(--text-secondary)] mb-3">
+                        Parameters
+                      </h4>
+                      <ul class="space-y-2">
+                        {op.parameters.map((parameter) => (
+                          <li class="text-sm">
+                            <code class="text-[var(--accent-primary)]">
+                              {parameter.name}
+                            </code>
+                            <span class="text-[var(--text-secondary)]">
+                              {" "}
+                              — {parameter.in}
+                              {parameter.required ? ", required" : ", optional"}.{" "}
+                              {parameter.description}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {op.requestBody ? (
+                    <div class="mt-5">
+                      <h4 class="text-xs font-bold uppercase text-[var(--text-secondary)] mb-3">
+                        Request body
+                      </h4>
+                      <p class="text-sm text-[var(--text-secondary)] mb-3">
+                        {op.requestBody.description}
+                      </p>
+                      <ul class="space-y-2">
+                        {Object.entries(
+                          (op.requestBody.schema.properties ?? {}) as Record<
+                            string,
+                            { description?: string }
+                          >,
+                        ).map(([name, field]) => (
+                          <li class="text-sm">
+                            <code class="text-[var(--accent-primary)]">
+                              {name}
+                            </code>
+                            <span class="text-[var(--text-secondary)]">
+                              {" "}
+                              — {field.description}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  <div class="mt-5">
+                    <h4 class="text-xs font-bold uppercase text-[var(--text-secondary)] mb-3">
+                      Responses
+                    </h4>
+                    <ul class="space-y-2">
+                      {op.responses.map((response) => (
+                        <li class="text-sm">
+                          <code class="text-[var(--accent-primary)]">
+                            {response.status}
+                          </code>
+                          <span class="text-[var(--text-secondary)]">
+                            {" "}
+                            — {response.description}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div class="mt-5">
+                    <h4 class="text-xs font-bold uppercase text-[var(--text-secondary)] mb-3">
+                      Example
+                    </h4>
+                    <pre class="text-xs sm:text-sm p-4 border border-[var(--border-color)] overflow-x-auto">
+                      <code>{exampleRequest(op)}</code>
+                    </pre>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+
+      <!-- Health -->
+      <section
+        id="health"
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12 scroll-mt-32"
+      >
+        <h2 class="text-xl sm:text-2xl font-medium">Status</h2>
+        <p
+          class="text-sm sm:text-base text-[var(--text-secondary)] mt-3 max-w-3xl"
+        >
+          Every API in the catalog points its <code>status</code> relation at a
+          shared health endpoint, which answers with
+          <code>{HEALTH_MEDIA_TYPE}</code>.
+        </p>
+        <pre
+          class="text-xs sm:text-sm p-4 border border-[var(--border-color)] overflow-x-auto mt-5"><code>curl "{
+            healthUrl
+          }"</code></pre>
+      </section>
+
+      <!-- Footnote -->
+      <div
+        class="border border-[var(--border-color)] border-t-0 p-6 sm:p-8 md:p-12"
+      >
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)]">
+          The machine-readable description at <a
+            href={OPENAPI_PATH}
+            class="text-[var(--accent-primary)] hover:underline">{openapiUrl}</a
+          > is generated from the same source as this page, so the two cannot drift
+          apart.
+        </p>
+      </div>
+    </div>
+
+    <Footer />
+  </div>
+</Layout>
