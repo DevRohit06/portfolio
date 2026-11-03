@@ -28,6 +28,13 @@ export default defineConfig({
   redirects: {
     "/projects/ocopus": "/projects/luna",
   },
+  build: {
+    // Inline all CSS: removes render-blocking stylesheet round trips before first paint.
+    inlineStylesheets: "always",
+  },
+  image: {
+    domains: ["raw.githubusercontent.com", "images.unsplash.com"],
+  },
   vite: {
     plugins: [tailwindcss()],
   },
@@ -82,7 +89,7 @@ export default defineConfig({
 
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: "load",
+    defaultStrategy: "hover",
   },
 
   integrations: [

@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import TextReveal from "./TextReveal.astro";
 import Badge from "./Badge.astro";
 import { projects } from "../lib/projects";
@@ -59,11 +60,29 @@ const displayProjects = projects.map((project) => ({
             <div class="project-card-wrapper group h-full flex flex-col">
               <div class="project-card flex flex-col h-full border border-[var(--border-color)] group-hover:border-[var(--accent-primary)] overflow-hidden relative bg-[var(--card-bg)]">
                 <div class="project-card-image-container relative overflow-hidden w-full aspect-video">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    class="project-card-image grayscale group-hover:grayscale-0 w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-105"
-                  />
+                  {/^https?:\/\//.test(project.image) ? (
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      inferSize
+                      widths={[480, 800]}
+                      sizes="(min-width: 768px) 40vw, 95vw"
+                      format="webp"
+                      loading="lazy"
+                      decoding="async"
+                      class="project-card-image grayscale group-hover:grayscale-0 w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-105"
+                    />
+                  ) : (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      width="800"
+                      height="450"
+                      loading="lazy"
+                      decoding="async"
+                      class="project-card-image grayscale group-hover:grayscale-0 w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-105"
+                    />
+                  )}
                   <div class="project-card-status absolute top-3 left-3 z-10">
                     <Badge
                       className="bg-opacity-50"
@@ -153,8 +172,7 @@ const displayProjects = projects.map((project) => ({
 </section>
 
 <!-- Load Iconify -->
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"
-></script>
+<script is:inline defer src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
 <script>
   import { gsap } from "gsap";
