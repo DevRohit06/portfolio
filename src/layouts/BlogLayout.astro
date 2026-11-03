@@ -40,7 +40,17 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
     />
     
     <!-- Theme initialization script - runs before anything renders -->
-    <script is:inline src="/theme-init.js"></script>
+    <script is:inline>
+      // Inlined (was /theme-init.js): set the theme class before first paint
+      // without a render-blocking request.
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          var dark = t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.classList.toggle("dark-theme", dark);
+        } catch (e) {}
+      })();
+    </script>
     
     <!-- SEO Component with enhanced metadata for blog posts -->
     <Seo

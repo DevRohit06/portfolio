@@ -194,7 +194,7 @@ const siteUrl = Astro.site?.toString() || "https://rohitk06.in";
       <div
         class="sm:col-span-4 md:col-span-3 lg:col-span-3 sm:pt-1 pt-2 border-b sm:border-b-0 border-[var(--border-color)] pb-2 sm:pb-0"
       >
-        <DiscordStatusCompact client:load userId="743173584935190620" />
+        <DiscordStatusCompact client:visible userId="743173584935190620" />
       </div>
       <div
         class="sm:col-span-8 md:col-span-9 lg:col-span-9 sm:border-l p-2 sm:p-3 lg:p-4 border-[var(--border-color)] flex items-center justify-between w-full"
@@ -494,7 +494,7 @@ const siteUrl = Astro.site?.toString() || "https://rohitk06.in";
 
   /* Small mobile screens (475px - 639px) */
   @media (min-width: 475px) and (max-width: 639px) {
-    .footer-grid .footer-col:nth-child(3) .flex.flex-col.sm\\:flex-row {
+    .footer-grid .footer-col:nth-child(3) .flex.flex-col.sm\:flex-row {
       flex-direction: column !important;
       align-items: flex-start !important;
       gap: 8px !important;

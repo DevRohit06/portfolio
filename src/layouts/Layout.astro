@@ -72,7 +72,17 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
 
 
     <!-- Theme initialization script - runs before anything renders -->
-    <script is:inline src="/theme-init.js"></script>
+    <script is:inline>
+      // Inlined (was /theme-init.js): set the theme class before first paint
+      // without a render-blocking request.
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          var dark = t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.classList.toggle("dark-theme", dark);
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Enhanced SEO implementation -->
     <Seo
@@ -147,11 +157,22 @@ const googleTagKey = PUBLIC_GOOGLE_TAG_KEY;
     <!-- Google Analytics - Updated implementation -->
     {googleTagKey && (
       <>
-        <script
-          async
-          src=`https://www.googletagmanager.com/gtag/js?id=${googleTagKey}`
-        ></script>
         <script define:vars={{ googleTagKey }}>
+          // gtag.js (~180KB) is the largest script on the page. Load it once the
+          // page is idle after `load` so it never competes with first paint;
+          // events pushed to dataLayer before then are queued, not lost.
+          window.addEventListener("load", () => {
+            const inject = () => {
+              const s = document.createElement("script");
+              s.async = true;
+              s.src = `https://www.googletagmanager.com/gtag/js?id=${googleTagKey}`;
+              document.head.appendChild(s);
+            };
+            "requestIdleCallback" in window
+              ? requestIdleCallback(inject, { timeout: 3000 })
+              : setTimeout(inject, 1500);
+          }, { once: true });
+
           window.dataLayer = window.dataLayer || [];
           function gtag() {
             dataLayer.push(arguments);

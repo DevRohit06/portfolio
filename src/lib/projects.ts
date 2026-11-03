@@ -19,6 +19,26 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "reui",
+    title: "ReUI",
+    description:
+      "The Dynamic Island for Windows. A small black island at the top of the screen shows what's playing, what you copied, your timers, your devices and the coding agents waiting on you, and lets you act on them without leaving the window you're in. Clipboard history (Win+Alt+V), a drag-and-drop shelf, volume and brightness pop-ups, Bluetooth batteries, mic/camera/screen indicators, call controls, system stats, and cards for Claude Code, Codex and OpenCode. A native Rust app that follows Windows' own events and draws nothing while nothing moves; installs without admin rights.",
+    image: "/images/projects/reui/hero.webp",
+    tags: ["Rust", "Windows", "Desktop App"],
+    status: "In Development",
+    githubOwner: "ocopus-labs",
+    githubRepo: "ReUI",
+    demo: "https://re-ui.rohitk06.in",
+    technologies: [
+      "Rust",
+      "windows-rs (Win32 / WinRT)",
+      "Tokio",
+      "Serde + postcard IPC",
+      "realfft",
+      "Astro",
+    ],
+  },
+  {
     slug: "astryx-svelte",
     title: "astryx-svelte",
     description:

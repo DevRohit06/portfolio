@@ -45,6 +45,8 @@ import SocialIcons from "./SocialIcons.astro";
         >
           <Image
             src={Pfp}
+            widths={[320, 480, 720]}
+            sizes="(min-width: 640px) 30vw, 95vw"
             loading="eager"
             decoding="async"
             fetchpriority="high"
